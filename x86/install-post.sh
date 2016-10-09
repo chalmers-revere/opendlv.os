@@ -50,7 +50,7 @@ if [ ! "$group" == "" ]; then
 fi
 
 
-if [ "$has_setup_root" ]; then
+if [[ $has_setup_root == 1 ]]; then
   su -c setup-root-* -s /bin/bash root
   rm setup-root-*.sh
 fi
@@ -61,7 +61,7 @@ for (( i = 0; i < ${#user[@]}; i++ )); do
     usermod -G ${group[$i]} ${user[$i]}
   fi
 
-  if [ "$has_setup_user" ]; then
+  if [[ $has_setup_user == 1 ]]; then
     cd /home/${user[$i]}
     cp /root/{install-conf,setup-user-*}.sh .
     chmod +x *.sh

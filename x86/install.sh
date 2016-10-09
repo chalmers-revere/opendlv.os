@@ -20,7 +20,7 @@ echo -e "${hdd}1\t/\text4\trw,relatime\t0 1" >> /mnt/etc/fstab
 
 mkdir -p /mnt/root
 cp {install-conf,install-post}.sh /mnt/root/
-if [ "$has_setup" ]; then
+if [[ $has_setup == 1 ]]; then
   cp setup-*.sh /mnt/root/
 fi
 
