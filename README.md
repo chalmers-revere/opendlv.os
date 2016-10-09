@@ -14,24 +14,24 @@ operating system capable of running the containerized OpenDLV framework.
    at: https://wiki.archlinux.org/index.php/USB_flash_installation_media
 2. Boot the computer using the bootable USB
 3. Download the automated scripts with:
-```
-wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master/x86/get.sh
-sh get.sh
-```
+   ```
+     wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master/x86/get.sh
+     sh get.sh
+   ```
 4. Enable the root and user setups that you want to enable on the machine, e.g.:
-```
-cp setup-root-available/setup-root-router.sh .
-```
+   ```
+     cp setup-root-available/setup-root-router.sh .
+   ```
 5. Configure the basic installation and the enabled setups.
-```
-vim install-conf.sh
-vim setup-root-router.sh
-```
+   ```
+     vim install-conf.sh
+     vim setup-root-router.sh
+   ```
 6. Run the automated installation with (REMEMBER: all your data will be lost, you have been warned!):
-```
-chmod +x *.sh
-./install.sh
-```
+   ```
+     chmod +x *.sh
+     ./install.sh
+   ```
 
 ## Automated install on a BeagleBone Black
 
