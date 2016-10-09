@@ -49,7 +49,11 @@ if [ ! "$group" == "" ]; then
   done
 fi
 
-su -c config-root-* -s /bin/bash root
+
+if [ "$has_setup_root" ]; then
+  su -c setup-root-* -s /bin/bash root
+  rm setup-root-*.sh
+fi
 
 for (( i = 0; i < ${#user[@]}; i++ )); do
   useradd -m -g users -s /bin/bash ${user[$i]}
@@ -57,21 +61,23 @@ for (( i = 0; i < ${#user[@]}; i++ )); do
     usermod -G ${group[$i]} ${user[$i]}
   fi
 
-  cd /home/${user[$i]}
-  cp /root/{install-conf,config-user-*}.sh .
-  chmod +x config-user-*
-#  mv .bash_profile .bash_profilecopy 2>/dev/null
-  su -c config-user-* -s /bin/bash ${user[$i]}
-#  mv .bash_profilecopy .bash_profile 2>/dev/null
-  rm {install-conf,config-user-*}.sh
-  cd
+  if [ "$has_setup_user" ]; then
+    cd /home/${user[$i]}
+    cp /root/{install-conf,setup-user-*}.sh .
+    chmod +x *.sh
+#    mv .bash_profile .bash_profilecopy 2>/dev/null
+    su -c setup-user-* -s /bin/bash ${user[$i]}
+#    mv .bash_profilecopy .bash_profile 2>/dev/null
+    rm {install-conf,setup-user-*}.sh
+    cd
+  fi
 done
 
 passwd
 for i in ${user[@]}; do
-    passwd $i
+  passwd $i
 done
 
-rm {install-conf,config-root-*}.sh
+rm {install-conf,install-post}.sh
 
 exit

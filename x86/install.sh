@@ -19,7 +19,10 @@ pacstrap /mnt base base-devel
 echo -e "${hdd}1\t/\text4\trw,relatime\t0 1" >> /mnt/etc/fstab
 
 mkdir -p /mnt/root
-cp {install-conf,install-post,config-*}.sh /mnt/root/
+cp {install-conf,install-post}.sh /mnt/root/
+if [ "$has_setup" ]; then
+  cp setup-*.sh /mnt/root/
+fi
 
 arch-chroot /mnt /root/install-post.sh
 
