@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source /root/install-conf.sh
+cd
+source install-conf.sh
 
 echo ${hostname} > /etc/hostname
 ln -fs /usr/share/zoneinfo/${timezone} /etc/localtime
