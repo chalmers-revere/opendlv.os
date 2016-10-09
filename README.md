@@ -5,7 +5,7 @@ operating system capable of running the containerized OpenDLV framework.
 
     Warning!! The scripts will completely erase your entire harddrive (ALL YOUR 
     DATA WILL BE LOST). Do this only if you know exactely what you are doing. 
-    Use on your own risk, we are not responsible for any lost data by running 
+    Use on your own risk, we are not responsible for any lost data from running 
     this script!
 
 ## Automated install on a x86 PC
