@@ -52,7 +52,9 @@ fi
 
 
 if [[ $has_setup_root == 1 ]]; then
-  su -c setup-root-* -s /bin/bash root
+  for f in setup-root-*.sh; do
+    su -c ${f} -s /bin/bash root
+  done
   rm setup-root-*.sh
 fi
 
@@ -67,7 +69,9 @@ for (( i = 0; i < ${#user[@]}; i++ )); do
     cp /root/{install-conf,setup-user-*}.sh .
     chmod +x *.sh
 #    mv .bash_profile .bash_profilecopy 2>/dev/null
-    su -c setup-user-* -s /bin/bash ${user[$i]}
+    for f in setup-user-*.sh; do
+      su -c ${f} -s /bin/bash ${user[$i]}
+    done
 #    mv .bash_profilecopy .bash_profile 2>/dev/null
     rm {install-conf,setup-user-*}.sh
     cd
