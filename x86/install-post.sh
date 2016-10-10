@@ -21,9 +21,8 @@ grub-install --target=i386-pc --recheck ${hdd}
 grub-mkconfig -o /boot/grub/grub.cfg
 
 for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
-  if [ ! "${dhcp_dev[$i]}" == "" ]; then
-    echo -e "Description='A basic dhcp ethernet connection'\nInterface=${dhcp_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${dhcp_dev[$i]}-dhcp
-  fi
+  echo -e "Description='A basic dhcp ethernet connection'\nInterface=${dhcp_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${dhcp_dev[$i]}-dhcp
+  systemctl enable netctl-ifplugd@${dhcp_dev[$i]}
 done
 
 pacman -S --noconfirm ${software}
