@@ -21,7 +21,7 @@ user=( reverian )
 group=( uucp,docker )
 
 # Setup
-software="git base-devel docker openssh screen wpa_supplicant dosfstools ntfs-3g bash-completion"
+software="git base-devel docker openssh screen wpa_supplicant dosfstools ntfs-3g bash-completion wget"
 service=( sshd docker )
 
 # Advanced
