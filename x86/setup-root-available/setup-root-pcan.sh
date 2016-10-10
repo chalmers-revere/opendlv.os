@@ -1,4 +1,4 @@
-bitrate=0x011c
+bitrate=0x1c  # truck: 0x011c
 url=https://raw.githubusercontent.com/se-research/OpenDaVINCI/master/automotive/odcantools/peak-linux-driver-7.15.2.kerneldriver
 
 wget ${url}/peak-linux-driver-7.15.2.tar.gz
