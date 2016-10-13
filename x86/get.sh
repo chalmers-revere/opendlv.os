@@ -4,7 +4,7 @@ wget ${ROOT_URL}/x86/{install,install-conf,install-env,install-post}.sh
 
 mkdir setup-root-available
 cd setup-root-available
-wget ${ROOT_URL}/x86/setup-root-available/setup-env-root-{4g,desktop,pcan,router,wifi}.sh ${ROOT_URL}/x86/setup-root-available/setup-post-root-pacn.sh
+wget ${ROOT_URL}/x86/setup-root-available/setup-env-root-{4g,desktop,pcan,router,wifi}.sh ${ROOT_URL}/x86/setup-root-available/setup-post-root-pcan.sh
 
 cd ..
 
