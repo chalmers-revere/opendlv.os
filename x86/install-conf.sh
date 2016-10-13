@@ -3,6 +3,7 @@
 # Basic
 vehicle=kodiac
 node_index=1
+root_password=changeMeNow
 
 timezone=Europe/Stockholm
 locale=( en_US.UTF-8 )
@@ -18,6 +19,7 @@ hdd=/dev/sda
 
 # Users
 user=( reverian )
+user_password=( changeMeNow )
 group=( uucp,docker )
 
 # Setup

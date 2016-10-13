@@ -63,6 +63,8 @@ for (( i = 0; i < ${#user[@]}; i++ )); do
     usermod -G ${group[$i]} ${user[$i]}
   fi
 
+  echo -e "${user_password[$i]}\n${user_password[$i]}" | (passwd ${user[$i]})
+
   if [[ $has_setup_env_user == 1 ]]; then
     cd /home/${user[$i]}
     cp /root/{install-conf,setup-env-user-*}.sh .
@@ -84,12 +86,7 @@ echo -e "[Unit]\nDescription=Automated install, post setup\n\n[Service]\nType=on
 
 systemctl enable isntall-post.service
 
-echo "Enter root password:"
-passwd
-for i in ${user[@]}; do
-  echo "Enter password for user ${i}:"
-  passwd ${i}
-done
+echo -e "${root_password}\n${root_password}" | (passwd)
 
 rm install-env.sh
   
