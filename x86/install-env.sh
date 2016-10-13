@@ -20,17 +20,17 @@ pacman -S --noconfirm grub
 grub-install --target=i386-pc --recheck ${hdd}
 grub-mkconfig -o /boot/grub/grub.cfg
 
-for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
-  echo -e "Description='A basic dhcp ethernet connection'\nInterface=${dhcp_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${dhcp_dev[$i]}-dhcp
-  systemctl enable netctl-ifplugd@${dhcp_dev[$i]}
-done
-
 pacman -S --noconfirm ${software}
 
 orphans=`pacman -Qtdq`
 if [ ! "${orphans}" == "" ]; then
   pacman -Rns ${orphans} --noconfirm || true
 fi
+
+for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
+  echo -e "Description='A basic dhcp ethernet connection'\nInterface=${dhcp_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${dhcp_dev[$i]}-dhcp
+  systemctl enable netctl-ifplugd@${dhcp_dev[$i]}
+done
 
 if [ ! "${service}" == "" ]; then
   for s in ${service[@]}; do
@@ -73,6 +73,7 @@ for (( i = 0; i < ${#user[@]}; i++ )); do
     done
     rm setup-env-user-*.sh
     cd
+    rm setup-env-user-*.sh
   fi
   
   if [[ $has_setup_post_user == 1 ]]; then
@@ -83,14 +84,10 @@ done
 
 echo -e "[Unit]\nDescription=Automated install, post setup\n\n[Service]\nType=oneshot\nExecStart=/root/install-post.sh\n\n[Install]\nWantedBy=multi-user.target" >> /etc/systemd/system/install-post.service
 
-systemctl enable isntall-post.service
+systemctl enable install-post.service
 
 echo -e "${root_password}\n${root_password}" | (passwd)
 
 rm install-env.sh
   
-if [[ $has_setup == 1 ]]; then
-  rm setup-*.sh
-fi
-
 exit
