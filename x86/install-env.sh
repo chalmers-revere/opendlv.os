@@ -49,14 +49,13 @@ if [ ! "$group" == "" ]; then
   done
 fi
 
-
 if [[ $has_setup_env_root == 1 ]]; then
   for f in setup-env-root-*.sh; do
     su -c ./${f} -s /bin/bash root
   done
-  rm setup-post-user-*.sh
+  rm setup-env-root-*.sh
 fi
-  
+
 for (( i = 0; i < ${#user[@]}; i++ )); do
   useradd -m -g users -s /bin/bash ${user[$i]}
   if [ ! "${group[$i]}" == "" ]; then
