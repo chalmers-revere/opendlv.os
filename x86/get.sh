@@ -1,6 +1,6 @@
 ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master
 
-wget ${ROOT_URL}/x86/{install,install-conf,install-post}.sh
+wget ${ROOT_URL}/x86/{install,install-conf,install-env,install-post}.sh
 
 mkdir setup-root-available
 cd setup-root-available

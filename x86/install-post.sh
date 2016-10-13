@@ -1,88 +1,26 @@
 #!/bin/bash
 
-cd
+cd 
 source install-conf.sh
 
-echo ${hostname} > /etc/hostname
-ln -fs /usr/share/zoneinfo/${timezone} /etc/localtime
-
-for i in ${locale[@]}; do
-  sed -i "s/^#$i/$i/g" /etc/locale.gen
-done
-locale-gen
-echo "LANG=${locale[0]}" > /etc/locale.conf
-
-echo "KEYMAP=${keymap}" > /etc/vconsole.conf
-echo "FONT=${font}" >> /etc/vconsole.conf
-
-pacman -Sy
-pacman -S --noconfirm grub
-grub-install --target=i386-pc --recheck ${hdd}
-grub-mkconfig -o /boot/grub/grub.cfg
-
-for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
-  echo -e "Description='A basic dhcp ethernet connection'\nInterface=${dhcp_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${dhcp_dev[$i]}-dhcp
-  systemctl enable netctl-ifplugd@${dhcp_dev[$i]}
-done
-
-pacman -S --noconfirm ${software}
-
-orphans=`pacman -Qtdq`
-if [ ! "${orphans}" == "" ]; then
-  pacman -Rns ${orphans} --noconfirm || true
-fi
-
-if [ ! "${service}" == "" ]; then
-  for s in ${service[@]}; do
-    systemctl enable $s
-  done
-fi
-
-if [ ! "$group" == "" ]; then
-  for i in "${group[@]}"; do
-    IFS=',' read -a grs <<< "$i"
-    for j in "${grs[@]}"; do
-      if [ "$(grep $j /etc/group)" == "" ]; then
-        groupadd $j
-      fi
-    done
-  done
-fi
-
-
-if [[ $has_setup_root == 1 ]]; then
-  for f in setup-root-*.sh; do
+if [[ $has_setup_post_root == 1 ]]; then
+  for f in setup-post-root-*.sh; do
     su -c ./${f} -s /bin/bash root
   done
 fi
-
-for (( i = 0; i < ${#user[@]}; i++ )); do
-  useradd -m -g users -s /bin/bash ${user[$i]}
-  if [ ! "${group[$i]}" == "" ]; then
-    usermod -G ${group[$i]} ${user[$i]}
-  fi
-
-  if [[ $has_setup_user == 1 ]]; then
+  
+if [[ $has_setup_post_user == 1 ]]; then
+  for (( i = 0; i < ${#user[@]}; i++ )); do
     cd /home/${user[$i]}
-    cp /root/{install-conf,setup-user-*}.sh .
-    chmod +x *.sh
-    for f in setup-user-*.sh; do
+    for f in setup-post-user-*.sh; do
       su -c ./${f} -s /bin/bash ${user[$i]}
     done
-    rm {install-conf,setup-user-*}.sh
+    rm setup-post-user-*.sh
     cd
-  fi
-done
-
-passwd
-for i in ${user[@]}; do
-  passwd $i
-done
-
-rm {install-conf,install-post}.sh
-  
-if [[ $has_setup == 1 ]]; then
-  rm setup-*.sh
+  done
 fi
 
-exit
+systemctl disable install-post.service
+rm /etc/systemd/system/install-post.service
+
+reboot

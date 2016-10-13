@@ -54,3 +54,5 @@ for (( i = 0; i < ${#dhcp_clients[@]}; i++ )); do
   client_ip=${client_conf_arr[2]}
   echo -e "host $client_name {\n  option host-name \"$client_name\";\n  hardware ethernet $client_mac;\n  fixed-address $base_ip.$client_ip;\n}\n" >> /etc/dhcpd.conf
 done
+
+iptables-save > /etc/iptables/iptables.rules
