@@ -1,3 +1,4 @@
+#!/bin/bash
 
 git clone https://github.com/beagleboard/am335x_pru_package
 cd am335x_pru_package
@@ -15,6 +16,5 @@ source linuxbuild
 mv ../pasm /usr/bin
 chmod +x /usr/bin/pasm
 
-dtc -@ -O dtb -o BB-BONE-PRU-00A0.dtbo BB-BONE-PRU-00A0.dts
-
+# Make automatic, or do it in C++ instead.
 echo BB-BONE-PRU > /sys/devices/platform/bone_capemgr/slots
