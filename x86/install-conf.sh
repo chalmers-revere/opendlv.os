@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Basic
-vehicle=kodiac
+vehicle=rhino
 node_index=1
 root_password=changeMeNow
 
@@ -9,7 +9,6 @@ timezone=Europe/Stockholm
 locale=( en_US.UTF-8 )
 mirror=( Sweden )
 keymap=sv-latin1
-font=lat2-16
 
 # Network
 dhcp_dev=( enp2s0 )
@@ -23,7 +22,7 @@ user_password=( changeMeNow )
 group=( uucp,docker )
 
 # Setup
-software="git base-devel docker openssh screen wpa_supplicant wpa_actiond dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim"
+software="git base-devel docker docker-compose openssh screen wpa_supplicant wpa_actiond dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim"
 service=( sshd docker )
 
 # Advanced
