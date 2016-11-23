@@ -18,8 +18,8 @@ user_password=( changeMeNow )
 group=( uucp,docker )
 
 #Software configuration
-software="git base-devel docker docker-compose openssh screen dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim i2c-tools dtc-overlay"
-service=( sshd docker )
+software="git base-devel openssh screen dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim i2c-tools dtc-overlay"
+service=( sshd )
 
 # Advanced
 hostname=revere-$vehicle-arm_bbb-$node_index

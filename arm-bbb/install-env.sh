@@ -43,6 +43,7 @@ fi
 if [[ $has_setup_env_root == 1 ]]; then
   for f in setup-env-root-*.sh; do
     su -c ./${f} -s /bin/bash root
+    cd
   done
   rm setup-env-root-*.sh
 fi
@@ -61,17 +62,19 @@ for (( i = 0; i < ${#user[@]}; i++ )); do
     chmod +x *.sh
     for f in setup-env-user-*.sh; do
       su -c ./${f} -s /bin/bash ${user[$i]}
+      cd
     done
     rm setup-env-user-*.sh
     cd
-    rm setup-env-user-*.sh
-  fi
-  
-  if [[ $has_setup_post_user == 1 ]]; then
-    cp setup-post-user-*.sh /home/${user[$i]}
-    chmod +x /home/${user[$i]}/*.sh
   fi
 done
+    
+if [[ $has_setup_env_user == 1 ]]; then
+  rm setup-env-user-*.sh
+fi
+
+mkdir /mnt/sdcard
+echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
 
 echo -e "[Unit]\nDescription=Automated install, post setup\n\n[Service]\nType=oneshot\nExecStart=/root/install-post.sh\n\n[Install]\nWantedBy=multi-user.target" >> /etc/systemd/system/install-post.service
 
