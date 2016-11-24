@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Basic
+lab=revere
 vehicle=rhino
 node_index=1
 root_password=changeMeNow
@@ -10,23 +11,23 @@ locale=( en_US.UTF-8 )
 mirror=( Sweden )
 keymap=sv-latin1
 
+# Users
+user=( revere )
+user_password=( changeMeNow )
+group=( uucp )
+
+# Setup
+software="git base-devel openssh screen wpa_supplicant wpa_actiond dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim"
+service=( sshd )
+
 # Network
 dhcp_dev=( enp2s0 )
 
 # Partitions
 hdd=/dev/sda
 
-# Users
-user=( reverian )
-user_password=( changeMeNow )
-group=( uucp,docker )
-
-# Setup
-software="git base-devel docker docker-compose openssh screen wpa_supplicant wpa_actiond dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim"
-service=( sshd docker )
-
 # Advanced
-hostname=revere-$vehicle-x86_64-$node_index
+hostname=$lab-$vehicle-x86_64-$node_index
 
 for f in setup-env-root-*.sh; do
     [ -e "$f" ] && has_setup_env_root=1 || has_setup_env_root=0

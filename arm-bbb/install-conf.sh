@@ -1,8 +1,7 @@
 #!/bin/bash
 
-download_image=1
-
 # Basic
+lab=revere
 vehicle=rhino
 node_index=1
 root_password=changeMeNow
@@ -13,16 +12,16 @@ mirror=( Sweden )
 keymap=sv-latin1
 
 # Users
-user=( reverian )
+user=( revere )
 user_password=( changeMeNow )
-group=( uucp,docker )
+group=( uucp )
 
 #Software configuration
 software="git base-devel openssh screen dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim i2c-tools dtc-overlay"
 service=( sshd )
 
 # Advanced
-hostname=revere-$vehicle-arm_bbb-$node_index
+hostname=$lab-$vehicle-arm_bbb-$node_index
 
 for f in setup-env-root-*.sh; do
     [ -e "$f" ] && has_setup_env_root=1 || has_setup_env_root=0

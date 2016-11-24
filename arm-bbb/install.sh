@@ -8,37 +8,39 @@ dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=8
 
 mkfs.ext4 -O ^metadata_csum,^64bit /dev/mmcblk1p1
 
-if [ "$download_image" == "1" ]; then
+image=ArchLinuxARM-am33x-latest.tar.gz
+if [ -f "$image" ]
+then
+	echo "$image was already found in the working directory."
+else
   pacman -Syy --noconfirm wget
-  rm ArchLinuxARM-am33x-latest.tar.gz
-  wget http://os.archlinuxarm.org/os/ArchLinuxARM-am33x-latest.tar.gz
+  wget http://os.archlinuxarm.org/os/${image}
 fi
 
-rm -r mnt
-mkdir mnt
-mount /dev/mmcblk1p1 mnt
+mount /dev/mmcblk1p1 /mnt
 
-bsdtar -xpf ArchLinuxARM-am33x-latest.tar.gz -C mnt
+bsdtar -xpf ${image} -C /mnt
 sync
 
-dd if=mnt/boot/MLO of=/dev/mmcblk1 count=1 seek=1 conv=notrunc bs=128k
-dd if=mnt/boot/u-boot.img of=/dev/mmcblk1 count=2 seek=1 conv=notrunc bs=384k
+dd if=/mnt/boot/MLO of=/dev/mmcblk1 count=1 seek=1 conv=notrunc bs=128k
+dd if=/mnt/boot/u-boot.img of=/dev/mmcblk1 count=2 seek=1 conv=notrunc bs=384k
 sync
 
-mount -t proc proc mnt/proc/
-mount --rbind /sys mnt/sys/
-mount --rbind /dev mnt/dev/
-mount --rbind /run mnt/run/
+mount -t proc proc /mnt/proc/
+mount --rbind /sys /mnt/sys/
+mount --rbind /dev /mnt/dev/
+mount --rbind /run /mnt/run/
 
-cp /etc/resolv.conf mnt/etc/resolve.conf
+cp /etc/resolv.conf /mnt/etc/resolve.conf
 
-cp {install-conf,install-env,install-post}.sh mnt/root/
+cp {install-conf,install-env,install-post}.sh /mnt/root/
 if [[ $has_setup == 1 ]]; then
-  cp setup-*.sh mnt/root/
+  cp setup-*.sh /mnt/root/
 fi
 
-chroot mnt /root/install-env.sh
+chroot /mnt /root/install-env.sh
 
-umount -R mnt
-read -p "Remember to disconnect power to the device, and remove any SD card before continuing with post install. Press [Enter] key to shutdown..."
+umount -R /mnt
+read -p "After shutdown, remember to (1) disconnect power to the device to disable SD boot, (2) remove the installation SD media, and (3) inserting the new SD card that will be used as a harddrive (WARNING: the inserted SD card WILL BE BLANKED *AUTOMATICALLY* ON THE NEXT BOOT!! Press [Enter] key to shutdown..."
+
 shutdown now
