@@ -40,39 +40,6 @@ if [ ! "$group" == "" ]; then
   done
 fi
 
-if [[ $has_setup_env_root == 1 ]]; then
-  for f in setup-env-root-*.sh; do
-    su -c ./${f} -s /bin/bash root
-    cd
-  done
-  rm setup-env-root-*.sh
-fi
-
-for (( i = 0; i < ${#user[@]}; i++ )); do
-  useradd -m -g users -s /bin/bash ${user[$i]}
-  if [ ! "${group[$i]}" == "" ]; then
-    usermod -G ${group[$i]} ${user[$i]}
-  fi
-
-  echo -e "${user_password[$i]}\n${user_password[$i]}" | (passwd ${user[$i]})
-
-  if [[ $has_setup_env_user == 1 ]]; then
-    cd /home/${user[$i]}
-    cp /root/{install-conf,setup-env-user-*}.sh .
-    chmod +x *.sh
-    for f in setup-env-user-*.sh; do
-      su -c ./${f} -s /bin/bash ${user[$i]}
-      cd
-    done
-    rm setup-env-user-*.sh
-    cd
-  fi
-done
-    
-if [[ $has_setup_env_user == 1 ]]; then
-  rm setup-env-user-*.sh
-fi
-
 mkdir /mnt/sdcard
 echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
 
@@ -82,6 +49,4 @@ systemctl enable install-post.service
 
 echo -e "${root_password}\n${root_password}" | (passwd)
 
-rm install-env.sh
-  
-exit
+rm install-sys.sh && exit

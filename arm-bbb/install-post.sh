@@ -3,42 +3,46 @@
 cd /root
 source install-conf.sh
 
-mkdir /mnt/sdcard/users
-
-for (( i = 0; i < ${#user[@]}; i++ )); do
-  mkdir /mnt/sdcard/users/${user[$i]}
-  chown -R ${user[$i]}:users /mnt/sdcard/users/${user[$i]}
-  su -c "ln -s /mnt/sdcard/users/${user[$i]} /home/${user[$i]}/sdcard" -s /bin/bash ${user[$i]}
-done
-
-if [[ $has_setup_post_root == 1 ]]; then
-  for f in setup-post-root-*.sh; do
+if [[ $has_setup_sys == 1 ]]; then
+  for f in setup-sys-*.sh; do
     su -c ./${f} -s /bin/bash root
     cd
   done
-  rm setup-post-root-*.sh
+  rm setup-sys-*.sh
 fi
-  
-if [[ $has_setup_post_user == 1 ]]; then
-  for (( i = 0; i < ${#user[@]}; i++ )); do
-    cp setup-post-user-*.sh /home/${user[$i]}
-    chmod +x /home/${user[$i]}/*.sh
 
+mkdir /mnt/sdcard/users
+
+for (( i = 0; i < ${#user[@]}; i++ )); do
+  useradd -m -g users -s /bin/bash ${user[$i]}
+  if [ ! "${group[$i]}" == "" ]; then
+    usermod -G ${group[$i]} ${user[$i]}
+  fi
+
+  mkdir /mnt/sdcard/users/${user[$i]}
+  chown -R ${user[$i]}:users /mnt/sdcard/users/${user[$i]}
+  su -c "ln -s /mnt/sdcard/users/${user[$i]} /home/${user[$i]}/sdcard" -s /bin/bash ${user[$i]}
+
+  echo -e "${user_password[$i]}\n${user_password[$i]}" | (passwd ${user[$i]})
+
+  if [[ $has_setup_user == 1 ]]; then
+    cp install-conf.sh setup-user-*.sh /home/${user[$i]}
     cd /home/${user[$i]}
-    for f in setup-post-user-*.sh; do
+    chmod +x *.sh
+    for f in setup-user-*.sh; do
       su -c ./${f} -s /bin/bash ${user[$i]}
-      cd
+      cd /home/${user[$i]}
     done
-    rm setup-post-user-*.sh
-
+    rm install-conf.sh setup-user-*.sh
     cd
-  done
+  fi
+done
 
-  rm setup-post-user-*.sh
+if [[ $has_setup_user == 1 ]]; then
+  rm setup-user-*.sh
 fi
-
+    
 systemctl disable install-post.service
 rm /etc/systemd/system/install-post.service
 
-rm install-conf.sh
-rm install-post.sh && reboot
+rm install-conf.sh install-post.sh && reboot

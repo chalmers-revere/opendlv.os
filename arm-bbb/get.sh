@@ -1,18 +1,13 @@
-if [ "$1" == "" ]; then
-  $1 = "master"
+#!/bin/bash
+
+if [ "${1}" == "" ]; then
+  ${1} = "master"
 fi
 
-ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/${1}
+ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/${1}/arm-bbb
 
-wget ${ROOT_URL}/arm-bbb/{install,install-conf,install-env,install-post}.sh
+wget ${ROOT_URL}/{install,install-conf,install-sys,install-post}.sh
 
-mkdir setup-root-available
-cd setup-root-available
-wget ${ROOT_URL}/arm-bbb/setup-root-available/setup-env-root-pru.sh ${ROOT_URL}/arm-bbb/setup-root-available/setup-post-root-pru.sh ${ROOT_URL}/arm-bbb/setup-root-available/setup-post-root-docker.sh
-
-cd ..
-
-mkdir setup-user-available
-cd setup-user-available
-wget ${ROOT_URL}/arm-bbb/setup-user-available/setup-post-user-opendlvclone.sh
-cd ..
+mkdir setup-available
+cd setup-available
+wget  ${ROOT_URL}/setup-available/setup-sys-01-pru.sh ${ROOT_URL}/setup-available/setup-sys-02-docker.sh ${ROOT_URL}/setup-available/setup-user-01-opendlv.sh

@@ -1,14 +1,13 @@
-ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master
+#!/bin/bash
 
-wget ${ROOT_URL}/x86/{install,install-conf,install-env,install-post}.sh
+if [ "${1}" == "" ]; then
+  ${1} = "master"
+fi
 
-mkdir setup-root-available
-cd setup-root-available
-wget ${ROOT_URL}/x86/setup-root-available/setup-env-root-{4g,desktop,pcan,router,wifi}.sh ${ROOT_URL}/x86/setup-root-available/setup-post-root-pcan.sh
+ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/${1}/x86
 
-cd ..
+wget ${ROOT_URL}/{install,install-conf,install-sys,install-post}.sh
 
-mkdir setup-user-available
-cd setup-user-available
-wget ${ROOT_URL}/x86/setup-user-available/setup-env-user-opendlvclone.sh
-cd ..
+mkdir setup-available
+cd setup-available
+wget  ${ROOT_URL}/setup-available/setup-sys-01-router.sh ${ROOT_URL}/setup-available/setup-sys-02-4g_ppp.sh ${ROOT_URL}/setup-available/setup-sys-03-wifi.sh ${ROOT_URL}/setup-available/setup-sys-04-pcan.sh ${ROOT_URL}/setup-available/setup-sys-05-docker.sh ${ROOT_URL}/setup-available/setup-sys-06-desktop.sh ${ROOT_URL}/setup-available/setup-user-01-opendlv.sh

@@ -23,26 +23,14 @@ service=( sshd )
 # Advanced
 hostname=$lab-$vehicle-arm_bbb-$node_index
 
-for f in setup-env-root-*.sh; do
-    [ -e "$f" ] && has_setup_env_root=1 || has_setup_env_root=0
+for f in setup-sys-*.sh; do
+    [ -e "$f" ] && has_setup_sys=1 || has_setup_sys=0
     break
 done
 
-for f in setup-post-root-*.sh; do
-    [ -e "$f" ] && has_setup_post_root=1 || has_setup_post_root=0
+for f in setup-user-*.sh; do
+    [ -e "$f" ] && has_setup_user=1 || has_setup_user=0
     break
 done
 
-for f in setup-env-user-*.sh; do
-    [ -e "$f" ] && has_setup_env_user=1 || has_setup_env_user=0
-    break
-done
-
-for f in setup-post-user-*.sh; do
-    [ -e "$f" ] && has_setup_post_user=1 || has_setup_post_user=0
-    break
-done
-
-has_setup_env=${has_setup_env_root:-$has_setup_env_user}
-has_setup_post=${has_setup_post_root:-$has_setup_post_user}
-has_setup=${has_setup_env:-$has_setup_post}
+has_setup=${has_setup_sys:-$has_setup_user}
