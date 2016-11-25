@@ -1,3 +1,5 @@
+#!/bin/bash
+
 dev=( wlp0s20u1 )
 essid=( "ASTA2" "REVERE 2.4GHz")
 wpa2=( "pass1" "pass2" )

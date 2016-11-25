@@ -1,17 +1,19 @@
+#!/bin/bash
+
 subnet=10.42.42.0
 lan=eno1
-wan=( enp2s0 wlp0s20u1 ppp0  )
+wan=( enp2s0 wlp0s20u1 ppp0 )
 dns="107.170.95.180, 75.127.14.107"
 
 dhcp_lease_start=10
 dhcp_lease_end=30
 
-#XC90
+# Snowfox
 dhcp_clients=(
   "x86-v2v,00:0d:b9:3e:bb:84,61",
 )
 
-# FH16
+# Rhino
 #dhcp_clients=(
 #  "scott2,00:07:32:34:6b:07,60",
 #  "uhura2,00:0d:b9:3e:bb:c0,61",

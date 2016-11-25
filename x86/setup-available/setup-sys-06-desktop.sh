@@ -1,4 +1,6 @@
-software="nvidia"
+#!/bin/bash
 
-pacman -S --noconfirm eog evince firefox gdm gedit gnome-system-monitor gnome-terminal gvim ${software}
+gfx="nvidia"
+
+pacman -S --noconfirm eog evince firefox gdm gedit gnome-system-monitor gnome-terminal gvim ${gfx}
 systemctl enable gdm

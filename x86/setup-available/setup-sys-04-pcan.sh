@@ -1,3 +1,5 @@
+#!/bin/bash
+
 bitrate=0x1c  # rhino: 0x011c
 
 url=https://raw.githubusercontent.com/se-research/OpenDaVINCI/master/automotive/odcantools/peak-linux-driver-7.15.2.kerneldriver

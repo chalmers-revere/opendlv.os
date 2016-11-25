@@ -1,3 +1,5 @@
+#!/bin/bash
+
 dev=( ttyUSB0 )
 apn=( online.telia.se )
 
