@@ -4,7 +4,7 @@ cd /root
 source install-conf.sh
 
 
-(echo o; echo n; echo p; echo 1; echo 2048; echo ""; echo w) | fdisk /dev/mmcblk0
+(echo d; echo n; echo p; echo ""; echo ""; echo ""; echo w) | fdisk /dev/mmcblk0
 mkfs.ext4 /dev/mmcblk0p1
 mkdir /mnt/sdcard
 mount /dev/mmcblk0p1 /mnt/sdcard
