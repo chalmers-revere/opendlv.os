@@ -10,16 +10,6 @@ mkdir /mnt/sdcard
 mount /dev/mmcblk0p1 /mnt/sdcard
 echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
 
-
-
-if [[ $has_setup_sys == 1 ]]; then
-  for f in setup-sys-*.sh; do
-    su -c ./${f} -s /bin/bash root
-    cd
-  done
-  rm setup-sys-*.sh
-fi
-
 mkdir /mnt/sdcard/users
 
 for (( i = 0; i < ${#user[@]}; i++ )); do
@@ -50,7 +40,15 @@ done
 if [[ $has_setup_user == 1 ]]; then
   rm setup-user-*.sh
 fi
-    
+
+if [[ $has_setup_sys == 1 ]]; then
+  for f in setup-sys-*.sh; do
+    su -c ./${f} -s /bin/bash root
+    cd
+  done
+  rm setup-sys-*.sh
+fi
+
 systemctl disable install-post.service
 rm /etc/systemd/system/install-post.service
 
