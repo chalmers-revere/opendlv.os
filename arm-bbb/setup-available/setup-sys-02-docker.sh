@@ -9,6 +9,7 @@ pacman -S --noconfirm docker docker-compose
 
 for u in ${user[@]}; do
   gpasswd -a ${u} docker
+  usermod -aG docker ${u}
 done
 
 systemctl enable docker
