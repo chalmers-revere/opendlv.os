@@ -17,7 +17,7 @@ user_password=( changeMeNow )
 group=( uucp )
 
 #Software configuration
-software="git base-devel openssh screen dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim i2c-tools dtc-overlay"
+software="git base-devel openssh screen dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim i2c-tools dtc-overlay ccache cmake make"
 service=( sshd )
 
 # Advanced
