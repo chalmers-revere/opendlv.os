@@ -2,14 +2,13 @@
 
 source install-conf.sh
 
-mkdir /mnt/sdcard/docker
-ln -s /mnt/sdcard/docker /var/lib/docker
-
 pacman -S --noconfirm docker docker-compose
 
 for u in ${user[@]}; do
   gpasswd -a ${u} docker
-  usermod -aG docker ${u}
 done
+
+mkdir -p /etc/systemd/system/docker.service.d/
+echo "[Service]\nExecStart=\nExecStart=/usr/bin/dockerd -g /mnt/sdcard/docker -H fd://" > /etc/systemd/system/docker.service.d/imagelocation.conf
 
 systemctl enable docker
