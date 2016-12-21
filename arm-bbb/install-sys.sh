@@ -40,8 +40,6 @@ if [ ! "$group" == "" ]; then
   done
 fi
 
-mkdir /mnt/sdcard
-echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
 
 echo -e "[Unit]\nDescription=Automated install, post setup\n\n[Service]\nType=oneshot\nExecStart=/root/install-post.sh\n\n[Install]\nWantedBy=multi-user.target" >> /etc/systemd/system/install-post.service
 
