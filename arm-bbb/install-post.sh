@@ -3,6 +3,15 @@
 cd /root
 source install-conf.sh
 
+
+(echo o; echo n; echo p; echo 1; echo 2048; echo ""; echo w) | fdisk /dev/mmcblk0
+mkfs.ext4 /dev/mmcblk0p1
+mkdir /mnt/sdcard
+mount /dev/mmcblk0p1 /mnt/sdcard
+echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
+
+
+
 if [[ $has_setup_sys == 1 ]]; then
   for f in setup-sys-*.sh; do
     su -c ./${f} -s /bin/bash root
