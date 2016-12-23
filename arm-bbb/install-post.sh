@@ -5,7 +5,7 @@ source install-conf.sh
 
 
 (echo d; echo n; echo p; echo ""; echo ""; echo ""; echo w) | fdisk /dev/mmcblk0
-mkfs.ext4 /dev/mmcblk0p1
+(echo y) | mkfs.ext4 /dev/mmcblk0p1
 mkdir /mnt/sdcard
 mount /dev/mmcblk0p1 /mnt/sdcard
 echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
