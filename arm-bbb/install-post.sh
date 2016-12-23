@@ -3,6 +3,10 @@
 cd /root
 source install-conf.sh
 
+echo "Sleeping" >> progress
+sleep 30
+echo "Executing" >> progress
+
 
 (echo d; echo n; echo p; echo ""; echo ""; echo ""; echo w) | fdisk /dev/mmcblk0
 (echo y) | mkfs.ext4 /dev/mmcblk0p1
