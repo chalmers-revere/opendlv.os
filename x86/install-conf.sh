@@ -17,7 +17,7 @@ user_password=( changeMeNow )
 group=( uucp )
 
 # Setup
-software="git base-devel openssh screen wpa_supplicant wpa_actiond dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim"
+software="git base-devel cmake ccache openssh screen wpa_supplicant wpa_actiond dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim"
 service=( sshd )
 
 # Network
