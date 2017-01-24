@@ -55,4 +55,4 @@ systemctl enable install-post.service
 
 echo -e "${root_password}\n${root_password}" | (passwd)
 
-rm install-sys.sh && exit
+rm install-chroot.sh && exit

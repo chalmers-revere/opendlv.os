@@ -28,12 +28,12 @@ if [[ $has_setup_user == 1 ]]; then
   rm setup-user-*.sh
 fi
 
-if [[ $has_setup_sys == 1 ]]; then
-  for f in setup-sys-*.sh; do
+if [[ $has_setup_post == 1 ]]; then
+  for f in setup-post-*.sh; do
     su -c ./${f} -s /bin/bash root
     cd /root
   done
-  rm setup-sys-*.sh
+  rm setup-post-*.sh
 fi
 
 systemctl disable install-post.service

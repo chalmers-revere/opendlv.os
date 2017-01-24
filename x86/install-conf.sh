@@ -29,8 +29,13 @@ hdd=/dev/sda
 # Advanced
 hostname=$lab-$vehicle-x86_64-$node_index
 
-for f in setup-sys-*.sh; do
-    [ -e "$f" ] && has_setup_sys=1 || has_setup_sys=0
+for f in setup-chroot-*.sh; do
+    [ -e "$f" ] && has_setup_chroot=1 || has_setup_chroot=0
+    break
+done
+
+for f in setup-post-*.sh; do
+    [ -e "$f" ] && has_setup_post=1 || has_setup_post=0
     break
 done
 
@@ -39,4 +44,5 @@ for f in setup-user-*.sh; do
     break
 done
 
-has_setup=${has_setup_sys:-$has_setup_user}
+has_setup_root=${has_setup_chroot:-$has_setup_post}
+has_setup=${has_setup_root:-$has_setup_user}
