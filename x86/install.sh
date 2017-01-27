@@ -4,7 +4,7 @@ source install-conf.sh
 
 (echo o; echo n; echo p; echo 1; echo ""; echo ""; echo w; echo q) | fdisk ${hdd}
 
-mkfs.ext4 ${hdd}1
+(echo y) | mkfs.ext4 ${hdd}1
 
 mount ${hdd}1 /mnt
 
@@ -16,9 +16,8 @@ mv mirrorlist /etc/pacman.d/mirrorlist
 pacman -Syy
 
 pacstrap /mnt base base-devel
-echo -e "${hdd}1\t/\text4\trw,relatime\t0 1" >> /mnt/etc/fstab
+echo -e "`blkid ${hdd}1 -o export | grep "^UUID"`\t/\text4\trw,relatime\t0 1" >> /mnt/etc/fstab
 
-mkdir -p /mnt/root
 cp {install-conf,install-chroot,install-post}.sh /mnt/root/
 if [[ $has_setup == 1 ]]; then
   cp setup-*.sh /mnt/root/

@@ -17,7 +17,7 @@ operating system capable of running the containerized OpenDLV framework.
 
    ```
      wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master/x86/get.sh
-     sh get.sh
+     sh get.sh [branch]
    ```
 4. Enable the root and user setups that you want to enable on the machine, e.g.:
 

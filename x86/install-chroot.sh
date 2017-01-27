@@ -32,6 +32,9 @@ for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
   systemctl enable netctl-ifplugd@${dhcp_dev[$i]}
 done
 
+useradd -m -g users -G wheel aur
+echo "aur ALL=(ALL) NOPASSWORD: ALL" | (EDITOR="tee -a" visudo) # TODO: This should be removed later!
+
 for (( i = 0; i < ${#user[@]}; i++ )); do
   useradd -m -g users -s /bin/bash ${user[$i]}
   if [ ! "${group[$i]}" == "" ]; then

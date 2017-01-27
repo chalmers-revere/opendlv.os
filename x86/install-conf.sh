@@ -44,5 +44,5 @@ for f in setup-user-*.sh; do
     break
 done
 
-has_setup_root=${has_setup_chroot:-$has_setup_post}
-has_setup=${has_setup_root:-$has_setup_user}
+has_setup_root=$(( $has_setup_chroot || $has_setup_post ? 1 : 0))
+has_setup=$(( $has_setup_root || $has_setup_user ? 1 : 0))
