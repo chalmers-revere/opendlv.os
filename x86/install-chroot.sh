@@ -32,6 +32,15 @@ for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
   systemctl enable netctl-ifplugd@${dhcp_dev[$i]}
 done
 
+for (( i = 0; i < ${#user[@]}; i++ )); do
+  useradd -m -g users -s /bin/bash ${user[$i]}
+  if [ ! "${group[$i]}" == "" ]; then
+    usermod -G ${group[$i]} ${user[$i]}
+  fi
+
+  echo -e "${user_password[$i]}\n${user_password[$i]}" | (passwd ${user[$i]})
+done
+
 if [ ! "${service}" == "" ]; then
   for s in ${service[@]}; do
     systemctl enable $s
@@ -47,6 +56,14 @@ if [ ! "$group" == "" ]; then
       fi
     done
   done
+fi
+
+if [[ $has_setup_chroot == 1 ]]; then
+  for f in setup-chroot-*.sh; do
+    su -c ./${f} -s /bin/bash root
+    cd /root
+  done
+  rm setup-chroot-*.sh
 fi
 
 echo -e "[Unit]\nDescription=Automated install, post setup\n\n[Service]\nType=oneshot\nExecStart=/root/install-post.sh\n\n[Install]\nWantedBy=multi-user.target" >> /etc/systemd/system/install-post.service

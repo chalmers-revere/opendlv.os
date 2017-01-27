@@ -4,13 +4,6 @@ cd /root
 source install-conf.sh
 
 for (( i = 0; i < ${#user[@]}; i++ )); do
-  useradd -m -g users -s /bin/bash ${user[$i]}
-  if [ ! "${group[$i]}" == "" ]; then
-    usermod -G ${group[$i]} ${user[$i]}
-  fi
-
-  echo -e "${user_password[$i]}\n${user_password[$i]}" | (passwd ${user[$i]})
-
   if [[ $has_setup_user == 1 ]]; then
     cp install-conf.sh setup-user-*.sh /home/${user[$i]}
     cd /home/${user[$i]}
