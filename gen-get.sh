@@ -11,7 +11,7 @@ cd ../..
 
 echo '#!/bin/bash
 
-if [ "${1}" == "" ]; then
+if [ -z ${1+x} ]; then 
   ${1} = "master"
 fi
 
