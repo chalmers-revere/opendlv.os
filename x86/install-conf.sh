@@ -21,7 +21,8 @@ software="git base-devel cmake ccache openssh screen wpa_supplicant wpa_actiond 
 service=( sshd )
 
 # Network
-dhcp_dev=( enp2s0 )
+lan_dev=enp2s0
+dhcp_dev=( ${lan_dev} )
 
 # Partitions
 hdd=/dev/sda

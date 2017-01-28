@@ -33,7 +33,13 @@ for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
 done
 
 useradd -m -g users -G wheel aur
-echo "aur ALL=(ALL) NOPASSWORD: ALL" | (EDITOR="tee -a" visudo) # TODO: This permission should be removed after installation!
+echo "aur ALL=(ALL) NOPASSWD: ALL" | (EDITOR="tee -a" visudo) 
+
+# TODO: This permission should be removed after installation!
+#sudo -u aur gpg --list-keys
+#echo "keyring /etc/pacman.d/gnupg/pubring.gpg" >> /home/aur/.gnupg/gpg.conf
+# The above does not help, woraround is to run makepkg with --skippgpcheck (potentially unsafe)
+
 
 for (( i = 0; i < ${#user[@]}; i++ )); do
   useradd -m -g users -s /bin/bash ${user[$i]}

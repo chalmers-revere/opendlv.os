@@ -1,7 +1,6 @@
 #!/bin/bash
 
 subnet=10.42.42.0
-lan=eno1
 wan=( enp2s0 wlp0s20u1 ppp0 )
 dns="107.170.95.180, 75.127.14.107"
 
@@ -41,8 +40,8 @@ base_ip=`echo $subnet | cut -d"." -f1-3`
 ip="$base_ip.1"
 broadcast_ip="$base_ip.255"
 
-echo -e "Description='Internal network'\nInterface=$lan\nConnection=ethernet\nIP=static\nIPCustom=('addr add dev $lan $ip/24' 'route add 225.0.0.0/24 dev $lan')\nSkipNoCarrier=yes" > /etc/netctl/$lan-static
-netctl enable $lan-static.service
+echo -e "Description='Internal network'\nInterface=${lan_dev}\nConnection=ethernet\nIP=static\nIPCustom=('addr add dev ${lan_dev} $ip/24' 'route add 225.0.0.0/24 dev ${lan_dev}')\nSkipNoCarrier=yes" > /etc/netctl/${lan_dev}-static
+netctl enable ${lan_dev}-static.service
 
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/30-ipforward.conf
 echo "net.ipv4.conf.eno1.rp_filter=0" > /etc/sysctl.d/40-rpfilter.conf
@@ -50,7 +49,7 @@ echo "net.ipv4.conf.eno1.rp_filter=0" > /etc/sysctl.d/40-rpfilter.conf
 iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 for (( i = 0; i < ${#wan[@]}; i++ )); do
-  iptables -A FORWARD -i $lan -o ${wan[$i]} -j ACCEPT
+  iptables -A FORWARD -i ${lan_dev} -o ${wan[$i]} -j ACCEPT
   iptables -t nat -A POSTROUTING -o ${wan[$i]} -j MASQUERADE
 done
 
@@ -68,4 +67,4 @@ done
 
 echo -e "[Unit]\nDescription=IPv4 DHCP server on %I\nAfter=network.target\n\n[Service]\nType=forking\nPIDFile=/run/dhcpd4.pid\nExecStart=/usr/bin/dhcpd -4 -q -pf /run/dhcpd4.pid %I\nKillSignal=SIGINT\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/dhcpd4@.service
 
-systemctl enable dhcpd4@$lan.service
+systemctl enable dhcpd4@${lan_dev}.service

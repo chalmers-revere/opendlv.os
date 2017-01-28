@@ -3,8 +3,8 @@
 cd /root
 source install-conf.sh
 
-for (( i = 0; i < ${#user[@]}; i++ )); do
-  if [[ $has_setup_user == 1 ]]; then
+if [[ $has_setup_user == 1 ]]; then
+  for (( i = 0; i < ${#user[@]}; i++ )); do
     cp install-conf.sh setup-user-*.sh /home/${user[$i]}
     cd /home/${user[$i]}
     chmod +x *.sh
@@ -14,10 +14,7 @@ for (( i = 0; i < ${#user[@]}; i++ )); do
     done
     rm install-conf.sh setup-user-*.sh
     cd /root
-  fi
-done
-
-if [[ $has_setup_user == 1 ]]; then
+  done
   rm setup-user-*.sh
 fi
 

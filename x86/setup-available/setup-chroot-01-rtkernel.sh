@@ -16,8 +16,10 @@ cd linux-rt
 
 chown aur:users -R /home/aur/setup-rtkernel
 
-sudo -u aur makepkg -s --noconfirm --skippgpcheck # TODO: Manually create ~/.gnupg/gpg.conf, see: https://bbs.archlinux.org/viewtopic.php?id=192575
+sudo -u aur makepkg -s --noconfirm --skippgpcheck # TODO: Find a way to fix user gpg keychain  for pacman
 
 pacman -U --noconfirm *.pkg.tar.xz
+
+grub-mkconfig -o /boot/grub/grub.cfg
 
 cd
