@@ -1,26 +1,31 @@
 #!/bin/bash
 
-echo "Generating get.sh for ${1}..."
+branch=`git rev-parse --abbrev-ref HEAD`
+platform=( x86 arm-bbb )
 
-setup_list=
-cd ${1}/setup-available
-for f in setup-*.sh; do
-  setup_list=${setup_list}' ${ROOT_URL}/setup-available/'${f}
-done
-cd ../..
+echo "For branch '${branch}'"
 
-echo '#!/bin/bash
+for p in ${platform[@]}; do
 
-if [ -z ${1+x} ]; then 
-  ${1} = "master"
-fi
+  echo "  .. generating ${p}/get.sh"
 
-ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/${1}/'${1}'
+  setup_list=
+  cd ${p}/setup-available
+  for f in setup-*.sh; do
+    setup_list=${setup_list}' ${ROOT_URL}/setup-available/'${f}
+  done
+  cd ../..
+
+  echo '#!/bin/bash
+
+ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/'${branch}'/'${p}'
 
 wget ${ROOT_URL}/{install,install-conf,install-sys,install-post}.sh
 
 mkdir setup-available
 cd setup-available
-wget '${setup_list} > ${1}/get.sh
+wget '${setup_list} > ${p}/get.sh
+
+done
 
 echo "Done."

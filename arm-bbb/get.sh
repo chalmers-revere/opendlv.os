@@ -1,10 +1,6 @@
 #!/bin/bash
 
-if [ "${1}" == "" ]; then
-  ${1} = "master"
-fi
-
-ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/${1}/arm-bbb
+ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/refactoring.major/arm-bbb
 
 wget ${ROOT_URL}/{install,install-conf,install-sys,install-post}.sh
 

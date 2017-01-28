@@ -1,10 +1,6 @@
 #!/bin/bash
 
-if [ -z ${1+x} ]; then 
-  ${1} = "master"
-fi
-
-ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/${1}/x86
+ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/refactoring.major/x86
 
 wget ${ROOT_URL}/{install,install-conf,install-sys,install-post}.sh
 
