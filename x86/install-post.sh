@@ -41,4 +41,6 @@ fi
 systemctl disable install-post.service
 rm /etc/systemd/system/install-post.service
 
+echo "" > /etc/motd
+
 rm install-conf.sh install-post.sh && reboot
