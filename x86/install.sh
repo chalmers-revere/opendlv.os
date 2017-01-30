@@ -15,7 +15,7 @@ mv mirrorlist /etc/pacman.d/mirrorlist
 
 pacman -Syy
 
-pacstrap /mnt base base-devel gnu-netcat vim ifplugd wget openssh bash-completion 
+pacstrap /mnt base 
 echo -e "`blkid ${hdd}1 -o export | grep "^UUID"`\t/\text4\trw,relatime\t0 1" >> /mnt/etc/fstab
 
 cp {install-conf,install-chroot,install-post}.sh /mnt/root/

@@ -16,21 +16,12 @@ echo "KEYMAP=${keymap}" > /etc/vconsole.conf
 
 pacman -Syy
 
-pacman -S --noconfirm grub
-grub-install --target=i386-pc --recheck ${hdd}
-grub-mkconfig -o /boot/grub/grub.cfg
-
 pacman -S --noconfirm ${software}
 
 orphans=`pacman -Qtdq`
 if [ ! "${orphans}" == "" ]; then
   pacman -Rns ${orphans} --noconfirm || true
 fi
-
-for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
-  echo -e "Description='A basic dhcp ethernet connection'\nInterface=${dhcp_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${dhcp_dev[$i]}-dhcp
-  systemctl enable netctl-ifplugd@${dhcp_dev[$i]}
-done
 
 useradd -m -g users -G wheel aur
 echo "aur ALL=(ALL) NOPASSWD: ALL" | (EDITOR="tee -a" visudo) 

@@ -1,8 +1,19 @@
 #!/bin/bash
 
+while :
+do
+  nc -z 8.8.8.8 53  >/dev/null 2>&1
+  online=$?
+  if [ $online -eq 0 ]; then
+    break
+  else
+    echo "install-post.sh: Internet NOT found, will try again in 10 s!"
+    sleep 10
+  fi
+done
+
 cd /root
 source install-conf.sh
-
 
 (echo d; echo n; echo p; echo ""; echo ""; echo ""; echo w) | fdisk /dev/mmcblk0
 (echo y) | mkfs.ext4 /dev/mmcblk0p1
@@ -10,21 +21,15 @@ mkdir /mnt/sdcard
 mount /dev/mmcblk0p1 /mnt/sdcard
 echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
 
-mkdir /mnt/sdcard/users
 
-for (( i = 0; i < ${#user[@]}; i++ )); do
-  useradd -m -g users -s /bin/bash ${user[$i]}
-  if [ ! "${group[$i]}" == "" ]; then
-    usermod -G ${group[$i]} ${user[$i]}
-  fi
+if [[ $has_setup_user == 1 ]]; then
+  mkdir /mnt/sdcard/users
 
-  mkdir /mnt/sdcard/users/${user[$i]}
-  chown -R ${user[$i]}:users /mnt/sdcard/users/${user[$i]}
-  su -c "ln -s /mnt/sdcard/users/${user[$i]} /home/${user[$i]}/sdcard" -s /bin/bash ${user[$i]}
+  for (( i = 0; i < ${#user[@]}; i++ )); do
+    mkdir /mnt/sdcard/users/${user[$i]}
+    chown -R ${user[$i]}:users /mnt/sdcard/users/${user[$i]}
+    su -c "ln -s /mnt/sdcard/users/${user[$i]} /home/${user[$i]}/sdcard" -s /bin/bash ${user[$i]}
 
-  echo -e "${user_password[$i]}\n${user_password[$i]}" | (passwd ${user[$i]})
-
-  if [[ $has_setup_user == 1 ]]; then
     cp install-conf.sh setup-user-*.sh /home/${user[$i]}
     cd /home/${user[$i]}
     chmod +x *.sh
@@ -34,24 +39,21 @@ for (( i = 0; i < ${#user[@]}; i++ )); do
     done
     rm install-conf.sh setup-user-*.sh
     cd /root
-  fi
-done
-
-if [[ $has_setup_user == 1 ]]; then
+  done
   rm setup-user-*.sh
 fi
 
-if [[ $has_setup_sys == 1 ]]; then
-  for f in setup-sys-*.sh; do
+if [[ $has_setup_post == 1 ]]; then
+  for f in setup-post-*.sh; do
     su -c ./${f} -s /bin/bash root
-    cd
+    cd /root
   done
-  rm setup-sys-*.sh
+  rm setup-post-*.sh
 fi
 
 systemctl disable install-post.service
 rm /etc/systemd/system/install-post.service
 
-rm install-conf.sh install-post.sh
+echo "" > /etc/motd
 
-shutdown now
+rm install-conf.sh install-post.sh && reboot

@@ -33,12 +33,12 @@ mount --rbind /run /mnt/run/
 
 cp /etc/resolv.conf /mnt/etc/resolve.conf
 
-cp {install-conf,install-sys,install-post}.sh /mnt/root/
+cp {install-conf,install-chroot,install-post}.sh /mnt/root/
 if [[ $has_setup == 1 ]]; then
   cp setup-*.sh /mnt/root/
 fi
 
-chroot /mnt /root/install-sys.sh
+chroot /mnt /root/install-chroot.sh
 
 umount -R /mnt
 read -p "After shutdown, remember to (1) disconnect power to the device to disable SD boot, (2) remove the installation SD media, and (3) inserting the new SD card that will be used as a harddrive (WARNING: the inserted SD card WILL BE BLANKED *AUTOMATICALLY* ON THE NEXT BOOT!! Press [Enter] key to shutdown..."

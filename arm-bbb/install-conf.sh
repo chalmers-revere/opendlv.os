@@ -16,15 +16,20 @@ user=( revere )
 user_password=( changeMeNow )
 group=( uucp )
 
-#Software configuration
-software="git base-devel openssh screen dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim i2c-tools dtc-overlay ccache cmake"
+# Software configuration
+software="i2c-tools dtc-overlay base-devel gnu-netcat vim ifplugd wget openssh bash-completion git cmake ccache screen wpa_supplicant wpa_actiond dosfstools ntfs-3g linux-headers"
 service=( sshd )
 
 # Advanced
 hostname=$lab-$vehicle-arm_bbb-$node_index
 
-for f in setup-sys-*.sh; do
-    [ -e "$f" ] && has_setup_sys=1 || has_setup_sys=0
+for f in setup-chroot-*.sh; do
+    [ -e "$f" ] && has_setup_chroot=1 || has_setup_chroot=0
+    break
+done
+
+for f in setup-post-*.sh; do
+    [ -e "$f" ] && has_setup_post=1 || has_setup_post=0
     break
 done
 
@@ -33,4 +38,5 @@ for f in setup-user-*.sh; do
     break
 done
 
-has_setup=${has_setup_sys:-$has_setup_user}
+has_setup_root=$(( $has_setup_chroot || $has_setup_post ? 1 : 0))
+has_setup=$(( $has_setup_root || $has_setup_user ? 1 : 0))

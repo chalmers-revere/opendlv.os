@@ -16,9 +16,9 @@ user=( revere )
 user_password=( changeMeNow )
 group=( uucp )
 
-# Setup
-software="git cmake ccache screen wpa_supplicant wpa_actiond dosfstools ntfs-3g linux-headers"
-service=( )
+# Software configuration
+software="base-devel gnu-netcat vim ifplugd wget openssh bash-completion git cmake ccache screen wpa_supplicant wpa_actiond dosfstools ntfs-3g linux-headers"
+service=( sshd )
 
 # Network
 lan_dev=enp2s0
