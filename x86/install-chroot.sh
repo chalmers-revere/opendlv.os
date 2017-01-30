@@ -55,6 +55,7 @@ if [ ! "${service}" == "" ]; then
     systemctl enable $s
   done
 fi
+systemctl enable sshd
 
 if [ ! "$group" == "" ]; then
   for i in "${group[@]}"; do
@@ -75,7 +76,7 @@ if [[ $has_setup_chroot == 1 ]]; then
   rm setup-chroot-*.sh
 fi
 
-echo -e "[Unit]\nDescription=Automated install, post setup\n\n[Service]\nType=oneshot\nExecStart=/root/install-post.sh\nWorkingDirectory=/root\nStandardOutput=console\n\n[Install]\nWantedBy=multi-user.target" >> /etc/systemd/system/install-post.service
+echo -e "[Unit]\nDescription=Automated install, post setup\nAfter=network-online.target\nRequires=network-online.target\n\n\n[Service]\nType=oneshot\nExecStart=/root/install-post.sh\nWorkingDirectory=/root\n\n[Install]\nWantedBy=multi-user.target" >> /etc/systemd/system/install-post.service
 
 systemctl enable install-post.service
 

@@ -1,5 +1,17 @@
 #!/bin/bash
 
+while :
+do
+  nc -z 8.8.8.8 53  >/dev/null 2>&1
+  online=$?
+  if [ $online -eq 0 ]; then
+    break
+  else
+    echo "install-post.sh: Internet NOT found, will try again in 10 s!"
+    sleep 10
+  fi
+done
+
 cd /root
 source install-conf.sh
 

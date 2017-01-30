@@ -17,8 +17,8 @@ user_password=( changeMeNow )
 group=( uucp )
 
 # Setup
-software="git base-devel cmake ccache openssh screen wpa_supplicant wpa_actiond dosfstools ntfs-3g bash-completion wget linux-headers ifplugd vim"
-service=( sshd )
+software="git cmake ccache screen wpa_supplicant wpa_actiond dosfstools ntfs-3g linux-headers"
+service=( )
 
 # Network
 lan_dev=enp2s0
