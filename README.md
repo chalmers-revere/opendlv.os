@@ -6,7 +6,7 @@ operating system capable of running the containerized OpenDLV framework.
     Warning!! The scripts will completely erase your entire harddrive (ALL YOUR 
     DATA WILL BE LOST). Do this only if you know exactely what you are doing. 
     Use on your own risk, we are not responsible for any lost data from running 
-    this script!
+    these scripts!
 
 ## Automated install on a x86 PC
 
@@ -17,20 +17,21 @@ operating system capable of running the containerized OpenDLV framework.
 
    ```
      wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master/x86/get.sh
-     sh get.sh [branch]
+     sh get.sh
    ```
-4. Enable the root and user setups that you want to enable on the machine, e.g.:
+4. Enable the setups that you want to enable on the machine, e.g.:
 
    ```
-     cp setup-root-available/setup-root-router.sh .
+     cp setup-available/setup-chroot-01-rtkernel.sh .
+     cp setup-available/setup-post-01-router.sh .
    ```
-5. Configure the basic installation and the enabled setups.
+5. Configure the basic installation and the enabled setups. Check the network interface name with 'ip a' and the harddrive device name with 'lsblk'.
 
    ```
      vim install-conf.sh
-     vim setup-root-router.sh
+     vim setup-post-01-router.sh
    ```
-6. Run the automated installation with (REMEMBER: all your data will be lost, you have been warned!):
+6. Run the automated installation with (REMEMBER: all your data will be lost. You have been warned!):
 
    ```
      chmod +x *.sh
@@ -44,8 +45,24 @@ operating system capable of running the containerized OpenDLV framework.
 2. Boot the BeagleBone Black using the bootable SD card
 3. Download the automated scripts with:
 
-    curl ...
+   ```
+     wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master/arm-bbb/get.sh
+     sh get.sh
+   ```
+4. Enable the setups that you want to enable on the machine, e.g.:
 
-4. Run the automated installation with (REMEMBER: all your data will be lost, you have been warned!):
+   ```
+     cp setup-available/setup-post-01-pru.sh .
+   ```
+5. Configure the basic installation and the enabled setups.
 
-  ./install.sh
+   ```
+     vim install-conf.sh
+     vim setup-post-01-pru.sh
+   ```
+6. Run the automated installation with (REMEMBER: all your data will be lost. You have been warned!):
+
+   ```
+     chmod +x *.sh
+     ./install.sh
+   ```
