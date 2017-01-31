@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/refactoring.major/arm-bbb
+ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master/arm-bbb
 
 wget ${ROOT_URL}/{install,install-conf,install-chroot,install-post}.sh
 
