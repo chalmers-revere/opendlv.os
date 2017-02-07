@@ -86,6 +86,3 @@ cd ../../utils/pasm_source
 source linuxbuild
 mv ../pasm /usr/bin
 chmod +x /usr/bin/pasm
-
-# TODO: Make automatic, or do it in C++ instead.
-echo BB-BONE-PRU > /sys/devices/platform/bone_capemgr/slots
