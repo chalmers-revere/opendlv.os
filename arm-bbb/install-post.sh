@@ -14,6 +14,7 @@ done
 
 cd /root
 source install-conf.sh
+mkdir -p /root/boot/
 
 (echo d; echo n; echo p; echo ""; echo ""; echo ""; echo w) | fdisk /dev/mmcblk0
 (echo y) | mkfs.ext4 /dev/mmcblk0p1
