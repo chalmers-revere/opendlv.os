@@ -1,22 +1,17 @@
 #!/bin/bash
 
-url=https://aur.archlinux.org/cgit/aur.git/snapshot/linux-rt.tar.gz
+base_url=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/master/x86/kernel/pkg
+version=4.9.9_rt6-revere
 
 cd
 source install-conf.sh
 
-cd /home/aur/
 mkdir setup-rtkernel
 cd setup-rtkernel
 
-wget ${url}
-
-tar -zxvf linux-rt.tar.gz
-cd linux-rt
-
-chown aur:users -R /home/aur/setup-rtkernel
-
-sudo -u aur makepkg -s --noconfirm --skippgpcheck # TODO: Find a way to fix user gpg keychain  for pacman
+wget ${url}/linux-rt-${version}-1-x86_64.pkg.tar.xz
+wget ${url}/linux-rt-docs-${version}-1-x86_64.pkg.tar.xz
+wget ${url}/linux-rt-headers-${version}-1-x86_64.pkg.tar.xz
 
 pacman -U --noconfirm *.pkg.tar.xz
 
