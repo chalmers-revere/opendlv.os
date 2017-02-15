@@ -38,6 +38,8 @@ if [[ $has_setup_post == 1 ]]; then
   rm setup-post-*.sh
 fi
 
+userdel -r aur
+
 systemctl disable install-post.service
 rm /etc/systemd/system/install-post.service
 
