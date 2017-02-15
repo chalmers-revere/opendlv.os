@@ -2,10 +2,14 @@
 
 url=https://aur.archlinux.org/cgit/aur.git/snapshot/linux-rt.tar.gz
 
+mkdir pkg
+
 wget ${url}
 
 tar -zxvf linux-rt.tar.gz
 cd linux-rt
+
+sed -i "s/`grep _rtpatchver= PKGBUILD`/`grep _rtpatchver= PKGBUILD`-revere/g" PKGBUILD
 
 makepkg -s --skippgpcheck --nobuild 
 
@@ -24,3 +28,5 @@ cd ../..
 pwd
 
 makepkg -s --skippgpcheck --noextract
+
+cp *.pkg.tar.xz ../pkg
