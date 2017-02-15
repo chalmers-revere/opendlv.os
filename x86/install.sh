@@ -18,6 +18,12 @@ pacman -Syy
 pacstrap /mnt base 
 echo -e "`blkid ${hdd}1 -o export | grep "^UUID"`\t/\text4\trw,relatime\t0 1" >> /mnt/etc/fstab
 
+fallocate -l 2G /mnt/var/swapfile
+chmod 600 /mnt/var/swapfile
+mkswap /mnt/var/swapfile
+swapon /mnt/var/swapfile
+echo -e "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /mnt/etc/fstab
+
 cp {install-conf,install-chroot,install-post}.sh /mnt/root/
 if [[ $has_setup == 1 ]]; then
   cp setup-*.sh /mnt/root/
