@@ -1,0 +1,18 @@
+--- ./drivers/tty/serial/8250/8250_pci.c	2016-04-07 08:11:17.583405501 +0200
++++ ./drivers/tty/serial/8250/8250_pci.c_new	2016-04-07 08:19:01.519414401 +0200
+@@ -1853,13 +1853,13 @@
+ 		writeb(0x00, p + 0x90); /*MPIOLVL[7:0]*/
+ 		writeb(0x00, p + 0x91); /*MPIO3T[7:0]*/
+ 		writeb(0x00, p + 0x92); /*MPIOINV[7:0]*/
+-		writeb(0x00, p + 0x93); /*MPIOSEL[7:0]*/
++		// writeb(0xff, p + 0x93); /*MPIOSEL[7:0]*/ // dont touch default direction
+ 		writeb(0x00, p + 0x94); /*MPIOOD[7:0]*/
+ 		writeb(0x00, p + 0x95); /*MPIOINT[15:8]*/
+ 		writeb(0x00, p + 0x96); /*MPIOLVL[15:8]*/
+ 		writeb(0x00, p + 0x97); /*MPIO3T[15:8]*/
+ 		writeb(0x00, p + 0x98); /*MPIOINV[15:8]*/
+-		writeb(0x00, p + 0x99); /*MPIOSEL[15:8]*/
++		// writeb(0xff, p + 0x99); /*MPIOSEL[15:8]*/ // dont touch default direction
+ 		writeb(0x00, p + 0x9a); /*MPIOOD[15:8]*/
+ 	}
+ 	writeb(0x00, p + UART_EXAR_8XMODE);
