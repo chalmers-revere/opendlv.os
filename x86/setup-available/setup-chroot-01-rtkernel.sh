@@ -9,9 +9,9 @@ source install-conf.sh
 mkdir setup-rtkernel
 cd setup-rtkernel
 
-wget ${url}/linux-rt-${version}-1-x86_64.pkg.tar.xz
-wget ${url}/linux-rt-docs-${version}-1-x86_64.pkg.tar.xz
-wget ${url}/linux-rt-headers-${version}-1-x86_64.pkg.tar.xz
+wget ${base_url}/linux-rt-${version}-1-x86_64.pkg.tar.xz
+wget ${base_url}/linux-rt-docs-${version}-1-x86_64.pkg.tar.xz
+wget ${base_url}/linux-rt-headers-${version}-1-x86_64.pkg.tar.xz
 
 pacman -U --noconfirm *.pkg.tar.xz
 
