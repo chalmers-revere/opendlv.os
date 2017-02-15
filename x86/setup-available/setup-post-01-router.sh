@@ -43,7 +43,7 @@ ip="$base_ip.1"
 broadcast_ip="$base_ip.255"
 
 echo -e "Description='Internal network'\nInterface=${lan_dev}\nConnection=ethernet\nIP=static\nIPCustom=('addr add dev ${lan_dev} $ip/24' 'route add 225.0.0.0/24 dev ${lan_dev}')\nSkipNoCarrier=yes" > /etc/netctl/${lan_dev}-static
-netctl enable ${lan_dev}-static.service
+netctl enable ${lan_dev}-static
 
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/30-ipforward.conf
 echo "net.ipv4.conf.eno1.rp_filter=0" > /etc/sysctl.d/40-rpfilter.conf
