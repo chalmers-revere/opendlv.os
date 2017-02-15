@@ -2,7 +2,7 @@
 
 subnet=10.42.42.0
 wan=( enp2s0 wlp0s20u1 ppp0 )
-dns="107.170.95.180, 75.127.14.107"
+dns="8.8.8.8"
 
 dhcp_lease_start=10
 dhcp_lease_end=30
