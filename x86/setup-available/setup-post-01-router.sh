@@ -4,7 +4,7 @@ source install-conf.sh
 
 subnet=10.42.42.0
 wan=( enp2s0 wlp0s20u1 ppp0 )
-dns="107.170.95.180, 75.127.14.107"
+dns="8.8.8.8"
 
 dhcp_lease_start=10
 dhcp_lease_end=30
@@ -57,7 +57,7 @@ done
 
 iptables-save > /etc/iptables/iptables.rules
 
-echo -e "option domain-name-servers $dns;\n\nauthoritative;\n\ndefault-lease-time 3600;\nmax-lease-time 7200;\n\nsubnet $subnet netmask 255.255.255.0 {\n  range $base_ip.$dhcp_lease_start $base_ip.$dhcp_lease_end;\n\n  option routers $ip;\n  option subnet-mask 255.255.255.0;\n  option broadcast-address $broadcast_ip;\n}\n" > /etc/dhcpd.conf
+echo -e "authoritative;\n\ndefault-lease-time 3600;\nmax-lease-time 7200;\n\nsubnet $subnet netmask 255.255.255.0 {\n  range $base_ip.$dhcp_lease_start $base_ip.$dhcp_lease_end;\n\n  option routers $ip;\n  option subnet-mask 255.255.255.0;\n  option broadcast-address $broadcast_ip;\noption domain-name-servers $dns;\n}\n" > /etc/dhcpd.conf
 for (( i = 0; i < ${#dhcp_clients[@]}; i++ )); do
   client_conf=${dhcp_clients[$i]}
   client_conf_arr=(${client_conf//,/ })
