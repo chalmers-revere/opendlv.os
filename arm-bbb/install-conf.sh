@@ -17,7 +17,7 @@ user_password=( changeMeNow )
 group=( uucp )
 
 # Software configuration
-software="i2c-tools dtc-overlay base-devel gnu-netcat vim ifplugd wget openssh bash-completion git cmake ccache screen wpa_supplicant wpa_actiond dosfstools ntfs-3g linux-headers"
+software="i2c-tools dtc-overlay base-devel gnu-netcat vim ifplugd wget openssh bash-completion git cmake ccache screen wpa_supplicant wpa_actiond dosfstools ntfs-3g linux-headers nano"
 service=( sshd )
 
 # Advanced
