@@ -44,6 +44,8 @@ if [[ $has_setup == 1 ]]; then
   cp setup-*.sh /mnt/root/
 fi
 
+cp kernel/pkg/linux*.tar.xz /mnt/root/
+
 chroot /mnt /root/install-chroot.sh
 
 umount -R /mnt

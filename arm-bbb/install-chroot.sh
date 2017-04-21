@@ -18,6 +18,8 @@ pacman -Syy
 
 pacman -S --noconfirm ${software}
 
+pacman -U --noconfirm --force linux-am33x-4.9.10-1-armv7h.pkg.tar.xz linux-am33x-headers-4.9.10-1-armv7h.pkg.tar.xz
+
 orphans=`pacman -Qtdq`
 if [ ! "${orphans}" == "" ]; then
   pacman -Rns ${orphans} --noconfirm || true
