@@ -1,6 +1,7 @@
 #!/bin/bash
 
-branch=`git rev-parse --abbrev-ref HEAD`
+#branch=`git rev-parse --abbrev-ref HEAD`
+branch=master
 platform=( x86 arm-bbb )
 
 echo "For branch '${branch}'"
