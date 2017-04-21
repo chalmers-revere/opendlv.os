@@ -25,6 +25,10 @@ if [ ! "${orphans}" == "" ]; then
   pacman -Rns ${orphans} --noconfirm || true
 fi
 
+echo g_ether > /etc/modules-load.d/g_ether.conf
+echo -e "Description='Connection via USB'\nInterface=usb0\nConnection=ethernet\nIP=dhcp" > /etc/netctl/usb0
+netctl enable usb0
+
 userdel -r alarm
 
 useradd -m -g users -G wheel aur
