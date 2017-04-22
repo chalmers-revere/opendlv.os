@@ -33,6 +33,7 @@ wget ${ROOT_URL}/{install,install-conf,install-chroot,install-post}.sh
 mkdir setup-available
 cd setup-available
 wget '${setup_list}'
+cd ..
 
 mkdir -p kernel/pkg
 cd kernel/pkg
