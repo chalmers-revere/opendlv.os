@@ -61,4 +61,4 @@ rm /etc/systemd/system/install-post.service
 
 echo -e "IMPORTANT: This computer is regularly and automatically wiped clean and reinstalled. Therefore, DO NOT keep any important files on this computer, and keep in mind that any settings that you make will be lost." > /etc/motd
 
-rm install-conf.sh install-post.sh && poweroff
+rm install-post.sh && poweroff

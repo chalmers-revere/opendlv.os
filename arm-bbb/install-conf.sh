@@ -31,7 +31,6 @@ ifplugd \
 i2c-tools \
 linux-headers \
 nano \
-netctl \
 ntfs-3g \
 openssh \
 screen \
@@ -41,6 +40,9 @@ wpa_supplicant \
 wpa_actiond \
 "
 service=( sshd )
+
+lan_dev=wlan0
+dhcp_dev=( ${lan_dev} )
 
 # Advanced
 hostname=$lab-$vehicle-arm_bbb-$node_index
