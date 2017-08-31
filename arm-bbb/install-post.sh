@@ -22,16 +22,18 @@ mkdir /mnt/sdcard
 mount /dev/mmcblk0p1 /mnt/sdcard
 echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
 
+mkdir /mnt/sdcard/users
+for (( i = 0; i < ${#user[@]}; i++ )); do
+  mkdir /mnt/sdcard/users/${user[$i]}
+  chown -R ${user[$i]}:users /mnt/sdcard/users/${user[$i]}
+  su -c "ln -s /mnt/sdcard/users/${user[$i]} /home/${user[$i]}/sdcard" -s /bin/bash ${user[$i]}
+done
+
 
 if [[ $has_setup_user == 1 ]]; then
-  mkdir /mnt/sdcard/users
-
   for (( i = 0; i < ${#user[@]}; i++ )); do
-    mkdir /mnt/sdcard/users/${user[$i]}
-    chown -R ${user[$i]}:users /mnt/sdcard/users/${user[$i]}
-    su -c "ln -s /mnt/sdcard/users/${user[$i]} /home/${user[$i]}/sdcard" -s /bin/bash ${user[$i]}
-
-    cp install-conf.sh setup-user-*.sh /home/${user[$i]}
+    cp install-conf.sh /home/${user[$i]}
+    cp setup-user-*.sh  /home/${user[$i]}
     cd /home/${user[$i]}
     chmod +x *.sh
     for f in setup-user-*.sh; do
