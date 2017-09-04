@@ -35,7 +35,7 @@ done
 
 iptables-save > /etc/iptables/iptables.rules
 
-echo -e "authoritative;\n\ndefault-lease-time 3600;\nmax-lease-time 7200;\n\nsubnet $subnet netmask 255.255.255.0 {\n  range $base_ip.$dhcp_lease_start $base_ip.$dhcp_lease_end;\n\n  option routers $ip;\n  option subnet-mask 255.255.255.0;\n  option broadcast-address $broadcast_ip;\noption domain-name-servers $dns;\n}\n" > /etc/dhcpd.conf
+echo -e "authoritative;\n\ndefault-lease-time 3600;\nmax-lease-time 7200;\n\nsubnet $subnet netmask 255.255.255.0 {\n  range $base_ip.$dhcp_lease_start $base_ip.$dhcp_lease_end;\n\n  option routers $ip;\n  option subnet-mask 255.255.255.0;\n  option broadcast-address $broadcast_ip;\n  option domain-name-servers $dns;\n}\n" > /etc/dhcpd.conf
 for (( i = 0; i < ${#dhcp_clients[@]}; i++ )); do
   client_conf=${dhcp_clients[$i]}
   client_conf_arr=(${client_conf//,/ })
@@ -45,6 +45,6 @@ for (( i = 0; i < ${#dhcp_clients[@]}; i++ )); do
   echo -e "host $client_name {\n  option host-name \"$client_name\";\n  hardware ethernet $client_mac;\n  fixed-address $base_ip.$client_ip;\n}\n" >> /etc/dhcpd.conf
 done
 
-echo -e "[Unit]\nDescription=IPv4 DHCP server on %I\nAfter=network.target\n\n[Service]\nType=forking\nPIDFile=/run/dhcpd4.pid\nExecStart=/usr/bin/dhcpd -4 -q -pf /run/dhcpd4.pid %I\nKillSignal=SIGINT\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/dhcpd4@.service
+echo -e "[Unit]\nDescription=IPv4 DHCP server on %I\nRequires=hostapd.service\nAfter=multi-user.target\n\n[Service]\nRestart=always\nRestartSec=30\nType=forking\nPIDFile=/run/dhcpd4.pid\nExecStart=/usr/bin/dhcpd -4 -q -pf /run/dhcpd4.pid %I\nKillSignal=SIGINT\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/dhcpd4@.service
 
-# systemctl enable dhcpd4@${lan_dev}.service
+systemctl enable dhcpd4@${lan_dev}.service
