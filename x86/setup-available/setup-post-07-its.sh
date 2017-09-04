@@ -1,6 +1,8 @@
 #!/bin/bash
 
 dev=wlp4s0
+server_port=4000
+client_port=4001
 
 
 pacman -S --noconfirm iw
@@ -20,7 +22,7 @@ make
 cp udp2eth /usr/local/bin
 cd /root
 
-echo -e "[Unit]\nDescription=Small package converter from udp to eth frames and vice versa.\nAfter=multi-user.target its-setfreq.service\n\n[Service]\nExecStart=/usr/local/bin/udp2eth -p --device=wlp4s0 --server=127.0.0.1:4000 --client=127.0.0.1:4001\n\n[Install]\nWantedBy=multi-user.target " > /etc/systemd/system/its-udp2eth.service 
+echo -e "[Unit]\nDescription=Small package converter from udp to eth frames and vice versa.\nAfter=multi-user.target its-setfreq.service\n\n[Service]\nExecStart=/usr/local/bin/udp2eth -p --device=${dev} --server=127.0.0.1:${server_port} --client=127.0.0.1:${client_port}\n\n[Install]\nWantedBy=multi-user.target " > /etc/systemd/system/its-udp2eth.service 
 rm -rf udp2eth
 
 systemctl enable its-udp2eth.service
