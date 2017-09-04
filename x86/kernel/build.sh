@@ -30,3 +30,7 @@ pwd
 makepkg -s --skippgpcheck --noextract
 
 cp *.pkg.tar.xz ../pkg
+
+cd ..
+
+rm -r linux-rt.tar.gz linux-rt
