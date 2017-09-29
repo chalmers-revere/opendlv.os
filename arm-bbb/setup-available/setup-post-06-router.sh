@@ -21,7 +21,7 @@ broadcast_ip="$base_ip.255"
 
 echo -e "# Speed up DHCP by disabling ARP probing\nnoarp\n\n# Set static IP address \ninterface $lan_dev\nstatic ip_address=$ip/24\nstatic routers=$ip\nstatic domain_name_servers=$ip 8.8.8.8\n" >> /etc/dhcpcd.conf
 
-# systemctl enable dhcpcd@${lan_dev}.service
+systemctl enable dhcpcd@${lan_dev}.service
 
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/30-ipforward.conf
 echo "net.ipv4.conf.eno1.rp_filter=0" > /etc/sysctl.d/40-rpfilter.conf
@@ -45,6 +45,6 @@ for (( i = 0; i < ${#dhcp_clients[@]}; i++ )); do
   echo -e "host $client_name {\n  option host-name \"$client_name\";\n  hardware ethernet $client_mac;\n  fixed-address $base_ip.$client_ip;\n}\n" >> /etc/dhcpd.conf
 done
 
-echo -e "[Unit]\nDescription=IPv4 DHCP server on %I\nRequires=hostapd.service\nAfter=multi-user.target\n\n[Service]\nRestart=always\nRestartSec=30\nType=forking\nPIDFile=/run/dhcpd4.pid\nExecStart=/usr/bin/dhcpd -4 -q -pf /run/dhcpd4.pid %I\nKillSignal=SIGINT\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/dhcpd4@.service
+echo -e "[Unit]\nDescription=IPv4 DHCP server on %I\nAfter=multi-user.target\n\n[Service]\nRestart=always\nRestartSec=30\nType=forking\nPIDFile=/run/dhcpd4.pid\nExecStart=/usr/bin/dhcpd -4 -q -pf /run/dhcpd4.pid %I\nKillSignal=SIGINT\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/dhcpd4@.service
 
 systemctl enable dhcpd4@${lan_dev}.service
