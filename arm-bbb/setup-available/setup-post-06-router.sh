@@ -14,13 +14,8 @@ systemctl enable iptables
 
 base_ip=`echo $subnet | cut -d"." -f1-3`
 ip="$base_ip.1"
-broadcast_ip="$base_ip.255"
-
-#echo -e "Description='Internal network'\nInterface=${lan_dev}\nConnection=ethernet\nIP=static\nIPCustom=('addr add dev ${lan_dev} $ip/24' 'route add 225.0.0.0/24 dev ${lan_dev}')\nSkipNoCarrier=yes" > /etc/netctl/${lan_dev}-static
-#netctl enable ${lan_dev}-static
 
 echo -e "# Speed up DHCP by disabling ARP probing\nnoarp\n\n# Set static IP address \ninterface $lan_dev\nstatic ip_address=$ip/24\nstatic routers=$ip\nstatic domain_name_servers=$ip 8.8.8.8\n" >> /etc/dhcpcd.conf
-
 systemctl enable dhcpcd@${lan_dev}.service
 
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/30-ipforward.conf
@@ -46,5 +41,4 @@ for (( i = 0; i < ${#dhcp_clients[@]}; i++ )); do
 done
 
 echo -e "[Unit]\nDescription=IPv4 DHCP server on %I\nAfter=multi-user.target\n\n[Service]\nRestart=always\nRestartSec=30\nType=forking\nPIDFile=/run/dhcpd4.pid\nExecStart=/usr/bin/dhcpd -4 -q -pf /run/dhcpd4.pid %I\nKillSignal=SIGINT\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/dhcpd4@.service
-
 systemctl enable dhcpd4@${lan_dev}.service
