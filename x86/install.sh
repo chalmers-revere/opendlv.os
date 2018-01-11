@@ -33,13 +33,14 @@ pacman -Syy
 
 pacstrap /mnt base 
 
+genfstab -U /mnt >> /mnt/etc/fstab
+
 mem_size=`awk '/MemTotal/ {print $2}' /proc/meminfo`
 fallocate -l ${mem_size}k /mnt/var/swapfile
 chmod 600 /mnt/var/swapfile
 mkswap /mnt/var/swapfile
 swapon /mnt/var/swapfile
-
-genfstab -U /mnt >> /mnt/etc/fstab
+echo -e "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /mnt/etc/fstab
 
 cp {install-conf,install-chroot,install-post}.sh /mnt/root/
 if [[ $has_setup == 1 ]]; then
