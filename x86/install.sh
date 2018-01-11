@@ -34,7 +34,7 @@ pacman -Syy
 pacstrap /mnt base 
 
 mem_size=`awk '/MemTotal/ {print $2}' /proc/meminfo`
-fallocate -l ${mem_size} /mnt/var/swapfile
+fallocate -l ${mem_size}k /mnt/var/swapfile
 chmod 600 /mnt/var/swapfile
 mkswap /mnt/var/swapfile
 swapon /mnt/var/swapfile
