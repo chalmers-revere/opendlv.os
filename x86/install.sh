@@ -11,6 +11,8 @@ then
   (echo n; echo ""; echo ""; echo +550M; echo EF00; echo w; echo Y) | gdisk ${hdd}
   hdd_esp=`lsblk ${hdd} -p -r -n | tail -n1 | cut -d ' ' -f 1`
   mkfs.fat -F32 ${hdd_esp}
+else
+  (echo n; echo ""; echo ""; echo +1M; echo EF02; echo w; echo Y) | gdisk ${hdd}
 fi
 
 (echo n; echo ""; echo ""; echo ""; echo 8300; echo w; echo Y) | gdisk ${hdd}
