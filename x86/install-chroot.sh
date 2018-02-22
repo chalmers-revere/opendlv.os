@@ -16,9 +16,43 @@ echo "KEYMAP=${keymap}" > /etc/vconsole.conf
 
 pacman -Syy
 
-pacman -S --noconfirm grub
-grub-install --target=i386-pc --recheck ${hdd}
-grub-mkconfig -o /boot/grub/grub.cfg
+use_intel_ucode=false
+if [ -n "`lscpu | grep Vendor | grep Intel`" ]
+then
+  pacman -S --noconfirm intel-ucode
+  use_intel_ucode=true
+fi
+
+if [ "$uefi" = true ]
+then
+  hdd_root=`mount | grep ' / ' | cut -d ' ' -f 1`
+  pacman -S --noconfirm efibootmgr
+  efibootmgr | grep '^Boot0' | cut -c 5-8 | while read n; do efibootmgr -b "$n" -B; done
+  if [ "$uefi_bad_impl" = false ]
+  then
+    if [ "$use_intel_ucode" = true ]
+    then
+      initrd_options="initrd=/intel-ucode.img initrd=/initramfs-linux.img"
+    else
+      initrd_options="initrd=/initramfs-linux.img"
+    fi
+    efibootmgr --disk ${hdd} --part 1 --create --gpt --label "Arch Linux" --loader /vmlinuz-linux --unicode "root=`blkid ${hdd_root} -o export | grep '^PARTUUID'` rw ${kernel_options}"
+  else
+    if [ "$use_intel_ucode" = true ]
+    then
+      initrd_options="initrd  /intel-ucode.img\ninitrd  /initramfs-linux.img\n"
+    else
+      initrd_options="initrd  /initramfs-linux.img\n"
+    fi
+    bootctl --path=/boot install
+    echo -e "default  arch" > /boot/loader/loader.conf
+    echo -e "title   Arch Linux\nlinux   /vmlinuz-linux\n${initrd_options}options root=`blkid ${hdd_root} -o export | grep '^PARTUUID'` rw" > /boot/loader/entries/arch.conf
+  fi
+else
+  pacman -S --noconfirm grub
+  grub-install --target=i386-pc --recheck ${hdd}
+  grub-mkconfig -o /boot/grub/grub.cfg
+fi
 
 pacman -S --noconfirm ${software}
 

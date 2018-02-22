@@ -2,11 +2,29 @@
 
 source install-conf.sh
 
-(echo o; echo n; echo p; echo 1; echo ""; echo ""; echo w; echo q) | fdisk ${hdd}
+timedatectl set-ntp true
 
-(echo y) | mkfs.ext4 ${hdd}1
+(echo x; echo z; echo Y; echo Y) | gdisk ${hdd}
 
-mount ${hdd}1 /mnt
+if [ "$uefi" = true ]
+then
+  (echo n; echo ""; echo ""; echo +550M; echo EF00; echo w; echo Y) | gdisk ${hdd}
+  hdd_esp=`lsblk ${hdd} -p -r -n | tail -n1 | cut -d ' ' -f 1`
+  mkfs.fat -F32 ${hdd_esp}
+else
+  (echo n; echo ""; echo ""; echo +1M; echo EF02; echo w; echo Y) | gdisk ${hdd}
+fi
+
+(echo n; echo ""; echo ""; echo ""; echo 8300; echo w; echo Y) | gdisk ${hdd}
+hdd_root=`lsblk ${hdd} -p -r -n | tail -n1 | cut -d ' ' -f 1`
+(echo y) | mkfs.ext4 ${hdd_root}
+mount ${hdd_root} /mnt
+
+if [ "$uefi" = true ]
+then
+  mkdir /mnt/boot
+  mount ${hdd_esp} /mnt/boot
+fi
 
 for i in "${mirror[@]}"; do
   grep -i -A 1 --no-group-separator $i /etc/pacman.d/mirrorlist >> mirrorlist
@@ -16,9 +34,11 @@ mv mirrorlist /etc/pacman.d/mirrorlist
 pacman -Syy
 
 pacstrap /mnt base 
-echo -e "`blkid ${hdd}1 -o export | grep "^UUID"`\t/\text4\trw,relatime\t0 1" >> /mnt/etc/fstab
 
-fallocate -l 2G /mnt/var/swapfile
+genfstab -U /mnt >> /mnt/etc/fstab
+
+mem_size=`awk '/MemTotal/ {print $2}' /proc/meminfo`
+fallocate -l ${mem_size}k /mnt/var/swapfile
 chmod 600 /mnt/var/swapfile
 mkswap /mnt/var/swapfile
 swapon /mnt/var/swapfile

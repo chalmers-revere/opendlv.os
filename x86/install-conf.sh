@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Basic
-lab=revere
-vehicle=rhino
-node_index=1
+hostname=revere-rhino-x86_64-1
+
 root_password=changeMeNow
 
 timezone=Europe/Stockholm
@@ -27,8 +26,11 @@ dhcp_dev=( ${lan_dev} )
 # Partitions
 hdd=/dev/sda
 
-# Advanced
-hostname=$lab-$vehicle-x86_64-$node_index
+uefi=false
+if [ -d "/sys/firmware/efi/efivars" ]; then
+  uefi=true
+  uefi_bad_impl=false
+fi
 
 for f in setup-chroot-*.sh; do
     [ -e "$f" ] && has_setup_chroot=1 || has_setup_chroot=0
