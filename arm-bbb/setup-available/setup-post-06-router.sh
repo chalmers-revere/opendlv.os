@@ -3,17 +3,19 @@
 source install-conf.sh
 
 subnet=10.42.11.0
-wan=( eth0 usb0 ppp0 )
+wan=( usb0 ppp0 )
 dns="8.8.8.8"
 
 dhcp_lease_start=10
 dhcp_lease_end=30
 
+base_ip=`echo $subnet | cut -d"." -f1-3`
+ip="$base_ip.1"
+broadcast_ip="$base_ip.255"
+
 pacman -S --noconfirm dhcp
 systemctl enable iptables
 
-base_ip=`echo $subnet | cut -d"." -f1-3`
-ip="$base_ip.1"
 
 echo -e "# Speed up DHCP by disabling ARP probing\nnoarp\n\n# Set static IP address \ninterface $lan_dev\nstatic ip_address=$ip/24\nstatic routers=$ip\nstatic domain_name_servers=$ip 8.8.8.8\n" >> /etc/dhcpcd.conf
 systemctl enable dhcpcd@${lan_dev}.service
