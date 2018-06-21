@@ -9,8 +9,9 @@ wget ${url}
 tar -zxvf linux-rt.tar.gz
 cd linux-rt
 
-sed -i "s/`grep _rtpatchver= PKGBUILD`/`grep _rtpatchver= PKGBUILD`-revere/g" PKGBUILD
+sed -i "s/`grep _rtpatchver= PKGBUILD`/`grep _rtpatchver= PKGBUILD`_revere/g" PKGBUILD
 
+# Prepare sources.
 makepkg -s --skippgpcheck --nobuild 
 
 cd src/linux-4.9
