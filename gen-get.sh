@@ -26,7 +26,7 @@ for p in ${platform[@]}; do
 
   echo '#!/bin/bash
 
-ROOT_URL=https://raw.githubusercontent.com/chalmers-revere/opendlv.os/'${branch}'/'${p}'
+ROOT_URL=https://raw.github.com/chalmers-revere/opendlv.os/'${branch}'/'${p}'
 
 wget ${ROOT_URL}/{install,install-conf,install-chroot,install-post}.sh
 
