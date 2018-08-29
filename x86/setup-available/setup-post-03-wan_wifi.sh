@@ -4,6 +4,7 @@ dev=( wlp0s20u1 )
 essid=( "ASTA2" "REVERE 2.4GHz")
 wpa2=( "pass1" "pass2" )
 
+pacman -S --noconfirm wpa_supplicant wpa_actiond
 
 for (( i = 0; i < ${#dev[@]}; i++ )); do
   for (( j = 0; j < ${#essid[@]}; j++ )); do

@@ -5,6 +5,8 @@ bitrate=0x1c
 url=http://www.peak-system.com/fileadmin/media/linux/files
 name=peak-linux-driver-8.6.0
 
+pacman -S --noconfirm linux-headers
+
 wget ${url}/${name}.tar.gz
 
 tar -xvzf ${name}.tar.gz

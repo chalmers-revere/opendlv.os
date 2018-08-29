@@ -5,6 +5,8 @@ url=https://aur.archlinux.org/cgit/aur.git/snapshot/ptpd.tar.gz
 cd
 source install-conf.sh
 
+pacman -S --noconfirm linux-headers
+
 cd /home/aur/
 mkdir setup-ptpd
 cd setup-ptpd

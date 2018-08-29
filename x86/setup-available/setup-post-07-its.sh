@@ -5,7 +5,7 @@ server_port=4000
 client_port=4001
 
 
-pacman -S --noconfirm iw
+pacman -S --noconfirm git iw
 
 mkdir -p /root/boot
 

@@ -16,12 +16,12 @@ user_password=( changeMeNow )
 group=( uucp )
 
 # Software configuration
-software="base-devel gnu-netcat vim ifplugd wget openssh bash-completion git cmake ccache screen wpa_supplicant wpa_actiond dosfstools ntfs-3g linux-headers"
+software="base-devel gnu-netcat vim ifplugd wget openssh bash-completion screen"
 service=( sshd )
 
 # Network
 lan_dev=enp2s0
-eth_dhcp_client_dev=( ${lan_dev} )
+eth_dhcp_client_dev=( ${lan_dev} )  # On a router setup, this is typically all ethernet WAN devices
 
 # Partitions
 hdd=/dev/sda

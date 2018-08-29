@@ -2,7 +2,7 @@
 
 source install-conf.sh
 
-pacman -S --noconfirm docker docker-compose
+pacman -S --noconfirm docker docker-compose git
 
 for u in ${user[@]}; do
   gpasswd -a ${u} docker
