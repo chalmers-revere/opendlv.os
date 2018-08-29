@@ -61,9 +61,9 @@ if [ ! "${orphans}" == "" ]; then
   pacman -Rns ${orphans} --noconfirm || true
 fi
 
-for (( i = 0; i < ${#dhcp_dev[@]}; i++ )); do
-  echo -e "Description='A basic dhcp ethernet connection'\nInterface=${dhcp_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${dhcp_dev[$i]}-dhcp
-  systemctl enable netctl-ifplugd@${dhcp_dev[$i]}
+for (( i = 0; i < ${#eth_dhcp_client_dev[@]}; i++ )); do
+  echo -e "Description='A basic dhcp ethernet connection'\nInterface=${eth_dhcp_client_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${eth_dhcp_client_dev[$i]}-dhcp
+  systemctl enable netctl-ifplugd@${eth_dhcp_client_dev[$i]}
 done
 
 useradd -m -g users -G wheel aur

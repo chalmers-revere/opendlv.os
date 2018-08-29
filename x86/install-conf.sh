@@ -21,7 +21,7 @@ service=( sshd )
 
 # Network
 lan_dev=enp2s0
-dhcp_dev=( ${lan_dev} )
+eth_dhcp_client_dev=( ${lan_dev} )
 
 # Partitions
 hdd=/dev/sda

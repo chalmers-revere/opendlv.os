@@ -3,7 +3,7 @@
 source install-conf.sh
 
 subnet=10.42.42.0
-wan=( enp2s0 wlp0s20u1 ppp0 )
+wan_forward_dev=( ${eth_dhcp_client_dev} wlp0s20u1 ppp0 )
 dns="8.8.8.8"
 
 dhcp_lease_start=10
@@ -50,9 +50,9 @@ echo "net.ipv4.conf.eno1.rp_filter=0" > /etc/sysctl.d/40-rpfilter.conf
 
 iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
-for (( i = 0; i < ${#wan[@]}; i++ )); do
-  iptables -A FORWARD -i ${lan_dev} -o ${wan[$i]} -j ACCEPT
-  iptables -t nat -A POSTROUTING -o ${wan[$i]} -j MASQUERADE
+for (( i = 0; i < ${#wan_forward_dev[@]}; i++ )); do
+  iptables -A FORWARD -i ${lan_dev} -o ${wan_forward_dev[$i]} -j ACCEPT
+  iptables -t nat -A POSTROUTING -o ${wan_forward_dev[$i]} -j MASQUERADE
 done
 
 iptables-save > /etc/iptables/iptables.rules
