@@ -9,6 +9,6 @@ for (( i = 0; i < ${#dev[@]}; i++ )); do
 done
 
 chmod 755 /root/socketcan-setup.sh
-echo -e "[Unit]\nDescription=Setup socket can.\nAfter=default.target\n\n[Service]\nExecStart=/root/socketcan-setup.sh\n\n[Install]\nWantedBy=default.target " > /etc/systemd/system/socketcan-setup.service 
+echo -e "[Unit]\nDescription=Setup socket can.\nAfter=network-online.target\n\n[Service]\nType=oneshot\nExecStart=/root/socketcan-setup.sh\n\n[Install]\nWantedBy=network-online.target" > /etc/systemd/system/socketcan-setup.service 
 
 systemctl enable socketcan-setup.service
