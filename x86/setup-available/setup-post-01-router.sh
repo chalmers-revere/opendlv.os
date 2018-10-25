@@ -3,7 +3,7 @@
 source install-conf.sh
 
 subnet=10.42.42.0
-wan_forward_dev=( ${eth_dhcp_client_dev} wlp0s20u1 ppp0 )
+wan_forward_dev=( ${eth_dhcp_client_dev[@]} wlp0s20u1 ppp0 )
 dns="8.8.8.8"
 
 dhcp_lease_start=10
