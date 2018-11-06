@@ -11,28 +11,23 @@ dhcp_lease_end=30
 
 # Snowfox
 dhcp_clients=(
-  "x86-v2v,00:0d:b9:3e:bb:84,61",
+  "axis1,AC:CC:8E:84:80:3C,12",
+  "velo-hdl32e,60:76:88:20:20:01,13",
+  "cisco-switch1-16p,F8:7B:20:D2:FE:40,21",
+  "meinberg1,EC:46:70:00:99:EB,27",
+  "meinberg2,00:13:95:1D:F4:B6,30",
+  "applanix-gps,00:17:47:20:0D:58,40",
 )
 
 # Rhino
 #dhcp_clients=(
-#  "scott2,00:07:32:34:6b:07,60",
-#  "uhura2,00:0d:b9:3e:bb:c0,61",
-#  "chekov1,a0:f6:fd:87:fc:d2,62",
-#  
-#  "chekov2,a0:f6:fd:3c:d2:38,63",
-#  "chekov3,a0:f6:fd:3c:f5:e4,64",
-#  "kirk1,00:24:9b:15:4a:ea,65",
-#  
-#  "camera-front-left,ac:cc:8e:23:6e:8d,90",
-#  "camera-front-right,ac:cc:8e:23:6e:49,91",
-#  "camera-rear-left,ac:cc:8e:23:6e:47,92",
-#  "camera-rear-right,ac:cc:8e:23:6e:4c,93",
-#
-#  "switch-cisco-8p,ec:bd:1d:c1:93:00,110",
-#  "timeprovider,00:13:95:19:ea:a6,111",
-#  
-#  "gps,00:60:35:05:47:a1,112"
+#  "meinberg2,00:13:95:19:EA:A6,10",
+#  "cisco-switch1-16p,EC:BD:1D:C1:93:40,11",
+#  "hp-tablet,00:24:9B:15:4A:EA,14",
+#  "meinberg1,EC:46:70:00:7F:86,16",
+#  "axis1,AC:CC:8E:23:6E:8D,29",
+#  "velo-vlp32c,60:76:88:34:34:4D,30",
+#  "oxts-gps,70:B3:D5:AF:03:73,56",
 #)
 
 pacman -S --noconfirm dhcp
