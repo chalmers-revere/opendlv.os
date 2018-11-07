@@ -3,37 +3,17 @@
 source install-conf.sh
 
 subnet=10.42.42.0
-wan_forward_dev=( ${eth_dhcp_client_dev[@]} wlp0s20u1 ppp0 )
+wan_forward_dev=( ${eth_dhcp_client_dev[@]} )
 dns="8.8.8.8"
 
 dhcp_lease_start=10
 dhcp_lease_end=30
 
-# Snowfox
-dhcp_clients=(
-  "x86-v2v,00:0d:b9:3e:bb:84,61",
-)
+# MAC filter according to: "x86-v2v,00:0d:b9:3e:bb:84,61", ..
 
-# Rhino
-#dhcp_clients=(
-#  "scott2,00:07:32:34:6b:07,60",
-#  "uhura2,00:0d:b9:3e:bb:c0,61",
-#  "chekov1,a0:f6:fd:87:fc:d2,62",
-#  
-#  "chekov2,a0:f6:fd:3c:d2:38,63",
-#  "chekov3,a0:f6:fd:3c:f5:e4,64",
-#  "kirk1,00:24:9b:15:4a:ea,65",
-#  
-#  "camera-front-left,ac:cc:8e:23:6e:8d,90",
-#  "camera-front-right,ac:cc:8e:23:6e:49,91",
-#  "camera-rear-left,ac:cc:8e:23:6e:47,92",
-#  "camera-rear-right,ac:cc:8e:23:6e:4c,93",
-#
-#  "switch-cisco-8p,ec:bd:1d:c1:93:00,110",
-#  "timeprovider,00:13:95:19:ea:a6,111",
-#  
-#  "gps,00:60:35:05:47:a1,112"
-#)
+dhcp_clients=( )
+
+
 
 pacman -S --noconfirm dhcp
 systemctl enable iptables
