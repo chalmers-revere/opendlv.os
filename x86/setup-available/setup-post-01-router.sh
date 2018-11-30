@@ -22,7 +22,9 @@ dhcp_clients=(
 # Rhino
 #dhcp_clients=(
 #  "meinberg2,00:13:95:19:EA:A6,10",
-#  "cisco-switch1-16p,EC:BD:1D:C1:93:40,11",
+#  "cisco-switch1-8p,EC:BD:1D:C1:93:40,11",
+#  "cisco-switch2-16p,00:5D:73:67:A5:40,12",
+#  "cisco-switch3-16p,6C:DD:30:B9:A2:C0,13",
 #  "hp-tablet,00:24:9B:15:4A:EA,14",
 #  "meinberg1,EC:46:70:00:7F:86,16",
 #  "axis1,AC:CC:8E:23:6E:8D,29",
