@@ -9,11 +9,13 @@ CONFIG_URL=https://git.archlinux.org/svntogit/packages.git/plain/trunk/config?h=
 
 #KERNEL_OPTIONS_Y=( CONFIG_RT_GROUP_SCHED )
 
+pacman -S --noconfirm bc
+
 read -r -d '' PATCHES << EOM
- drivers/net/wireless/ath/ath9k/common-init.c | 19 +++++++++++++++++++
- drivers/net/wireless/ath/ath9k/hw.h          |  2 +-
- drivers/net/wireless/ath/regd.c              | 17 ++++++++++++-----
- 3 files changed, 32 insertions(+), 6 deletions(-)
+drivers/net/wireless/ath/ath9k/common-init.c | 19 +++++++++++++++++++
+drivers/net/wireless/ath/ath9k/hw.h          |  2 +-
+drivers/net/wireless/ath/regd.c              | 17 ++++++++++++-----
+3 files changed, 32 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath9k/common-init.c b/drivers/net/wireless/ath/ath9k/common-init.c
 index a006c14..0b61c63 100644
@@ -4644,4 +4646,6 @@ echo "${DEFAULT_CONFIG}" > .config
 
 make -j4
 
-#cp arch/x86/boot/bzImage /boot/vmlinuz-linux
+pacman -Rn --noconfirm bc
+
+cp arch/x86/boot/bzImage /boot/vmlinuz-linux
