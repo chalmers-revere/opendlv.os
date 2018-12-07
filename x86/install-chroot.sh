@@ -61,6 +61,8 @@ if [ ! "${orphans}" == "" ]; then
   pacman -Rns ${orphans} --noconfirm || true
 fi
 
+echo "alias ll='ls -l'" >> /etc/bash.bashrc
+
 for (( i = 0; i < ${#eth_dhcp_client_dev[@]}; i++ )); do
   echo -e "Description='A basic dhcp ethernet connection'\nInterface=${eth_dhcp_client_dev[$i]}\nConnection=ethernet\nIP=dhcp" > /etc/netctl/${eth_dhcp_client_dev[$i]}-dhcp
   systemctl enable netctl-ifplugd@${eth_dhcp_client_dev[$i]}
