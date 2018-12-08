@@ -7,11 +7,68 @@ RT_BASE_URL="https://www.kernel.org/pub/linux/kernel/projects/rt"
 
 CONFIG_URL=https://git.archlinux.org/svntogit/packages.git/plain/trunk/config?h=packages/linux
 
-#KERNEL_OPTIONS_Y=( CONFIG_RT_GROUP_SCHED )
-
 pacman -S --noconfirm bc
 
-read -r -d '' PATCHES << EOM
+rt_version_list=`wget -q $RT_BASE_URL -O - | grep '^<a href'`
+
+latest_version='';
+while read -r line; do
+  version=`echo $line | cut -d '"' -f2 | cut -d '/' -f1 | grep [0-9]`
+
+  if [ ! $latest_version ]
+  then
+    latest_version=$version
+  else
+    is_newer=false
+
+    OIFS="$IFS"
+    IFS='.'
+    read -a version_arr <<< "${version}"
+    read -a latest_version_arr <<< "${latest_version}"
+    IFS="$OIFS"
+
+    for i in "${!version_arr[@]}"; do
+      if [ ${version_arr[$i]} -gt ${latest_version_arr[$i]} ]; then
+        is_newer=true
+        break
+      elif [ ${version_arr[$i]} -lt ${latest_version_arr[$i]} ]; then
+        is_newer=false
+        break
+      fi
+    done
+    if $is_newer; then
+      latest_version=$version
+    fi
+  fi
+
+done <<< "$rt_version_list"
+
+echo "Latest detected Linux RT patch version: $latest_version"
+
+rt_patch_filename=`wget -q $RT_BASE_URL/$latest_version -O - | grep 'patch.xz' | cut -d '"' -f2`
+
+kernel_major=`echo $latest_version | cut -d '.' -f1`
+
+kernel_url=$KERNEL_BASE_URL/v$kernel_major.x/linux-$latest_version.tar.xz
+rt_patch_url=$RT_BASE_URL/$latest_version/$rt_patch_filename
+
+file=`echo "${kernel_url##*/}"`
+folder=`echo $file | cut -d '.' -f1-2`
+
+mkdir -p ${WORKDIR}
+cd ${WORKDIR}
+
+wget -N ${kernel_url}
+tar -xf ${file}
+
+cd ${folder}
+
+wget -N ${rt_patch_url}
+
+echo -e "Applying RT patch\n"
+xzcat $rt_patch_filename | patch -p1
+
+cat <<"EOF" > patches.patch
 drivers/net/wireless/ath/ath9k/common-init.c | 19 +++++++++++++++++++
 drivers/net/wireless/ath/ath9k/hw.h          |  2 +-
 drivers/net/wireless/ath/regd.c              | 17 ++++++++++++-----
@@ -141,9 +198,12 @@ index 444bd28..1f8b209 100644
 2.5.3
 
 --
-EOM
+EOF
 
-read -r -d '' DEFAULT_CONFIG << EOM
+echo -e "Applying additional patches\n"
+cat patches.patch | patch --dry-run -p1
+
+cat <<"EOF" > .config
 #
 # Automatically generated file; DO NOT EDIT.
 # Linux/x86 4.19.0 Kernel Configuration
@@ -4582,67 +4642,7 @@ CONFIG_X86_DEBUG_FPU=y
 # CONFIG_PUNIT_ATOM_DEBUG is not set
 CONFIG_UNWINDER_ORC=y
 # CONFIG_UNWINDER_FRAME_POINTER is not set
-EOM
-
-
-latest_version='4.19';  # TODO: Fix this code... Dates are apparently not always in order... Check version numbers directly.
-#rt_version_list=`wget -q $RT_BASE_URL -O - | grep '^<a href'`
-#latest_version='';
-#latest_date=`date -d 1970-01-01 +%s`
-#while read -r line; do
-#  version=`echo $line | cut -d '"' -f2 | cut -d '/' -f1 | grep [0-9]`
-#  date_text=`echo $line | cut -d '>' -f3 | sed -e 's/^[[:space:]]*//' | cut -d ' ' -f1`
-#  date=`date -d $date_text +%s`
-
-#  if [ $date -ge $latest_date ]
-#  then
-#    latest_version=$version;
-#    latest_date=$date;
-#  fi
-#done <<< "$rt_version_list"
-
-echo "Latest detected Linux RT patch version: $latest_version"
-
-rt_patch_filename=`wget -q $RT_BASE_URL/$latest_version -O - | grep 'patch.xz' | cut -d '"' -f2`
-
-kernel_major=`echo $latest_version | cut -d '.' -f1`
-
-kernel_url=$KERNEL_BASE_URL/v$kernel_major.x/linux-$latest_version.tar.xz
-rt_patch_url=$RT_BASE_URL/$latest_version/$rt_patch_filename
-
-file=`echo "${kernel_url##*/}"`
-folder=`echo $file | cut -d '.' -f1-2`
-
-mkdir -p ${WORKDIR}
-cp *.patch ${WORKDIR}
-cd ${WORKDIR}
-
-wget -N ${kernel_url}
-tar -xf ${file}
-
-cd ${folder}
-
-wget -N ${rt_patch_url}
-
-echo -e "Applying RT patch\n"
-xzcat $rt_patch_filename | patch -p1
-
-echo -e "Applying additional patches\n"
-echo "${PATCHES}" | patch -p1
-
-#for f in ../*.patch; do
-#  echo " .. patch: $f"
-#  patch -p1 -i $f
-#done
-
-make defconfig
-echo "${DEFAULT_CONFIG}" > .config
-
-#echo -e "Configuring\n"
-#for (( i = 0; i < ${#KERNEL_OPTIONS_Y[@]}; i++ )); do
-#  sed -i "s/.*${KERNEL_OPTIONS_Y[$i]}.*/${KERNEL_OPTIONS_Y[$i]}=y/" .config
-#  echo -e " .. setting: ${KERNEL_OPTIONS_Y[$i]}=y\n"
-#done
+EOF
 
 make -j4
 
