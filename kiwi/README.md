@@ -31,9 +31,9 @@ In this guide, we will assume that you have internet connection on your host pc 
 * Get root privileges: `su`
   * Password: root
 
-6. Use the installation script: https://github.com/chalmers-revere/opendlv.os/blob/kiwi/kiwi/arm-bbblue/install-post.sh
+6. Use the installation script: https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/arm-bbblue/install-post.sh
 
-* `curl -sSL https://raw.githubusercontent.com/bjornborg/bbb/master/bbb/install.sh | sh`
+* `curl -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/arm-bbblue/install-post.sh | sh`
 
 The installation will prompt you some options for some packages.
 
@@ -75,7 +75,7 @@ if your ip address 10.42.0.1
 
 9. Use our installation script
 
-* Script: `curl -sSL https://github.com/chalmers-revere/opendlv.os/blob/kiwi/kiwi/rpi3/install-post.sh| sh`
+* Script: `curl -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3/install-post.sh | sh`
 
 The installation will prompt you some options for some packages.
 
