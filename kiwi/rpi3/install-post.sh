@@ -47,7 +47,7 @@ raspi-config nonint do_camera 0
 
 
 #enable wireless
-echo -e 'network={\n    ssid="WASP2018"\n    psk="beaglebone"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo -e 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 # echo -e 'network={\n    ssid="ChalmersVOR"\n    psk="VOR2018!"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 # echo -e 'network={\n    ssid="ChalmersVOR_2G"\n    psk="VOR2018!"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 
@@ -133,9 +133,10 @@ usermod -aG docker pi
 # cd /root/bbb
 cd /root
 # wget https://raw.githubusercontent.com/chalmers-revere/2018-wasp-summer-school/master/getting-started/rpi-camera-x264-viewer-kiwi.yml
-git clone https://github.com/chalmers-revere/2018-wasp-summer-school.git
-cd /root/2018-wasp-summer-school/getting-started
-docker-compose -f rpi-camera-x264-viewer-kiwi.yml up -d
+# git clone https://github.com/chalmers-revere/2018-wasp-summer-school.git
+# cd /root/2018-wasp-summer-school/getting-started
+curl -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3.yml 
+docker-compose -f rpi3.yml up -d
 cd
 
 apt-get dist-upgrade -y
