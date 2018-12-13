@@ -143,9 +143,9 @@ iptables-save > /etc/iptables/rules.v4
 echo -e "10.42.42.1\t kiwi.opendlv.io" >> /etc/hosts
 
 
-cd /root/bbb/
-
-docker-compose -f bbb.yml up -d
+cd /root/
+curl -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/bbblue.yml 
+docker-compose -f bbblue.yml up -d
 
 read -p "Installation script for the beaglebone is done!"
 
