@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+    device-kiwi-prugw:
+        image: chalmersrevere/opendlv-device-kiwi-prugw-armhf:v0.0.8
+        network_mode: "host"
+        privileged: true
+        restart: always
+        volumes:
+            - /sys/:/sys/
+            - /lib/firmware/:/lib/firmware/
+        command: "/usr/bin/opendlv-device-kiwi-prugw --cid=${CID} \
+                --names=${NAMES} --types=${TYPES} --channels=${CHANNELS} \
+                --offsets=${OFFSETS} --maxvals=${MAXVALS} \
+                --angleconversion=${ANGLECONVERSION} --verbose=0"
+    device-ultrasonic-srf08-front:
+        image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.7
+        network_mode: "host"
+        restart: always
+        privileged: true
+        volumes:
+          - /dev/i2c-1:/dev/i2c-1
+        command: "/usr/bin/opendlv-device-ultrasonic-srf08 --dev=/dev/i2c-1 --bus-address=112 --cid=${CID} --freq=10 --id=0 --range=${USRANGE} --gain=${USGAIN}"
+    
+    device-ultrasonic-srf08-rear:
+        image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.7
+        network_mode: "host"
+        restart: always
+        privileged: true
+        volumes:
+          - /dev/i2c-1:/dev/i2c-1
+        command: "/usr/bin/opendlv-device-ultrasonic-srf08 --dev=/dev/i2c-1 --bus-address=113 --cid=${CID} --freq=10 --id=2 --range=${USRANGE} --gain=${USGAIN}"
+    
+    device-adc-bbblue-left:
+        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.11
+        network_mode: "host"
+        restart: always
+        volumes:
+          - /sys/:/sys/
+        command: "/usr/bin/opendlv-device-adc-bbblue --cid=${CID} --freq=10 --channel=2 --id=1"
+    
+    device-adc-bbblue-right:
+        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.11
+        network_mode: "host"
+        restart: always
+        volumes:
+          - /sys/:/sys/
+        command: "/usr/bin/opendlv-device-adc-bbblue --cid=${CID} --freq=10 --channel=3 --id=3"
+    device-adc-bbblue-battery:
+        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.11
+        network_mode: "host"
+        restart: always
+        volumes:
+          - /sys/:/sys/
+        command: "/usr/bin/opendlv-device-adc-bbblue --cid=${CID} --freq=1 --channel=6 --id=99"
+
+
