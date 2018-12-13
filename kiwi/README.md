@@ -19,7 +19,7 @@ In this guide, we will assume that you have internet connection on your host pc 
 
 2. Use a program to flash sdcard with the newly downloaded debian image. I'd recommend etcher (https://etcher.io/). Use a spare sdcard if possible, this step will wipe it clean for the debian image.
 
-3. Put the sdcard into the beaglebone blue sdcard slot and reboot it. It will now flash the eMMC on the chip. You will see the LEDs flash in a orderly manner back and fourth. Once it's done, the LEDs should be turned off and static. Remove the sdcard and put an empty sdcard on. Then reboot (Press the RST button once(upper left corner) and then the POW button(next to it)).
+3. Put the sdcard into the beaglebone blue sdcard slot and reboot it. It will now flash the eMMC on the chip. You will see the LEDs flash in a orderly manner back and fourth. Once it's done, the LEDs should be turned off and static. Remove the sdcard and put an empty sdcard on. Then reboot (Press the RST button once (upper left corner) and then the POW button (next to it)).
 
 4. Connect the beaglebone to your host machine via usb or connect to its wifi hotspot (password: `BeagleBone`). Ssh into the board using the predefined target IP addresses `192.168.7.2` if you connected via usb or `192.168.8.1` if you connected to the board's wifi.
 
