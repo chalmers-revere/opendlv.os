@@ -4644,8 +4644,18 @@ CONFIG_UNWINDER_ORC=y
 # CONFIG_UNWINDER_FRAME_POINTER is not set
 EOF
 
+# NVIDIA support
+if [[ $(lspci | grep VGA | grep NVIDIA) ]]; then
+  ./scripts/config -e MODULES -e MTRR -e VGA_ARB -e AGP -e IPMI_HANDLER -e FB_UVESA -d FB_EFI -e FB_SIMPLE -e X86_SYSFB
+  pacman -S --noconfirm nvidia
+fi
+
+# USB camera support
+./scripts/config -e USB_GADGET -e USB_CONFIGFS -e MEDIA_SUPPORT -e MEDIA_CAMERA_SUPPORT -e USB_CONFIGFS_F_UVC
+
+# Intel WIFI
+./scripts/config -e IWLWIFI -e IWLMVM -e IWLDVM --set-str EXTRA_FIRMWARE "iwlwifi-8000C-16.ucode" --set-str EXTRA_FIRMWARE_DIR "/lib/firmware"
+
 make -j4
-
 pacman -Rn --noconfirm bc
-
 cp arch/x86/boot/bzImage /boot/vmlinuz-linux
