@@ -4656,6 +4656,6 @@ fi
 # Intel WIFI
 ./scripts/config -e IWLWIFI -e IWLMVM -e IWLDVM --set-str EXTRA_FIRMWARE "iwlwifi-8000C-16.ucode" --set-str EXTRA_FIRMWARE_DIR "/lib/firmware"
 
-make -j4
+yes "" | make -j4
 pacman -Rn --noconfirm bc
 cp arch/x86/boot/bzImage /boot/vmlinuz-linux
