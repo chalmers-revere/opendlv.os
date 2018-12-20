@@ -4656,8 +4656,8 @@ fi
 # Intel WIFI
 ./scripts/config -e IWLWIFI -e IWLMVM -e IWLDVM --set-str EXTRA_FIRMWARE "iwlwifi-8000C-16.ucode" --set-str EXTRA_FIRMWARE_DIR "/lib/firmware"
 
-# FTDI
-./scripts/config -e USB_SERIAL -e USB_SERIAL_FTDI_SIO
+# FTDI and ACM CDC
+./scripts/config -e USB_SERIAL -e USB_SERIAL_FTDI_SIO -e USB_ACM
 
 
 yes "" | make -j4
