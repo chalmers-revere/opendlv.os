@@ -1,7 +1,5 @@
 #!/bin/bash
 
-sudo -i
-
 systemctl enable ssh
 systemctl start ssh
 
