@@ -131,7 +131,7 @@ cd /root
 # wget https://raw.githubusercontent.com/chalmers-revere/2018-wasp-summer-school/master/getting-started/rpi-camera-x264-viewer-kiwi.yml
 # git clone https://github.com/chalmers-revere/2018-wasp-summer-school.git
 # cd /root/2018-wasp-summer-school/getting-started
-wget -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3.yml 
+wget -SL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3.yml 
 docker-compose -f rpi3.yml up -d
 cd
 
