@@ -143,6 +143,12 @@ iptables-save > /etc/iptables/rules.v4
 echo -e "10.42.42.1\t kiwi.opendlv.io" >> /etc/hosts
 
 
+# /usr/bin/bb-wl18xx-tether < good stuff here
+# Random 1-13 channel assignment
+channel=$((1 + RANDOM % 13))
+sed -i -e 's/channel=.*/channel='"${channel}"'" >> ${wfile}/g' /usr/bin/bb-wl18xx-tether 
+
+
 cd /root/
 wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/bbblue.yml 
 wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/.env 
