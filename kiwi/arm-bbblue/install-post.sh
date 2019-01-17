@@ -2,6 +2,9 @@
 
 # git clone --recurse-submodules https://github.com/bjornborg/bbb
 
+echo "alias ll='ls -alF --color=auto'" >> /root/.bashrc
+echo "alias ll='ls -alF --color=auto'" >> /home/pi/.bashrc
+
 apt-get update
 apt-get install -y netcat
 
