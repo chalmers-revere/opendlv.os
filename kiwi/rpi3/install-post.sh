@@ -1,3 +1,5 @@
+#!/bin/bash
+
 systemctl enable ssh
 systemctl start ssh
 
@@ -46,7 +48,7 @@ raspi-config nonint do_camera 0
 
 
 #enable wireless
-echo -e 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 # echo -e 'network={\n    ssid="ChalmersVOR"\n    psk="VOR2018!"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 # echo -e 'network={\n    ssid="ChalmersVOR_2G"\n    psk="VOR2018!"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 
