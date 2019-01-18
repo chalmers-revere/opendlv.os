@@ -2,9 +2,6 @@
 
 # git clone --recurse-submodules https://github.com/bjornborg/bbb
 
-echo "alias ll='ls -alF --color=auto'" >> /root/.bashrc
-echo "alias ll='ls -alF --color=auto'" >> /home/pi/.bashrc
-
 apt-get update
 apt-get install -y netcat
 
@@ -144,8 +141,8 @@ iptables -t nat -A PREROUTING -p tcp -i SoftAp0 --dport 80 -j DNAT --to-destinat
 iptables -A FORWARD -i SoftAp0 -o usb1 -p tcp --syn --dport 8081 -m conntrack --ctstate NEW -j ACCEPT
 iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 8081 -j DNAT --to-destination 10.42.42.1
 
-iptables -A FORWARD -i SoftAp0 -o usb1 -p tcp --syn --dport 8880 -m conntrack --ctstate NEW -j ACCEPT
-iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 8880 -j DNAT --to-destination 10.42.42.1
+iptables -A FORWARD -i SoftAp0 -o usb1 -p tcp --syn --dport 2200 -m conntrack --ctstate NEW -j ACCEPT
+iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 2200 -j DNAT --to-destination 10.42.42.1
 
 iptables-save > /etc/iptables/rules.v4
 

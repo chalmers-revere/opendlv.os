@@ -35,11 +35,6 @@ In this guide, we will assume that you have internet connection on your host pc 
 
 * `curl -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/arm-bbblue/install-post.sh | sh`
 
-The installation will prompt you some options for some packages.
-
-* For librobotcontrol: Use none
-* For iptables-persistent: ipv4 yes and ipv6 yes
-
 7. When the script is done, reboot and you are done!
 
 ### Raspberry pi 3
@@ -77,15 +72,11 @@ if your ip address 10.42.0.1
 
 * Script: `curl -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3/install-post.sh | sh`
 
-The installation will prompt you some options for some packages.
-
-* For iptables-persistent: ipv4 yes and ipv6 yes
-
 10. Once the script is done, reboot and you are done.
 
 11. Now the port has changed so you need to ssh to the device with
 
-* `ssh -p 8880 pi@ipaddr`
+* `ssh -p 2200 pi@ipaddr`
 
 ### Devantech flashing
 1. After flashing the beaglebone with our installation script, there is a devantech folder at /root/bbb/devatech inside of the beaglebone (ssh into it). Navigate to it as root(do the following).

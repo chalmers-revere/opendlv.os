@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "alias ll='ls -alF --color=auto'" >> /root/.bashrc
+echo "alias ll='ls -alF --color=auto'" >> /home/pi/.bashrc
+
 systemctl enable ssh
 systemctl start ssh
 
@@ -100,7 +103,7 @@ sed -i 's/Restart=no/Restart=on-failure\nRestartSec=5/g' /etc/systemd/system/isc
 echo '\n[Install]\nWantedBy=multi-user.target' >> /etc/systemd/system/isc-dhcp-server.service
 
 # custom ssh port
-echo "Port 8880" >> /etc/ssh/sshd_config
+echo "Port 2200" >> /etc/ssh/sshd_config
 
 # iptables
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
