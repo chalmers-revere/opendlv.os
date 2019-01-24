@@ -1,14 +1,30 @@
+# Copyright (C) 2018  Björnborg Nguyen
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 version: '2'
 
 services:
     device-kiwi-prugw:
-        image: chalmersrevere/opendlv-device-kiwi-prugw-armhf:v0.0.8
+        image: chalmersrevere/opendlv-device-kiwi-prugw-armhf:v0.0.9
         network_mode: "host"
         privileged: true
         restart: always
         volumes:
             - /sys/:/sys/
             - /lib/firmware/:/lib/firmware/
+            - .env:.env
         command: "/usr/bin/opendlv-device-kiwi-prugw --cid=${CID} \
                 --names=${NAMES} --types=${TYPES} --channels=${CHANNELS} \
                 --offsets=${OFFSETS} --maxvals=${MAXVALS} \
