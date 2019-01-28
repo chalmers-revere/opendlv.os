@@ -5,7 +5,7 @@ echo "alias ll='ls -alF --color=auto'" >> /home/pi/.bashrc
 
 timedatectl set-timezone Europe/Stockholm
 
-locale-update
+locale-gen
 
 systemctl enable ssh
 systemctl start ssh

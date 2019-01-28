@@ -15,7 +15,7 @@ done
 
 timedatectl set-timezone Europe/Stockholm
 
-locale-update
+locale-gen
 
 cd /root
 
