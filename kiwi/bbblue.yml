@@ -24,7 +24,7 @@ services:
         volumes:
             - /sys/:/sys/
             - /lib/firmware/:/lib/firmware/
-            - /root/.env:/root/bin/.env
+            - /root/.env:/usr/bin/.env
         command: "/usr/bin/opendlv-device-kiwi-prugw --cid=${CID} \
                 --names=${NAMES} --types=${TYPES} --channels=${CHANNELS} \
                 --offsets=${OFFSETS} --maxvals=${MAXVALS} \
