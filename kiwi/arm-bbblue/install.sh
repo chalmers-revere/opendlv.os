@@ -86,6 +86,7 @@ echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-
 echo librobotcontrol librobotcontrol/q_runonboot select none | debconf-set-selections
 echo librobotcontrol librobotcontrol/q_enable_dt boolean false | debconf-set-selections
 
+apt-get update
 apt-get dist-upgrade -y
 apt-get upgrade -y
 apt-get install -y ${software}
