@@ -17,7 +17,7 @@ version: '2'
 
 services:
     device-kiwi-prugw:
-        image: chalmersrevere/opendlv-device-kiwi-prugw-armhf:v0.0.10
+        image: chalmersrevere/opendlv-device-kiwi-prugw-armhf:v0.0.11
         network_mode: "host"
         privileged: true
         restart: always
