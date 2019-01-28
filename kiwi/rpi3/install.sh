@@ -58,6 +58,10 @@ echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-
 
 apt-get update
 apt-get install -y ${software}
+apt-get dist-upgrade -y
+apt-get upgrade -y
+apt-get autoremove -y
+apt-get autoclean
 
 
 systemctl stop ntp
@@ -162,9 +166,5 @@ wget -SL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/
 docker-compose -f rpi3.yml up -d
 cd /root
 
-apt-get dist-upgrade -y
-apt-get upgrade -y
-apt-get autoremove -y
-apt-get autoclean
 clear
 echo "Installation script for raspberry pi 3 is done."

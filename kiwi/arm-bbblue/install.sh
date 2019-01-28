@@ -16,7 +16,6 @@ done
 timedatectl set-timezone Europe/Stockholm
 
 echo 'sv_SE.UTF-8 UTF-8' >> /etc/locale.gen
-echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
 
 locale-gen
 
@@ -157,10 +156,6 @@ wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/.env
 docker-compose -f bbblue.yml up -d
 
 
-apt-get dist-upgrade -y
-apt-get upgrade -y
-apt-get autoremove -y
-apt-get autoclean
 clear
 
 echo "Installation script for the beaglebone is done!"
