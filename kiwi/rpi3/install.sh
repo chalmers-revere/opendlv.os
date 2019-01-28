@@ -5,6 +5,10 @@ echo "alias ll='ls -alF --color=auto'" >> /home/pi/.bashrc
 
 timedatectl set-timezone Europe/Stockholm
 
+echo 'sv_SE.UTF-8 UTF-8' >> /etc/locale.gen
+echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
+
+
 locale-gen
 
 systemctl enable ssh
