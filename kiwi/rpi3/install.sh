@@ -63,6 +63,8 @@ apt-get upgrade -y
 apt-get autoremove -y
 apt-get autoclean
 
+echo 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo 'broadcast 10.42.42.255\nserver 127.127.1.0\nfudge 127.127.1.0 stratum 10\n' >> /etd/ntp.conf
 
 systemctl stop ntp
 ntpd -gq
@@ -108,19 +110,6 @@ sed -i 's/INTERFACESv4=""/INTERFACESv4="eth1"/g' /etc/default/isc-dhcp-server
 
 
 
-# Making interface static
-until [ -d /sys/class/net/eth1/ ] ; do
-  sleep 1
-  echo "Waiting for eth1 interface"
-done
-addr1=$(cat /sys/class/net/eth1/address)
-until [ -d /sys/class/net/eth2/ ] ; do
-  sleep 1
-  echo "Waiting for eth2 interface"
-done
-addr2=$(cat /sys/class/net/eth2/address)
-
-echo 'SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="'$addr1'", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth1"\nSUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="'$addr2'", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth2"' > /etc/udev/rules.d/70-local-persistent-net.rules
 
 
 cp /run/systemd/generator.late/isc-dhcp-server.service /etc/systemd/system
@@ -165,6 +154,20 @@ cd /root
 wget -SL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3.yml 
 docker-compose -f rpi3.yml up -d
 cd /root
+
+# Making interface static
+until [ -d /sys/class/net/eth1/ ] ; do
+  sleep 1
+  echo "Waiting for eth1 interface"
+done
+addr1=$(cat /sys/class/net/eth1/address)
+until [ -d /sys/class/net/eth2/ ] ; do
+  sleep 1
+  echo "Waiting for eth2 interface"
+done
+addr2=$(cat /sys/class/net/eth2/address)
+
+echo 'SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="'$addr1'", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth1"\nSUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="'$addr2'", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth2"' > /etc/udev/rules.d/70-local-persistent-net.rules
 
 clear
 echo "Installation script for raspberry pi 3 is done."

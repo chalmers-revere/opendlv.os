@@ -93,10 +93,17 @@ apt-get install -y ${software}
 apt-get autoremove -y
 apt-get autoclean
 
+sed -i '/# pool:/a \
+server 10.42.42.1 iburst' /etc/ntp.conf
+sed -i 's/#restrict 192.168.123.0 mask 255.255.255.0 notrust/restrict 10.42.42.0 mask 255.255.255.0 nomodify notrap/g' /etc/ntp.conf
+sed -i 's/#broadcastclient/broadcastclient/g' /etc/ntp.conf
+
 systemctl stop ntp
 ntpd -gq
 systemctl start ntp
 systemctl enable ntp
+/sbin/hwclock --systohc
+
 
 # Installing docker
 curl -sSL https://get.docker.com | sh
