@@ -64,7 +64,7 @@ apt-get autoremove -y
 apt-get autoclean
 
 echo 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
-echo 'broadcast 10.42.42.255\nserver 127.127.1.0\nfudge 127.127.1.0 stratum 10\n' >> /etd/ntp.conf
+echo 'broadcast 10.42.42.255\nserver 127.127.1.0\nfudge 127.127.1.0 stratum 10\n' >> /etc/ntp.conf
 
 systemctl stop ntp
 ntpd -gq
