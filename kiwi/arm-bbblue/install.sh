@@ -154,8 +154,8 @@ echo "10.42.42.1\t kiwi.opendlv.io" >> /etc/hosts
 
 # /usr/bin/bb-wl18xx-tether < good stuff here
 # Random 1-13 channel assignment
-# channel=$((1 + RANDOM % 13))
-sed -i 's/channel=.*/channel='"$((1 + RANDOM % 13))"'" >> ${wfile}/g' /usr/bin/bb-wl18xx-tether 
+channel=$(shuf -i 1-13 -n 1)
+sed -i 's/channel=.*/channel='"$channel"'" >> ${wfile}/g' /usr/bin/bb-wl18xx-tether 
 
 
 cd /root
