@@ -63,7 +63,6 @@ apt-get upgrade -y
 apt-get autoremove -y
 apt-get autoclean
 
-echo 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 echo 'broadcast 10.42.42.255\nserver 127.127.1.0\nfudge 127.127.1.0 stratum 10\n' >> /etc/ntp.conf
 
 systemctl stop ntp
@@ -78,7 +77,9 @@ raspi-config nonint do_camera 0
 
 
 #enable wireless
-echo 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo -e 'country=SE' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo -e 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n    priority=1\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo -e 'network={\n    ssid="IVRL"\n    psk="opendlv-ivrl"\n    priority=2\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 # echo 'network={\n    ssid="ChalmersVOR"\n    psk="VOR2018!"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 # echo 'network={\n    ssid="ChalmersVOR_2G"\n    psk="VOR2018!"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 
