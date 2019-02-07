@@ -41,7 +41,7 @@ services:
 
     opendlv-kiwi-view-webrtc-armhf:
         container_name: opendlv-vehicle-view
-        image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.55
+        image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.57
         restart: always
         network_mode: "host"
         volumes:
