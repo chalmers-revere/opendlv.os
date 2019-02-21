@@ -4660,6 +4660,6 @@ fi
 ./scripts/config -e USB_SERIAL -e USB_SERIAL_FTDI_SIO -e USB_ACM
 
 
-yes "" | make -j4
+yes "" | make -j$(nproc)
 pacman -Rn --noconfirm bc
 cp arch/x86/boot/bzImage /boot/vmlinuz-linux
