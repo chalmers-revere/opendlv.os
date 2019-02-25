@@ -4661,5 +4661,12 @@ fi
 
 
 yes "" | make -j$(nproc)
+make modules_install
 pacman -Rn --noconfirm bc
 cp arch/x86/boot/bzImage /boot/vmlinuz-linux
+
+# NVIDIA support
+if [[ $(lspci | grep VGA | grep NVIDIA) ]]; then
+  pacman -S --noconfirm nvidia-dkms
+  dkms autoinstall
+fi
