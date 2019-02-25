@@ -4647,7 +4647,6 @@ EOF
 # NVIDIA support
 if [[ $(lspci | grep VGA | grep NVIDIA) ]]; then
   ./scripts/config -e MODULES -e MTRR -e VGA_ARB -e AGP -e IPMI_HANDLER -e FB_UVESA -d FB_EFI -e FB_SIMPLE -e X86_SYSFB
-  pacman -S --noconfirm nvidia
 fi
 
 # USB camera support
