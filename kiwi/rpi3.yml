@@ -16,10 +16,9 @@
 version: '2'
 
 services:
-    opendlv-device-camera-rpi:
-        container_name: rpi-camera
+    device-camera-rpi:
         image: chalmersrevere/opendlv-device-camera-rpi-armhf:v0.0.6
-        restart: on-failure
+        restart: always
         ipc: "host"
         privileged: true
         volumes:
@@ -27,10 +26,9 @@ services:
         command: "--name.i420=img.i420 --name.argb=img.argb --width=640 --height=480 --freq=20"
 
 
-    video-x264-encoder-armhf:
+    encoder:
         depends_on:
-        - opendlv-device-camera-rpi
-        container_name: x264-encoder
+        - device-camera-rpi
         image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.5
         restart: always
         network_mode: "host"
@@ -39,8 +37,7 @@ services:
         - /tmp:/tmp
         command: "--cid=112 --name=img.i420 --width=640 --height=480"
 
-    opendlv-kiwi-view-webrtc-armhf:
-        container_name: opendlv-vehicle-view
+    kiwi-view:
         image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.55
         restart: always
         network_mode: "host"
