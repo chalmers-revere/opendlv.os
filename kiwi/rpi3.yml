@@ -17,6 +17,7 @@ version: '2'
 
 services:
     device-camera-rpi:
+        container_name: device-camera-rpi
         image: chalmersrevere/opendlv-device-camera-rpi-armhf:v0.0.6
         restart: always
         ipc: "host"
@@ -27,6 +28,7 @@ services:
 
 
     encoder:
+        container_name: encoder 
         depends_on:
         - device-camera-rpi
         image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.5
@@ -38,7 +40,8 @@ services:
         command: "--cid=112 --name=img.i420 --width=640 --height=480"
 
     kiwi-view:
-        image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.55
+        container_name: kiwi-view
+        image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.57
         restart: always
         network_mode: "host"
         volumes:

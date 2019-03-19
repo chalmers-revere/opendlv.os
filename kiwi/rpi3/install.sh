@@ -77,9 +77,9 @@ raspi-config nonint do_camera 0
 
 
 #enable wireless
-echo -e 'country=SE' >> /etc/wpa_supplicant/wpa_supplicant.conf
-echo -e 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n    priority=1\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
-echo -e 'network={\n    ssid="IVRL"\n    psk="opendlv-ivrl"\n    priority=2\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo 'country=SE' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n    priority=1\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo 'network={\n    ssid="IVRL"\n    psk="opendlv-ivrl"\n    priority=2\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 # echo 'network={\n    ssid="ChalmersVOR"\n    psk="VOR2018!"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 # echo 'network={\n    ssid="ChalmersVOR_2G"\n    psk="VOR2018!"\n}' >> /etc/wpa_supplicant/wpa_supplicant.conf
 
