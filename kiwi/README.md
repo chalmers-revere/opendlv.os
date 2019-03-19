@@ -15,7 +15,7 @@ In this guide, we will assume that you have internet connection on your host pc 
 
 ### Beaglebone blue
 
-1. Download the following debian image that is custom build for beaglebone blue: http://strawsondesign.com/docs/images/BBB-blank-debian-9.5-iot-armhf-2018-10-07-4gb.img.xz
+1. Download the following debian image that is custom build for beaglebone blue: http://strawsondesign.com/docs/images/BBBL-blank-debian-9.5-iot-armhf-2018-10-07-4gb.img.xz
 
 2. Use a program to flash sdcard with the newly downloaded debian image. I'd recommend etcher (https://etcher.io/). Use a spare sdcard if possible, this step will wipe it clean for the debian image.
 
@@ -83,15 +83,15 @@ if your ip address 10.42.0.1
 
 * root: `su`
   * Password: root
-* change directory: `cd /root/bbb/devantech`
+* change directory: `cd /root`
 
-2. Build the binary
+2. Download and build the binary
 
-* `make`
+* `mkdir -p devantech_tools && cd devantech_tools && wget -q https://raw.githubusercontent.com/chalmers-revere/opendlv-device-ultrasonic-srf08/master/tools/devantech_change_addr.cpp && wget -q https://raw.githubusercontent.com/chalmers-revere/opendlv-device-ultrasonic-srf08/master/tools/Makefile && make`
 
 3. Navigate to the directory /root/bbb, which is the one outside.
 
-* `cd .. (Takes you to the directory outside /bbb)`
+* `cd /root`
 
 4. Bring the service down with the following command
 
@@ -99,7 +99,7 @@ if your ip address 10.42.0.1
 
 5. Navigate to the directory where you runned make
 
-* `cd devantech`
+* `cd devantech_tools`
 
 6. Unplug the front sensor and run following command
 
