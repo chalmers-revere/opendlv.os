@@ -15,7 +15,7 @@ In this guide, we will assume that you have internet connection on your host pc 
 
 ### Beaglebone blue
 
-1. Download the following debian image that is custom build for beaglebone blue: http://strawsondesign.com/docs/images/BBBL-blank-debian-9.5-iot-armhf-2018-10-07-4gb.img.xz
+1. Download the following debian image that is custom build for beaglebone blue: http://strawsondesign.com/docs/images/BBB-blank-debian-9.5-iot-armhf-2018-10-07-4gb.img.xz
 
 2. Use a program to flash sdcard with the newly downloaded debian image. I'd recommend etcher (https://etcher.io/). Use a spare sdcard if possible, this step will wipe it clean for the debian image.
 
