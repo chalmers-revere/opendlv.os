@@ -4659,6 +4659,9 @@ fi
 # FTDI and ACM CDC
 ./scripts/config -e USB_SERIAL -e USB_SERIAL_FTDI_SIO -e USB_ACM
 
+# Enable PEAK PCIe FD
+./scripts/config -e CAN_PEAK_PCIEFD
+
 
 yes "" | make -j4
 pacman -Rn --noconfirm bc
