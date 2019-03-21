@@ -135,4 +135,4 @@ Password: root
 then
 `docker-compose -f bbb.yml up -d`
 
-Redo step 4 and 7 if it still needs to reconfiguered.
+Redo step 4 to 7 if it still needs to reconfiguered.
