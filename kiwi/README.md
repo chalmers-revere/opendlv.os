@@ -115,24 +115,24 @@ to change the back sensor on the i2c-1 bus from addr 0x70 to 0x71. When the comm
 
 ### Steering calibration
 
-1. After the installation of our software, the steering might be slightly off centered causing kiwi to drift either left or right. This can be fixed by adding a small offset value to the steering as a part of the calibration. Get root privileges inside of the beaglebone (ssh into it)
+1. After the installation of our software, the steering might be slightly off centered causing kiwi to drift either left or right when tryint to propell it forward. This can be fixed by adding a small offset value to the steering as a part of the calibration. Get root privileges inside of the beaglebone (ssh into it and su)
+
+`ssh debian@192.168.8.1`
+Password: temppwd
 
 `su`
 Password: root
 
 2. Goto bbb folder
-`cd /root/bbb`
+`cd /root`
 
-3. In there, you will find a .env file containing all configuration settings for the kiwi platform regarding the motors. 
-
-* `cat .env`
-
-The particular setting of our interest is the OFFSETS first value. Change the value from 0.0 to 0.01 for example. Positive value on offset will steer it to left. Change the values using nano for example
-
-* `nano .env`
-
-4. Once changing the value reload the microservices
+3. Open a web browser (preferrably chrome or firefox) and goto http://192.182.8.1:8081 . This will show you the overview of the robot platform with sensor data and other debug tools. We will navigate to joystick page, so goto joystick page at http://192.182.8.1:8081/joystick . This page will give you actuation control of the robot. Before trying to actuate the robot, make sure that the robot is in a safe place to do so (e.g. not on a table to drive off to the ground). Make sure that you can actuate the robot by click-and-hold on the bottom half of the webpage. Sliding up will accelerate, down deccelerate. Sliding horizontally will make the robot steer. 
+4. Put the car on the ground and activate the joystick mode by switch it to "ON". To configure the steering calibration, open the "Parameters" option. In the list of parameters, there is a tickbox "Calibration". This slider will offset the steering to your configuration.
+5. Slide the steering calibration to your satisfaction and try the new calibration settings with your joystick control.
+6. In order to make the new calibration settings persistent (across reboots), you will now go back to the terminal where you previously logged in as root.
+7. Save the settings by running
 `docker-compose -f bbb.yml down`
+then
 `docker-compose -f bbb.yml up -d`
 
-Redo step 3 and 4 if it still needs to reconfiguered.
+Redo step 4 and 7 if it still needs to reconfiguered.
