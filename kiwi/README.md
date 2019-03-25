@@ -6,12 +6,53 @@ In this guide, we will assume that you have internet connection on your host pc 
 
 
 ## Table of Contents
-* [Beaglebone blue](#beaglebone-blue)
 * [Raspberry pi 3](#raspberry-pi-3)
+* [Beaglebone blue](#beaglebone-blue)
 * [Devantech flashing](#devantech-flashing)
 * [Steering calibration](#steering-calibration)
 
 ---
+
+### Raspberry pi 3
+
+1. Download the following debian image that is custom build for raspberry pi 3: https://www.raspberrypi.org/downloads/raspbian/ 
+I recommend using the lite version without any graphical interface for optimum performance.
+
+2. Use a program to flash sdcard with the newly downloaded debian image. I'd recommend etcher (https://etcher.io/). Use a spare sdcard if possible, this step will wipe it clean for the debian image.
+
+3. Before unmounting the sdcard after the flashing, create a file named ssh on the boot filesystem partition. This will enable ssh functionality at boot on default. Unmount and insert the sdcard to the raspberry pi 3. BEFORE BOOTING UP raspberry pi 3, make sure that the beaglebone blue is powered up first and connected to the rasperry pi 3 via the USB. This is to ensure the configuration is done properly.
+
+4. To power up the Raspberry Pi, you need to plug in the battery and you start the ESC. This will start the Raspberry Pi(it does not have a power up button).
+
+5. Connect to the raspberry pi 3 via ethernet (share your network/internet by acting as a dhcp server alternatively connect your pc and raspberry pi 3 to a router).
+
+6. Find the ip address of the raspberry pi 3. On linux system use nmap, e.g.
+
+* Finding the ip: nmap 10.42.0.1/24 
+
+if your ip address 10.42.0.1
+
+7. Connect the raspberry pi 3 via ssh
+
+* Connecting: `ssh pi@10.42.0.33`
+  * Password: raspberry
+  
+(replace 10.42.0.33 with the found ip adress from previous step.)
+
+8. Get root privileges
+
+`sudo -i`
+
+9. Use our installation script
+
+* Script: `curl -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3/install.sh | sh`
+
+10. Once the script is done, reboot and you are done.
+
+11. Now the port has changed so you need to ssh to the device with
+
+* `ssh -p 2200 pi@ipaddr`
+
 
 ### Beaglebone blue
 
@@ -37,47 +78,6 @@ In this guide, we will assume that you have internet connection on your host pc 
 
 7. When the script is done, reboot and you are done!
 
-### Raspberry pi 3
-
-
-1. Download the following debian image that is custom build for raspberry pi 3: https://www.raspberrypi.org/downloads/raspbian/ 
-I recommend using the lite version without any graphical interface for optimum performance.
-
-2. Use a program to flash sdcard with the newly downloaded debian image. I'd recommend etcher (https://etcher.io/). Use a spare sdcard if possible, this step will wipe it clean for the debian image.
-
-3. Before unmounting the sdcard after the flashing, create a file named ssh on the boot filesystem partition. This will enable ssh functionality at boot on default. Unmount and insert the sdcard to the raspberry pi 3. BEFORE BOOTING UP raspberry pi 3, make sure that the beaglebone blue is powered up first and connected to the rasperry pi 3 via the USB. This is to ensure the configuration is done properly.
-
-4. To power up the Raspberry Pi, you need to plug in the battery and you start the ESC. This will start the Raspberry Pi(it does not have a power up button).
-
-5. Connect to the raspberry pi 3 via ethernet (share your network/internet by acting as a dhcp server alternatively connect your pc and raspberry pi 3 to a router).
-
-6. Find the ip address of the raspberry pi 3. On linux system use nmap, e.g.
-
-* Finding the ip: nmap 10.42.0.1/24
-
-if your ip address 10.42.0.1
-
-7. Connect the raspberry pi 3 via ssh
-
-* Connecting: `ssh pi@10.42.0.33`
-  * Password: raspberry
-  
-(replace 10.42.0.33 with the found ip adress from previous step.)
-
-8. Get root privileges
-
-`sudo -i`
-
-9. Use our installation script
-
-* Script: `curl -sSL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3/install.sh | sh`
-
-10. Once the script is done, reboot and you are done.
-
-11. Now the port has changed so you need to ssh to the device with
-
-* `ssh -p 2200 pi@ipaddr`
-
 ### Devantech flashing
 1. After flashing the beaglebone with our installation script, there is a devantech folder at /root/bbb/devatech inside of the beaglebone (ssh into it). Navigate to it as root(do the following).
 
@@ -89,7 +89,7 @@ if your ip address 10.42.0.1
 
 * `mkdir -p devantech_tools && cd devantech_tools && wget -q https://raw.githubusercontent.com/chalmers-revere/opendlv-device-ultrasonic-srf08/master/tools/devantech_change_addr.cpp && wget -q https://raw.githubusercontent.com/chalmers-revere/opendlv-device-ultrasonic-srf08/master/tools/Makefile && make`
 
-3. Navigate to the directory /root/bbb, which is the one outside.
+3. Navigate to the directory /root, which is the one outside. <!-- the directory /root/bbb does not exist any longer -->
 
 * `cd /root`
 
@@ -105,7 +105,7 @@ if your ip address 10.42.0.1
 
 * `./devantech_change_addr 1 0x70 0x71`
 
-to change the back sensor on the i2c-1 bus from addr 0x70 to 0x71. When the command its executed, the led flash on the sensor should be lit up upon success. Unplug and plug the sensor again, when booting up, you should see the sensor flashing the led twice. Now plug in the front sensor again. You will also see that it flashes once
+to change the back sensor on the i2c-1 bus from addr 0x70 to 0x71. When the command its executed, the led flash on the sensor should be lit up upon success. Unplug and plug the sensor again, when booting up, you should see the sensor flashing the led twice. Now plug in the front sensor again. You will also see that it flashes once. 
 
 7. Now you need to bring the service up again. So you need to navigate to the outside directory again
 
