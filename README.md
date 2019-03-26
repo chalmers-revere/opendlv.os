@@ -41,7 +41,7 @@ Kiwi's Raspberry Pi is running [Rasbian Stretch](https://www.raspberrypi.org/dow
 To ssh to the beaglebone
 `ssh debian@192.168.8.1`
 To ssh to the pi
-`ssh -p 8880 pi@192.168.8.1`
+`ssh -p 2200 pi@192.168.8.1`
 
 ### Update Kiwi
 
