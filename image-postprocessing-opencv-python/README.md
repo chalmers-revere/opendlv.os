@@ -5,7 +5,7 @@ This Python-template demonstrates how to develop a software module to process vi
 Prerequisites:
 * [You need to install Docker for your platform](https://docs.docker.com/install/linux/docker-ce/debian/#install-docker-ce)
 * [You need to install `docker-compose`](https://docs.docker.com/compose/install/#install-compose)
-* You have successfully completed the "Getting Started" tutorials [here](https://github.com/chalmers-revere/2018-wasp-summer-school/tree/master/getting-started).
+* You have successfully completed the "Getting Started" tutorials [here](https://github.com/chalmers-revere/opendlv.os/blob/kiwi/README.md).
 * You have a recording file (`.rec`) with some video frames.
 * You need to install `libcluon` (example below is for Ubuntu 18.04 LTS):
 ```Bash
@@ -84,12 +84,12 @@ docker save myapp > myapp.tar
 
 * Step 6: Now, you copy the Docker image to Kiwi (the upload can take a few minutes):
 ```Bash
-scp -P 8880 myapp.tar pi@192.168.8.1:~
+scp -P 2200 myapp.tar pi@192.168.8.1:~
 ```
 
 * Step 7: Your application image is now on Kiwi; next, login to Kiwi to start it:
 ```Bash
-ssh -p 8880 pi@192.168.8.1
+ssh -p 2200 pi@192.168.8.1
 ```
 
 * Step 8: Assuming that the Getting Started Tutorial 2 (Controlling Kiwi using your webbrowser) is still running, you can load your application into Docker and start it:
@@ -114,12 +114,12 @@ After you have completed your development locally and you are ready for testing 
 
 * Step 4: Copy your application myApplication.py to Kiwi:
 ```Bash
-scp -P 8880 myApplication.py pi@192.168.8.1:~
+scp -P 2200 myApplication.py pi@192.168.8.1:~
 ```
 
 * Step 5: Your application image is now on Kiwi; next, login to Kiwi to start it:
 ```Bash
-ssh -p 8880 pi@192.168.8.1
+ssh -p 2200 pi@192.168.8.1
 ```
 
 * Step 6: Assuming that the Getting Started Tutorial 2 (Controlling Kiwi using your webbrowser) is still running, you can load your application into Docker and start it:
