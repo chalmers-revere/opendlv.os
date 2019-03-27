@@ -43,7 +43,7 @@ To ssh to the beaglebone
 To ssh to the pi
 `ssh -p 2200 pi@192.168.8.1`
 
-### Update Kiwi
+### (Optional) Update Kiwi
 
 Connect to the Raspberry Pi and get root permissions through
 ```Bash
