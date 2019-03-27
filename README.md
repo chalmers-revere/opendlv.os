@@ -184,6 +184,5 @@ _Where to go from here?_
 
 Now, you are able to use the camera from your Kiwi, visualize, record, and replay the data, and to send steering, acceleration, and deceleration commands.
 
-Next, you can investigate our template module that is running in Python to process video data and to send steering/acceleration/deceleration commands to Kiwi. You find the template [here](https://github.com/chalmers-revere/2018-wasp-summer-school/tree/master/templates/image-postprocessing-opencv-python) next to further descriptions how to develop and test your Python application.
+Next, you can investigate our template module that is running in Python to process video data and to send steering/acceleration/deceleration commands to Kiwi. You find the template [here](https://github.com/chalmers-revere/opendlv.os/tree/kiwi/image-postprocessing-opencv-python) next to further descriptions how to develop and test your Python application.
 
-Alternatively, you can investigate our template module that is running in C++ to process video data and to interface with Kiwi. You find the template [here](https://github.com/chalmers-revere/2018-wasp-summer-school/tree/master/templates/image-postprocessing-opencv-cpp) next to further descriptions how to develop and test your C++ application
