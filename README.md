@@ -31,6 +31,8 @@ The following pictures provide an overview of the installed components on Kiwi.
 All the sensors except for the camera are connected to a small PCB board and then to the BeagleBone Blue board. The camera is directly connected to the Raspberry Pi board. The two boards are connected by a USB cable, which is treated by both boards as a standard network connection. Both boards are also wireless-ready: in particular, the Raspberry Pi has WiFi capabilities, while the BeagleBone Blue has both WiFi and Bluetooth connectivity.
 
 ---
+### Booting the system
+There is a specific sequence to follow in order to boot up the Kiwi platform correctly. First, use the main power switch to turn on the BeagleBone Blue. You will see several led lights blinking. Wait until the green leds in the bottom-right corner of the board are turned on. At this point, you can turn on the ESC by pushing its power button: you will start hearing a repetitive beep sound that indicates that the beaglebone is waiting to connect to the raspberry pi. Wait until you see a red led on in the top right corner of the beaglebone. Finally push the following buttons in sequence: MOD, PAU, MOD. The beeping sound should stop indicating that the system has started correctly.
 
 ### Connect to Kiwi
 
