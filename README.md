@@ -4,8 +4,9 @@ This "Getting Started" tutorial will introduce you to Kiwi, the miniature vehicl
 
 ## Table of Contents
 * [Hardware Overview](#hardware-overview)
+* [Booting the system](#booting-the-system)
 * [Connect to Kiwi](#connect-to-kiwi)
-* [Update Kiwi](#update-kiwi)
+* [(Optional)Update Kiwi](#update-kiwi)
 * [Interacting with Kiwi using Microservices](#interacting-with-kiwi-using-microservices)
 
 ---
@@ -32,7 +33,7 @@ All the sensors except for the camera are connected to a small PCB board and the
 
 ---
 ### Booting the system
-There is a specific sequence to follow in order to boot up the Kiwi platform correctly. First, use the main power switch to turn on the BeagleBone Blue. You will see several led lights blinking. Wait until the green leds in the bottom-right corner of the board are turned on. At this point, you can turn on the ESC by pushing its power button: you will start hearing a repetitive beep sound that indicates that the beaglebone is waiting to connect to the raspberry pi. Wait until you see a red led on in the top right corner of the beaglebone. Finally push the following buttons in sequence: MOD, PAU, MOD. The beeping sound should stop indicating that the system has started correctly.
+There is a specific sequence to follow in order to boot up the Kiwi platform correctly. First, use the main power switch to turn on the BeagleBone Blue. You will see several blue led lights blinking. Wait until the green leds in the bottom-right corner of the board are turned on. At this point, you can turn on the ESC by pushing its power button: you will start hearing a repetitive beep sound that indicates that the beaglebone is waiting to connect to the raspberry pi. Wait until you see a red led on in the top right corner of the beaglebone. Finally push the following buttons in sequence: MOD, PAU, MOD. The beeping sound should stop indicating that the system has started correctly.
 
 ### Connect to Kiwi
 
