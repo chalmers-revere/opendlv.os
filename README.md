@@ -89,7 +89,7 @@ To simplify the distribution of this microservice and the description how to con
 
 _Getting Started:_
 
-Now, connect your laptop's webbrowser to the *Raspberry Pi's* IP address, port 8081: [http://192.168.8.1:8081](http://192.168.8.1:8081). You should still see a live stream from your Kiwi's camera visualized in your webbrowser. Next, enable the button right to `Joystick` to send [opendlv.proxy.PedalPositionRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L208-L210) and [opendlv.proxy.GroundSteeringRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L216-L218) to interface with Kiwi's motor and servo. Now, you can click and drag with your mouse (or pan on a smartphone/tablet) to accelerate/decelerate and steer Kiwi.
+Now, connect your laptop's webbrowser to the *Raspberry Pi's* IP address, port 8081: [http://192.168.8.1:8081](http://192.168.8.1:8081). You should still see a live stream from your Kiwi's camera visualized in your webbrowser. Next, enable the `Joystick` by pushing the joystick button in order to send [opendlv.proxy.PedalPositionRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L208-L210) and [opendlv.proxy.GroundSteeringRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L216-L218) to interface with Kiwi's motor and servo. Now, you can click and drag with your mouse (or pan on a smartphone/tablet) to accelerate/decelerate and steer Kiwi.
 
 ---
 
@@ -99,7 +99,6 @@ The third tutorial is to download a recording file and replay it on your local s
 
 _Prerequisites:_
 
-* Please meet the following requirements:
 * [You need to install Docker for your platform](https://docs.docker.com/install/linux/docker-ce/debian/#install-docker-ce)
 * [You need to install `docker-compose`](https://docs.docker.com/compose/install/#install-compose)
 * It is recommended to use the Chrome web-browser 68+.
