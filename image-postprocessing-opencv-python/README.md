@@ -38,7 +38,7 @@ docker-compose -f h264-decoder-viewer.yml up
 * Step 2: Clone this repository:
 ```bash
 cd $HOME
-git clone git clone -b kiwi https://github.com/chalmers-revere/opendlv.os.git
+git clone -b kiwi https://github.com/chalmers-revere/opendlv.os.git
 cd opendlv.os/image-postprocessing-opencv-python/
 ```
 
