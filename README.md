@@ -106,7 +106,7 @@ _Prerequisites:_
 _Tutorial:_
 
 * Download the `.rec` file of interest from Kiwi to your computer into the folder `$HOME/recordings`. If the folder does not exist, you can create it as follows: `mkdir -p $HOME/recordings` running in a terminal.
-* Next, download the application description (a .yml-file for docker-compose) to `$HOME` in a terminal: `wget https://raw.githubusercontent.com/chalmers-revere/2018-wasp-summer-school/master/templates/image-postprocessing-opencv-python/h264-decoder-viewer.yml -O h264-decoder-viewer.yml`.
+* Next, download the application description (a .yml-file for docker-compose) to `$HOME` in a terminal: `wget https://github.com/chalmers-revere/opendlv.os/blob/kiwi/image-postprocessing-opencv-python/h264-decoder-viewer.yml -O h264-decoder-viewer.yml`.
 * Now, start the application description: `docker-compose -f h264-decoder-viewer.yml up` in a terminal.
 
 The application is available when you read a message stating `[opendlv-vehicle-view] Web server listening on port: 8081, joining live OD4Session 112, using OD4Session 253 for playback.`
