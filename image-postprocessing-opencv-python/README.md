@@ -38,8 +38,8 @@ docker-compose -f h264-decoder-viewer.yml up
 * Step 2: Clone this repository:
 ```bash
 cd $HOME
-git clone https://github.com/chalmers-revere/2018-wasp-summer-school.git
-cd 2018-wasp-summer-school/templates/image-postprocessing-opencv-python
+git clone git clone -b kiwi https://github.com/chalmers-revere/opendlv.os.git
+cd opendlv.os/image-postprocessing-opencv-python/
 ```
 
 * Step 3: The Python script uses messages from the OpenDLV Standard Message Set. To use them with Python, just run:
