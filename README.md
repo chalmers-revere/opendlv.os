@@ -85,11 +85,11 @@ _Overview:_
 
 This microservice is listening for the messages [opendlv.proxy.PedalPositionRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L208-L210) and [opendlv.proxy.GroundSteeringRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L216-L218) to interface with Kiwi's motor and servo for acceleration/deceleration and steering.
 
-To simplify the distribution of this microservice and the description how to configure and run it, we are using Docker. The listed microservices are pre-configured and run already on Kiwi.
+To simplify the distribution of this microservice and the description how to configure and run it, we are using Docker. The listed microservices are pre-configured and already running on Kiwi.
 
 _Getting Started:_
 
-Now, connect your laptop's webbrowser to the *Raspberry Pi's* IP address, port 8081: [http://192.168.8.1:8081](http://192.168.8.1:8081). You should still see a live stream from your Kiwi's camera visualized in your webbrowser. Next, enable the button right to `Joystick` to send [opendlv.proxy.PedalPositionRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L208-L210) and [opendlv.proxy.GroundSteeringRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L216-L218) to interface with Kiwi's motor and servo. Now, you can click and drag with your mouse (or pan on a smartphone/tablet) to accelerate/decelerate and steer Kiwi. If you have difficulties to enable the joystick on your smartphone, try the following link: [http://kiwi.opendlv.io/joystick.html](http://kiwi.opendlv.io/joystick.html).
+Now, connect your laptop's webbrowser to the *Raspberry Pi's* IP address, port 8081: [http://192.168.8.1:8081](http://192.168.8.1:8081). You should still see a live stream from your Kiwi's camera visualized in your webbrowser. Next, enable the button right to `Joystick` to send [opendlv.proxy.PedalPositionRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L208-L210) and [opendlv.proxy.GroundSteeringRequest](https://github.com/chalmers-revere/opendlv.standard-message-set/blob/fb11778810a37d76d45e83e52ea054dac2e2a350/opendlv.odvd#L216-L218) to interface with Kiwi's motor and servo. Now, you can click and drag with your mouse (or pan on a smartphone/tablet) to accelerate/decelerate and steer Kiwi.
 
 ---
 
@@ -99,9 +99,7 @@ The third tutorial is to download a recording file and replay it on your local s
 
 _Prerequisites:_
 
-* We suggest to use our pre-configured [Ubuntu 18.04 LTS Virtual Machine](http://www.cse.chalmers.se/~yuek/Ubuntu_18.04_64-bit.ova) for [VirtualBox](virtualbox.org) that contains already the necessary software (username: `summerschool`, password: `Summer2018`). If you don't have VirtualBox installed, you can download it from [here](virtualbox.org) for your platform. Afterwards, download the pre-configured virtual machine and import the appliance into VirtualBox.
-
-If you want to use your own native Linux installation, please meet the following requirements:
+* Please meet the following requirements:
 * [You need to install Docker for your platform](https://docs.docker.com/install/linux/docker-ce/debian/#install-docker-ce)
 * [You need to install `docker-compose`](https://docs.docker.com/compose/install/#install-compose)
 * It is recommended to use the Chrome web-browser 68+.
