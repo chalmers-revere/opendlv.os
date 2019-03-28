@@ -6,7 +6,6 @@ This "Getting Started" tutorial will introduce you to Kiwi, the miniature vehicl
 * [Hardware Overview](#hardware-overview)
 * [Booting the system](#booting-the-system)
 * [Connect to Kiwi](#connect-to-kiwi)
-* [(Optional)Update Kiwi](#update-kiwi)
 * [Interacting with Kiwi using Microservices](#interacting-with-kiwi-using-microservices)
 
 ---
@@ -45,25 +44,6 @@ To ssh to the beaglebone
 `ssh debian@192.168.8.1`
 To ssh to the pi
 `ssh -p 2200 pi@192.168.8.1`
-
-### (Optional) Update Kiwi
-
-Connect to the Raspberry Pi and get root permissions through
-```Bash
-sudo -i
-```
-
-then run the following:
-```Bash
-cd ~/2018-wasp-summer-school/getting-started
-docker-compose -f rpi-camera-x264-viewer-kiwi.yml down
-git pull
-docker-compose -f rpi-camera-x264-viewer-kiwi.yml up -d
-```
-
-Once it finished the download, you are done and you can close the connection.
-
----
 
 ### Interacting with Kiwi using Microservices
 
