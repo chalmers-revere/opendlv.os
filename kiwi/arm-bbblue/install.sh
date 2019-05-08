@@ -15,7 +15,7 @@ done
 
 timedatectl set-timezone Europe/Stockholm
 
-echo 'sv_SE.UTF-8 UTF-8' >> /etc/locale.gen
+printf 'sv_SE.UTF-8 UTF-8' >> /etc/locale.gen
 
 locale-gen
 
@@ -27,8 +27,8 @@ git pull
 cd -
 sed -i 's/\/sbin\/ifconfig usb1 192.168.6.2 netmask 255.255.255.252 || true/#\/sbin\/ifconfig usb1 192.168.6.2 netmask 255.255.255.252 || true/g' /opt/scripts/boot/autoconfigure_usb1.sh
 # echo 'dhclient usb1' >> /opt/scripts/boot/autoconfigure_usb1.sh
-echo 'auto usb1\niface usb1 inet dhcp' >> /etc/network/interfaces
-echo 'ip route add 225.0.0.0/24 dev usb0' >> /opt/scripts/boot/autoconfigure_usb0.sh
+printf 'auto usb1\niface usb1 inet dhcp' >> /etc/network/interfaces
+printf 'ip route add 225.0.0.0/24 dev usb0' >> /opt/scripts/boot/autoconfigure_usb0.sh
 
 
 # Create swapfile
@@ -36,7 +36,7 @@ fallocate -l 512M /var/swapfile
 chmod 600 /var/swapfile
 mkswap /var/swapfile
 swapon /var/swapfile
-echo "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /etc/fstab
+printf "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /etc/fstab
 
 
 
@@ -45,7 +45,7 @@ echo "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /etc/fstab
 (echo y) | mkfs.ext4 /dev/mmcblk0p1
 mkdir -p /mnt/sdcard
 mount /dev/mmcblk0p1 /mnt/sdcard
-echo "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
+printf "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
 
 mkdir -p /mnt/sdcard/users/debian
 chown -R debian:users /mnt/sdcard/users/debian
@@ -120,7 +120,7 @@ pip install docker-compose
 # Networking
 sed -i 's/#timeout 60;/timeout 300;/g' /etc/dhcp/dhclient.conf 
 sed -i 's/#retry 60;/retry 10;/g' /etc/dhcp/dhclient.conf 
-echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
+printf 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -o usb1 -j MASQUERADE
 iptables -A FORWARD -i usb1 -o SoftAp0 -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -149,7 +149,7 @@ iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 2200 -j DNAT --to-destin
 
 iptables-save > /etc/iptables/rules.v4
 
-echo "10.42.42.1\t kiwi.opendlv.io" >> /etc/hosts
+printf "10.42.42.1\t kiwi.opendlv.io" >> /etc/hosts
 
 
 # /usr/bin/bb-wl18xx-tether < good stuff here
@@ -166,5 +166,5 @@ docker-compose -f bbblue.yml up -d
 
 clear
 
-echo "Installation script for the beaglebone is done!"
+printf "Installation script for the beaglebone is done!"
 
