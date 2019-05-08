@@ -166,5 +166,5 @@ docker-compose -f bbblue.yml up -d
 
 clear
 
-printf "Installation script for the beaglebone is done!"
+echo "Installation script for the beaglebone is done!"
 
