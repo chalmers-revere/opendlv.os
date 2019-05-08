@@ -113,7 +113,7 @@ systemctl stop docker.service
 sed -i 's/\/usr\/bin\/dockerd -H fd:\/\//\/usr\/bin\/dockerd -g \/mnt\/sdcard\/docker\/ -H fd:\/\//g' /lib/systemd/system/docker.service
 systemctl daemon-reload
 systemctl start docker.service
-pip install docker-compose
+apt-get install -y docker-compose
 
 
 
