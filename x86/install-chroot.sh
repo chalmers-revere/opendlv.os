@@ -101,7 +101,7 @@ fi
 if [[ $has_setup_chroot == 1 ]]; then
   for f in setup-chroot-*.sh; do
     if [[ "${f}" == "setup-chroot-01-rtkernel.sh" ]]; then
-      su -c ./${f} -s /bin/bash root
+      su -c ./${f} -s /bin/bash aur
       cd /root
     else
       su -c ./${f} -s /bin/bash root
