@@ -33,7 +33,7 @@ mv mirrorlist /etc/pacman.d/mirrorlist
 
 pacman -Syy
 
-pacstrap /mnt base 
+pacstrap /mnt base linux linux-firmware netctl dhcpcd
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
