@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 source install-conf.sh
 
@@ -32,19 +33,27 @@ cp *.sh /tmp/ramdisk
 arch_bootstrap_file=`wget -q ${arch_mirror}/archlinux/iso/latest -O - | grep 'tar.gz"' | cut -d '"' -f2`
 cd /tmp/ramdisk && wget "${arch_mirror}/archlinux/iso/latest/${arch_bootstrap_file}" && tar -zxf ${arch_bootstrap_file} && mv root.x86_64/* . && rm -r ${arch_bootstrap_file} root.x86_64
 
-cp /etc/pacman.d/mirrorlist /tmp/ramdisk/etc/pacman.d/mirrorlist
+#cp /etc/pacman.d/mirrorlist /tmp/ramdisk/etc/pacman.d/mirrorlist
+# Set mirror.
+cat <<EOF >> /tmp/ramdisk/etc/pacman.d/mirrorlist
+Server = https://ftp.acc.umu.se/mirror/archlinux/\$repo/os/\$arch
+EOF
+cp /etc/resolv.conf /tmp/ramdisk/etc
 
 
 
 cat <<EOF > /tmp/ramdisk/arch-bootstrap-chroot.sh
+#!/bin/bash
 
 source install-conf.sh
 
 pacman-key --init
 pacman-key --populate archlinux
+pacman -ySu --noconfirm
 pacman -Sy --noconfirm gdisk wget grep
 
-timedatectl set-ntp true
+# There is no systemd.
+#timedatectl set-ntp true
 
 (echo x; echo z; echo Y; echo Y) | gdisk ${hdd}
 
@@ -59,6 +68,12 @@ fi
 
 (echo n; echo ""; echo ""; echo ""; echo 8300; echo w; echo Y) | gdisk ${hdd}
 hdd_root=\`lsblk ${hdd} -p -r -n | tail -n1 | cut -d ' ' -f 1\`
+
+# Allow kernel to propage the latest changes.
+sync
+sleep 5
+sync
+
 (echo y) | mkfs.ext4 \${hdd_root}
 mount \${hdd_root} /mnt
 
@@ -68,16 +83,35 @@ then
   mount \${hdd_esp} /mnt/boot
 fi
 
-for i in "\${mirror[@]}"; do
-  grep -i -A 1 --no-group-separator \$i /etc/pacman.d/mirrorlist >> mirrorlist
-done
-mv mirrorlist /etc/pacman.d/mirrorlist
+#for i in "\${mirror[@]}"; do
+#  grep -i -A 1 --no-group-separator \$i /etc/pacman.d/mirrorlist >> mirrorlist
+#done
+#mv mirrorlist /etc/pacman.d/mirrorlist
+
+cp -a /etc/pacman.d/gnupg "/mnt/etc/pacman.d/"
+cp -a /etc/pacman.d/mirrorlist "/mnt/etc/pacman.d/"
 
 pacman -Syy
 
-pacstrap /mnt base linux linux-firmware netctl dhcpcd
+# pacstrap is not working; do it manually.
+#pacstrap /mnt base linux linux-firmware netctl dhcpcd
+
+# Preparing necessary system mounts.
+mkdir -m 0755 -p "/mnt"/var/{cache/pacman/pkg,lib/pacman,log} "/mnt"/{dev,run,etc}
+mkdir -m 1777 -p "/mnt"/tmp
+mkdir -m 0555 -p "/mnt"/{sys,proc}
+mount --bind "/mnt" "/mnt"
+mount -t proc /proc "/mnt/proc"
+mount --rbind /sys "/mnt/sys"
+mount --rbind /run "/mnt/run"
+mount --rbind /dev "/mnt/dev"
+
+# Install software.
+pacman -r "/mnt" --cachedir="/mnt/var/cache/pacman/pkg" -Sy --noconfirm base linux linux-firmware netctl dhcpcd
+
 
 genfstab -U /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab | grep \${hdd_root} > /mnt/etc/fstab.new && mv /mnt/etc/fstab.new /mnt/etc/fstab
 
 mem_size=\`awk '/MemTotal/ {print \$2}' /proc/meminfo\`
 fallocate -l \${mem_size}k /mnt/var/swapfile
@@ -94,11 +128,17 @@ cp install-conf.sh /mnt/root/
 
 
 
-cat <<CHROOT > /root/install-chroot.sh
+cat <<"CHROOT" > /mnt/root/install-chroot.sh
+#!/bin/bash
+set -e
 
 cd
 
 source install-conf.sh
+
+pacman-key --init
+pacman-key --populate archlinux
+pacman -ySu --noconfirm
 
 echo ${hostname} > /etc/hostname
 ln -fs /usr/share/zoneinfo/${timezone} /etc/localtime
@@ -206,7 +246,6 @@ fi
 
 
 cat <<POST >> /root/install-post.sh
-
 while :
 do
   nc -z 8.8.8.8 53  >/dev/null 2>&1
@@ -255,6 +294,7 @@ echo -e "IMPORTANT: This computer is regularly and automatically wiped clean and
 rm install-conf.sh install-post.sh && reboot
 
 POST
+chmod 700 /root/install-post.sh
 
 
 echo -e "[Unit]\nDescription=Automated install, post setup\nAfter=network-online.target\nRequires=network-online.target\n\n\n[Service]\nType=oneshot\nExecStart=/root/install-post.sh\nWorkingDirectory=/root\n\n[Install]\nWantedBy=multi-user.target" >> /etc/systemd/system/install-post.service
@@ -267,13 +307,25 @@ echo -e "\${root_password}\n\${root_password}" | (passwd)
 
 rm install-chroot.sh && exit
 CHROOT
+chmod 700 /mnt/root/install-chroot.sh
 
 
 
-arch-chroot /mnt /root/install-chroot.sh
+#arch-chroot /mnt /root/install-chroot.sh
+cp /etc/resolv.conf /mnt/etc
+cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/
+chroot /mnt /root/install-chroot.sh
 EOF
 
-/tmp/ramdisk/bin/arch-chroot /tmp/ramdisk /tmp/ramdisk/arch-bootstrap-chroot.sh
+#/tmp/ramdisk/bin/arch-chroot /tmp/ramdisk /tmp/ramdisk/arch-bootstrap-chroot.sh
+cd /tmp/ramdisk
+mount -t proc /proc proc
+mount --make-rslave --rbind /sys sys
+mount --make-rslave --rbind /dev dev
+mount --make-rslave --rbind /run run
+chmod 755 /tmp/ramdisk/arch-bootstrap-chroot.sh
+chroot /tmp/ramdisk ./arch-bootstrap-chroot.sh
+
 
 
 umount -R /mnt
