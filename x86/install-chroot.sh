@@ -15,6 +15,7 @@ echo "LANG=${locale[0]}" > /etc/locale.conf
 echo "KEYMAP=${keymap}" > /etc/vconsole.conf
 
 pacman -Syy
+pacman -S base linux linux-firmware netctl dhcpcd
 
 use_intel_ucode=false
 if [ -n "`lscpu | grep Vendor | grep Intel`" ]

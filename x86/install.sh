@@ -31,9 +31,9 @@ for i in "${mirror[@]}"; do
 done
 mv mirrorlist /etc/pacman.d/mirrorlist
 
-pacman -Syy
-
-pacstrap /mnt base linux linux-firmware netctl dhcpcd
+arch_mirror="http://mirror.rackspace.com"
+arch_bootstrap_file=`wget -q ${arch_mirror}/archlinux/iso/latest -O - | grep 'tar.gz"' | cut -d '"' -f2`
+cd /mnt && wget "${arch_mirror}/archlinux/iso/latest/${arch_bootstrap_file}" && tar -zxvf ${arch_bootstrap_file} && mv root.x86_64/* . && rm -r ${arch_bootstrap_file} root.x86_64
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -49,7 +49,13 @@ if [[ $has_setup == 1 ]]; then
   cp setup-*.sh /mnt/root/
 fi
 
-arch-chroot /mnt /root/install-chroot.sh
+mount --rbind /dev /mnt/dev
+mount --make-rslave /mnt/dev
+mount -t proc /proc /mnt/proc
+mount --rbind /sys /mnt/sys
+mount --make-rslave /mnt/sys
+mount --rbind /tmp /mnt/tmp 
+chroot /mnt/mychroot /root/install-chroot.sh
 
 umount -R /mnt
 reboot
