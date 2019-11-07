@@ -33,10 +33,13 @@ cp *.sh /tmp/ramdisk
 arch_bootstrap_file=`wget -q ${arch_mirror}/archlinux/iso/latest -O - | grep 'tar.gz"' | cut -d '"' -f2`
 cd /tmp/ramdisk && wget "${arch_mirror}/archlinux/iso/latest/${arch_bootstrap_file}" && tar -zxf ${arch_bootstrap_file} && mv root.x86_64/* . && rm -r ${arch_bootstrap_file} root.x86_64
 
-for i in "${mirror[@]}"; do
-  grep -i -A 1 --no-group-separator $i /etc/pacman.d/mirrorlist >> mirrorlist 
-done
-mv mirrorlist /tmp/ramdisk/etc/pacman.d/mirrorlist
+cat <<EOF >> /tmp/ramdisk/etc/pacman.d/mirrorlist
+Server = https://ftp.acc.umu.se/mirror/archlinux/\$repo/os/\$arch
+EOF
+#for i in "${mirror[@]}"; do
+#  grep -i -A 1 --no-group-separator $i /etc/pacman.d/mirrorlist >> mirrorlist 
+#done
+#mv mirrorlist /tmp/ramdisk/etc/pacman.d/mirrorlist
 cp /etc/resolv.conf /tmp/ramdisk/etc
 
 
