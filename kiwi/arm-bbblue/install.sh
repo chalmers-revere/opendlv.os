@@ -25,31 +25,32 @@ cd /root
 cd /opt/scripts/
 git pull
 cd -
-sed -i 's/\/sbin\/ifconfig usb1 192.168.6.2 netmask 255.255.255.252 || true/#\/sbin\/ifconfig usb1 192.168.6.2 netmask 255.255.255.252 || true/g' /opt/scripts/boot/autoconfigure_usb1.sh
+#sed -i 's/\/sbin\/ifconfig usb1 192.168.6.2 netmask 255.255.255.252 || true/#\/sbin\/ifconfig usb1 192.168.6.2 netmask 255.255.255.252 || true/g' /opt/scripts/boot/autoconfigure_usb1.sh
 # echo 'dhclient usb1' >> /opt/scripts/boot/autoconfigure_usb1.sh
-printf 'auto usb1\niface usb1 inet dhcp' >> /etc/network/interfaces
-printf 'ip route add 225.0.0.0/24 dev usb0' >> /opt/scripts/boot/autoconfigure_usb0.sh
+printf '    post-up ip route add 225.0.0.0/24 dev usb0\n' >> /etc/network/interfaces
+printf 'auto usb1\niface usb1 inet dhcp\n' >> /etc/network/interfaces
+#printf 'ip route add 225.0.0.0/24 dev usb0' >> /opt/scripts/boot/autoconfigure_usb0.sh
 
 
 # Create swapfile
-fallocate -l 512M /var/swapfile
-chmod 600 /var/swapfile
-mkswap /var/swapfile
-swapon /var/swapfile
-printf "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /etc/fstab
+#fallocate -l 512M /var/swapfile
+#chmod 600 /var/swapfile
+#mkswap /var/swapfile
+#swapon /var/swapfile
+#printf "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /etc/fstab
 
 
 
 # Format sdcard
-(echo d; echo n; echo p; echo ""; echo ""; echo ""; echo w) | fdisk /dev/mmcblk0
-(echo y) | mkfs.ext4 /dev/mmcblk0p1
-mkdir -p /mnt/sdcard
-mount /dev/mmcblk0p1 /mnt/sdcard
-printf "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
+#(echo d; echo n; echo p; echo ""; echo ""; echo ""; echo w) | fdisk /dev/mmcblk0
+#(echo y) | mkfs.ext4 /dev/mmcblk0p1
+#mkdir -p /mnt/sdcard
+#mount /dev/mmcblk0p1 /mnt/sdcard
+#printf "/dev/mmcblk0p1  /mnt/sdcard  ext4  defaults  0 2" >> /etc/fstab
 
-mkdir -p /mnt/sdcard/users/debian
-chown -R debian:users /mnt/sdcard/users/debian
-su -c "ln -s /mnt/sdcard/users/debian /home/debian/sdcard" -s /bin/bash debian
+#mkdir -p /mnt/sdcard/users/debian
+#chown -R debian:users /mnt/sdcard/users/debian
+#su -c "ln -s /mnt/sdcard/users/debian /home/debian/sdcard" -s /bin/bash debian
 
 
 # Add unstable branch
@@ -93,6 +94,8 @@ apt-get install -y ${software}
 apt-get autoremove -y
 apt-get autoclean
 
+##
+
 sed -i '/# pool:/a \
 server 10.42.42.1 iburst' /etc/ntp.conf
 sed -i 's/#restrict 192.168.123.0 mask 255.255.255.0 notrust/restrict 10.42.42.0 mask 255.255.255.0 nomodify notrap/g' /etc/ntp.conf
@@ -118,8 +121,8 @@ apt-get install -y docker-compose
 
 
 # Networking
-sed -i 's/#timeout 60;/timeout 300;/g' /etc/dhcp/dhclient.conf 
-sed -i 's/#retry 60;/retry 10;/g' /etc/dhcp/dhclient.conf 
+#sed -i 's/#timeout 60;/timeout 300;/g' /etc/dhcp/dhclient.conf 
+#sed -i 's/#retry 60;/retry 10;/g' /etc/dhcp/dhclient.conf 
 printf 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -o usb1 -j MASQUERADE
