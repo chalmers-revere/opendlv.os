@@ -15,10 +15,6 @@ done
 
 timedatectl set-timezone Europe/Stockholm
 
-printf 'sv_SE.UTF-8 UTF-8' >> /etc/locale.gen
-
-locale-gen
-
 cd /root
 
 # Update scripts
@@ -27,7 +23,23 @@ git pull
 cd -
 printf 'USB_NETWORK_CDC_DISABLED=yes\n' >> /etc/default/bb-boot
 printf 'auto lo\niface lo inet loopback\nauto usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n' > /etc/network/interfaces
-
+# Disabling usb1 breaks dnsmasq
+# prevents creating new conf file for dnsmasq
+touch /etc/dnsmasq.d/.SoftAp0 
+sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-wl18xx
+printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
+printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-authoritative\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'domain-needed\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'bogus-priv\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'expand-hosts\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'cache-size=2048\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-range=SoftAp0,192.168.8.50,192.168.8.150,10m\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'listen-address=127.0.0.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'listen-address=192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-option-force=interface:SoftAp0,option:dns-server,192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-option-force=interface:SoftAp0,option:mtu,1500\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-leasefile=/var/run/dnsmasq.leases\n' >> /etc/dnsmasq.d/SoftAp0
 
 
 
@@ -90,7 +102,6 @@ systemctl enable ntp
 # Installing docker
 curl -sSL https://get.docker.com | sh
 usermod -aG docker debian
-systemctl start docker.service
 apt-get install -y docker-compose
 
 
@@ -101,7 +112,7 @@ apt-get install -y docker-compose
 printf 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -o usb0 -j MASQUERADE
-iptables -A FORWARD -i usb1 -o SoftAp0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i usb0 -o SoftAp0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i SoftAp0 -o usb0 -j ACCEPT
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -A FORWARD -i eth0 -o SoftAp0 -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -127,7 +138,7 @@ iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 2200 -j DNAT --to-destin
 
 iptables-save > /etc/iptables/rules.v4
 
-printf "10.42.42.1\t kiwi.opendlv.io" >> /etc/hosts
+printf "10.42.42.1\t kiwi.opendlv.io\n" >> /etc/hosts
 
 
 # /usr/bin/bb-wl18xx-tether < good stuff here
