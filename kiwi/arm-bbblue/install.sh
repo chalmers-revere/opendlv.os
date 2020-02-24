@@ -17,6 +17,13 @@ timedatectl set-timezone Europe/Stockholm
 
 cd /root
 
+# Creating a swap 
+fallocate -l 512M /var/swapfile
+chmod 600 /var/swapfile
+mkswap /var/swapfile
+swapon /var/swapfile
+printf "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /etc/fstab
+
 # Update scripts
 cd /opt/scripts/
 git pull
