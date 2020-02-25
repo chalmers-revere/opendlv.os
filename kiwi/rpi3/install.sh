@@ -86,12 +86,12 @@ echo 'network={\n    ssid="IVRL"\n    psk="opendlv-ivrl"\n    priority=2\n}' >> 
 
 wpa_cli -i wlan0 reconfigure
 
-#dhcp
-echo 'authoritative;\nsubnet 10.42.42.0 netmask 255.255.255.0 {\n    range 10.42.42.10 10.42.42.50;\n    option broadcast-address 10.42.42.255;\n    option routers 10.42.42.1;\n    default-lease-time 600;\n    max-lease-time 7200;\n    option domain-name "local";\n    option domain-name-servers 1.1.1.1, 1.0.0.1;\n}' >> /etc/dhcp/dhcpd.conf
+#dhcp server
+echo 'authoritative;\nsubnet 10.42.42.0 netmask 255.255.255.0 {\n    range 10.42.42.10 10.42.42.50;\n    option broadcast-address 10.42.42.255;\n    option routers 10.42.42.1;\n    default-lease-time 600;\n    max-lease-time 7200;\n    option domain-name "kiwi.opendlv.io";\n    option domain-name-servers 1.1.1.1, 1.0.0.1;\n}' >> /etc/dhcp/dhcpd.conf
 sed -i  's/option domain-name "example.org";/#option domain-name "example.org";/g' /etc/dhcp/dhcpd.conf
 sed -i  's/option domain-name-servers ns1.example.org, ns2.example.org;/#option domain-name-servers ns1.example.org, ns2.example.org;/g' /etc/dhcp/dhcpd.conf
 # mutlicast
-echo 'ip route add 225.0.0.0/24 dev eth2' >> /etc/dhcpcd.exit-hook
+echo 'ip route add 225.0.0.0/24 dev eth1' >> /etc/dhcpcd.exit-hook
 echo 'interface eth1\nstatic ip_address=10.42.42.1/24' >> /etc/dhcpcd.conf
 # echo 'interface wlan0\nstatic ip_address=10.154.84.26/24\nstatic routers=10.154.84.1\nstatic domain_name_servers=208.67.222.222' >> /etc/dhcpcd.conf
 echo 'auto lo\niface lo inet loopback\nallow-hotplug eth1' >> /etc/network/interfaces
@@ -155,20 +155,6 @@ cd /root
 wget -SL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3.yml 
 docker-compose -f rpi3.yml up -d
 cd /root
-
-# Making interface static
-until [ -d /sys/class/net/eth1/ ] ; do
-  sleep 1
-  echo "Waiting for eth1 interface"
-done
-addr1=$(cat /sys/class/net/eth1/address)
-until [ -d /sys/class/net/eth2/ ] ; do
-  sleep 1
-  echo "Waiting for eth2 interface"
-done
-addr2=$(cat /sys/class/net/eth2/address)
-
-echo 'SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="'$addr1'", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth1"\nSUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="'$addr2'", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth2"' > /etc/udev/rules.d/70-local-persistent-net.rules
 
 clear
 echo "Installation script for raspberry pi 3 is done."
