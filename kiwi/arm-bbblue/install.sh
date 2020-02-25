@@ -28,12 +28,15 @@ printf "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /etc/fstab
 cd /opt/scripts/
 git pull
 cd -
-printf 'USB_NETWORK_CDC_DISABLED=yes\n' >> /etc/default/bb-boot
+#printf 'USB_NETWORK_CDC_DISABLED=yes\n' >> /etc/default/bb-boot
+printf 'USB_NETWORK_RNDIS_DISABLED=yes\n' >> /etc/default/bb-boot
+sed -i 's/usb1/usb0/g' /opt/scripts/boot/autoconfigure_usb1.sh
 printf 'auto lo\niface lo inet loopback\nauto usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n' > /etc/network/interfaces
-# Disabling usb1 breaks dnsmasq
+# Disabling rndis breaks dnsmasq
 # prevents creating new conf file for dnsmasq
 touch /etc/dnsmasq.d/.SoftAp0 
 sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-wl18xx
+sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
 printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
 printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-authoritative\n' >> /etc/dnsmasq.d/SoftAp0
@@ -49,6 +52,12 @@ printf 'dhcp-option-force=interface:SoftAp0,option:mtu,1500\n' >> /etc/dnsmasq.d
 printf 'dhcp-leasefile=/var/run/dnsmasq.leases\n' >> /etc/dnsmasq.d/SoftAp0
 
 
+cp /tmp/hostapd-wl18xx.conf /etc/hostapd.conf
+
+# /usr/bin/bb-wl18xx-tether < good stuff here
+# Random 1-13 channel assignment
+channel=$[ $(shuf -i 0-2 -n 1) * 5  + 1]
+sed -i 's/channel=.*/channel='"$channel"'/g' /etc/hostapd.conf
 
 # Add unstable branch
 # echo "deb http://ftp.us.debian.org/debian unstable main contrib non-free" > /etc/apt/sources.list.d/unstable.list
@@ -118,6 +127,7 @@ apt-get install -y docker-compose
 #sed -i 's/#retry 60;/retry 10;/g' /etc/dhcp/dhclient.conf 
 printf 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING -o usb1 -j MASQUERADE
 iptables -t nat -A POSTROUTING -o usb0 -j MASQUERADE
 iptables -A FORWARD -i usb0 -o SoftAp0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i SoftAp0 -o usb0 -j ACCEPT
@@ -147,11 +157,6 @@ iptables-save > /etc/iptables/rules.v4
 
 printf "10.42.42.1\t kiwi.opendlv.io\n" >> /etc/hosts
 
-
-# /usr/bin/bb-wl18xx-tether < good stuff here
-# Random 1-13 channel assignment
-channel=$[ $(shuf -i 0-2 -n 1) * 5  + 1]
-sed -i 's/channel=.*/channel='"$channel"'" >> ${wfile}/g' /usr/bin/bb-wl18xx-tether 
 
 
 cd /root
