@@ -90,7 +90,7 @@ printf 'authoritative;\nsubnet 10.42.42.0 netmask 255.255.255.0 {\n    range 10.
 sed -i  's/option domain-name "example.org";/#option domain-name "example.org";/g' /etc/dhcp/dhcpd.conf
 sed -i  's/option domain-name-servers ns1.example.org, ns2.example.org;/#option domain-name-servers ns1.example.org, ns2.example.org;/g' /etc/dhcp/dhcpd.conf
 # mutlicast
-printf 'ip route add 225.0.0.0/24 dev eth1\n' >> /etc/dhcpcd.exit-hook
+printf 'ip route add 225.0.0.0/24 dev eth1\nsystemctl restart isc-dhcp-server\n' >> /etc/dhcpcd.exit-hook
 # static ip
 printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\nstatic routers=10.42.42.1\nstatic domain_name-servers=1.1.1.1 1.0.0.1' >> /etc/dhcpcd.conf
 printf 'auto lo\niface lo inet loopback\nallow-hotplug eth0\nallow-hotplug eth1\n' >> /etc/network/interfaces
