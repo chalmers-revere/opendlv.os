@@ -28,36 +28,6 @@ printf "/var/swapfile\tnone\tswap\tdefaults\t0 0" >> /etc/fstab
 cd /opt/scripts/
 git pull
 cd -
-#printf 'USB_NETWORK_CDC_DISABLED=yes\n' >> /etc/default/bb-boot
-printf 'USB_NETWORK_RNDIS_DISABLED=yes\n' >> /etc/default/bb-boot
-sed -i 's/usb1/usb0/g' /opt/scripts/boot/autoconfigure_usb1.sh
-printf 'auto lo\niface lo inet loopback\nauto usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n' > /etc/network/interfaces
-# Disabling rndis breaks dnsmasq
-# prevents creating new conf file for dnsmasq
-touch /etc/dnsmasq.d/.SoftAp0 
-sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-wl18xx
-sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
-printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
-printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'dhcp-authoritative\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'domain-needed\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'bogus-priv\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'expand-hosts\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'cache-size=2048\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'dhcp-range=SoftAp0,192.168.8.50,192.168.8.150,10m\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'listen-address=127.0.0.1\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'listen-address=192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'dhcp-option-force=interface:SoftAp0,option:dns-server,192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'dhcp-option-force=interface:SoftAp0,option:mtu,1500\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'dhcp-leasefile=/var/run/dnsmasq.leases\n' >> /etc/dnsmasq.d/SoftAp0
-
-
-cp /tmp/hostapd-wl18xx.conf /etc/hostapd.conf
-
-# /usr/bin/bb-wl18xx-tether < good stuff here
-# Random 1-13 channel assignment
-channel=$[ $(shuf -i 0-2 -n 1) * 5  + 1]
-sed -i 's/channel=.*/channel='"$channel"'/g' /etc/hostapd.conf
 
 # Add unstable branch
 # echo "deb http://ftp.us.debian.org/debian unstable main contrib non-free" > /etc/apt/sources.list.d/unstable.list
@@ -123,6 +93,36 @@ apt-get install -y docker-compose
 
 
 # Networking
+#printf 'USB_NETWORK_CDC_DISABLED=yes\n' >> /etc/default/bb-boot
+printf 'USB_NETWORK_RNDIS_DISABLED=yes\n' >> /etc/default/bb-boot
+sed -i 's/usb1/usb0/g' /opt/scripts/boot/autoconfigure_usb1.sh
+printf 'auto lo\niface lo inet loopback\nauto usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n' > /etc/network/interfaces
+# Disabling rndis breaks dnsmasq
+# prevents creating new conf file for dnsmasq
+touch /etc/dnsmasq.d/.SoftAp0 
+sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-wl18xx
+#sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
+printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
+printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-authoritative\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'domain-needed\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'bogus-priv\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'expand-hosts\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'cache-size=2048\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-range=SoftAp0,192.168.8.50,192.168.8.150,10m\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'listen-address=127.0.0.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'listen-address=192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-option-force=interface:SoftAp0,option:dns-server,192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-option-force=interface:SoftAp0,option:mtu,1500\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-leasefile=/var/run/dnsmasq.leases\n' >> /etc/dnsmasq.d/SoftAp0
+
+# Need to generate at boot
+#cp /tmp/hostapd-wl18xx.conf /etc/hostapd.conf
+
+# /usr/bin/bb-wl18xx-tether < good stuff here
+# Random 1,6,11 channel assignment
+sed -i 's/channel=1/channel=$( shuf -n 1 -e 1 6 11 )/g' /usr/bin/bb-wl18xx-tether
+
 #sed -i 's/#timeout 60;/timeout 300;/g' /etc/dhcp/dhclient.conf 
 #sed -i 's/#retry 60;/retry 10;/g' /etc/dhcp/dhclient.conf 
 printf 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
