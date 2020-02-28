@@ -97,6 +97,7 @@ apt-get install -y docker-compose
 printf 'USB_NETWORK_RNDIS_DISABLED=yes\n' >> /etc/default/bb-boot
 sed -i 's/usb1/usb0/g' /opt/scripts/boot/autoconfigure_usb1.sh
 printf 'auto lo\niface lo inet loopback\nauto usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n' > /etc/network/interfaces
+sed -i 's/timeout 300/timeout 10/g' /etc/dhcp/dhclient.conf
 # Disabling rndis breaks dnsmasq
 # prevents creating new conf file for dnsmasq
 touch /etc/dnsmasq.d/.SoftAp0 
