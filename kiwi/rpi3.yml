@@ -48,7 +48,7 @@ services:
         - ~/recordings:/opt/vehicle-view/recordings
         - /var/run/docker.sock:/var/run/docker.sock
         environment:
-        - OD4SESSION_CID=112
+        - OD4SESSION_CID=140
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 
         ports:
         - "8081:8081"
