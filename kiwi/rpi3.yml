@@ -31,24 +31,26 @@ services:
         container_name: encoder 
         depends_on:
         - device-camera-rpi
-        image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.5
+        image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.7
         restart: always
         network_mode: "host"
         ipc: "host"
         volumes:
         - /tmp:/tmp
-        command: "--cid=112 --name=img.i420 --width=640 --height=480"
+        command: "--cid=${CID} --name=img.i420 --width=640 --height=480"
 
     kiwi-view:
         container_name: kiwi-view
-        image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.57
+        image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.60
         restart: always
         network_mode: "host"
         volumes:
         - ~/recordings:/opt/vehicle-view/recordings
         - /var/run/docker.sock:/var/run/docker.sock
+#         temp fix
+        - -v opendlv-standard-message-set-v0.9.10:/opt/vehicle-view/opendlv-standard-message-set-v0.9.9
         environment:
-        - OD4SESSION_CID=140
+        - OD4SESSION_CID=${CID}
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 
         ports:
         - "8081:8081"
