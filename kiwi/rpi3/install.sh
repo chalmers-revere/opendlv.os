@@ -140,6 +140,9 @@ systemctl restart isc-dhcp-server
 usermod -aG docker pi
 cd /root
 wget -SL https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/rpi3.yml 
+wget https://raw.githubusercontent.com/chalmers-revere/opendlv.os/kiwi/kiwi/.env 
+wget https://raw.githubusercontent.com/chalmers-revere/opendlv.standard-message-set/v0.9.10/opendlv.odvd -O opendlv-standard-message-set-v0.9.10.odvd
+
 docker-compose -f rpi3.yml up -d
 cd /root
 
