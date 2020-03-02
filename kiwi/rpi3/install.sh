@@ -123,9 +123,6 @@ iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCE
 iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
 iptables-save > /etc/iptables/rules.v4
 
-iptables -t nat -A POSTROUTING -o enp17s0f3u1 -j MASQUERADE
-iptables -A FORWARD -i enp17s0f3u1 -o wlp8s0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i wlp8s0 -o enp17s0f3u1 -j ACCEPT
 
 sed -i '$imodprobe bcm2835-v4l2' /etc/rc.local
 systemctl daemon-reload
