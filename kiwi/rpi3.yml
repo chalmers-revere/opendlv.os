@@ -48,7 +48,7 @@ services:
         - ~/recordings:/opt/vehicle-view/recordings
         - /var/run/docker.sock:/var/run/docker.sock
 #         temp fix
-        - -v opendlv-standard-message-set-v0.9.10:/opt/vehicle-view/opendlv-standard-message-set-v0.9.9
+        - ~/opendlv-standard-message-set-v0.9.10:/opt/vehicle-view/opendlv-standard-message-set-v0.9.9
         environment:
         - OD4SESSION_CID=${CID}
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 
