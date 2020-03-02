@@ -29,8 +29,18 @@ services:
                 --names=${NAMES} --types=${TYPES} --channels=${CHANNELS} \
                 --offsets=${OFFSETS} --maxvals=${MAXVALS} \
                 --angleconversion=${ANGLECONVERSION} --verbose=0"
+                
+    device-kiwi-mpu9250:
+        image: registry.git.chalmers.se/chalmers-revere/opendlv-device-kiwi-mpu9250/armhf:v0.0.1
+        network_mode: "host"
+        privileged: true
+        restart: always
+        volumes:
+          - /dev/i2c-2:/dev/i2c-2
+        command: "/usr/bin/opendlv-device-kiwi-mpu9250 --cid=${CID} --verbose=0"
+        
     device-ultrasonic-srf08-front:
-        image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.7
+        image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.12
         network_mode: "host"
         restart: always
         privileged: true
@@ -39,7 +49,7 @@ services:
         command: "/usr/bin/opendlv-device-ultrasonic-srf08 --dev=/dev/i2c-1 --bus-address=112 --cid=${CID} --freq=10 --id=0 --range=${USRANGE} --gain=${USGAIN}"
     
     device-ultrasonic-srf08-rear:
-        image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.7
+        image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.12
         network_mode: "host"
         restart: always
         privileged: true
