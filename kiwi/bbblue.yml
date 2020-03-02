@@ -36,6 +36,7 @@ services:
         privileged: true
         restart: always
         volumes:
+          - /var/lib/robotcontrol/:/var/lib/robotcontrol/
           - /dev/i2c-2:/dev/i2c-2
         command: "/usr/bin/opendlv-device-kiwi-mpu9250 --cid=${CID} --verbose=0"
         
