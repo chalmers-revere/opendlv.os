@@ -96,7 +96,7 @@ printf 'if [ "${interface}" = "eth1" ]; then\n' > /lib/dhcpcd/dhcpcd-hooks/99-et
 printf '  if $if_up ; then\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 printf '    ip route add 225.0.0.0/24 dev eth1\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 printf '    systemctl try-restart isc-dhcp-server.service || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
-printf '    env $(grep -v '"'"'^#'"'"' /root/.env | xargs) docker-compose -f /root/rpi3.yml restart & || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+printf '    env $(grep -v '"'"'^#'"'"' /root/.env | xargs) docker-compose -f /root/rpi3.yml restart encoder || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 printf '  fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 
