@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export DEBIAN_FRONTEND=noninteractive
 printf "alias ll='ls -alF --color=auto'" >> /root/.bashrc
 printf "alias ll='ls -alF --color=auto'" >> /home/pi/.bashrc
 
