@@ -18,7 +18,13 @@ In this guide, we will assume that you have internet connection on your host pc 
 1. Download the following debian image that is custom build for raspberry pi 3: https://www.raspberrypi.org/downloads/raspbian/ 
 I recommend using the lite version without any graphical interface for optimum performance.
 
-2. Use a program to flash sdcard with the newly downloaded debian image. I'd recommend etcher (https://etcher.io/). Use a spare sdcard if possible, this step will wipe it clean for the debian image.
+2.a Use a program to flash sdcard with the newly downloaded debian image. I'd recommend etcher (https://etcher.io/). Use a spare sdcard if possible, this step will wipe it clean for the debian image.
+
+2.b If you know what you are doing, you could also use ```dd``` with following command assuming the sdcard is detected as mmcblk0
+```
+sudo dd bs=4M if=raspbian.img of=/dev/mmcblk0 conv=fsync status=progress
+```
+
 
 3. Before unmounting the sdcard after the flashing, create a file named ssh on the boot filesystem partition. This will enable ssh functionality at boot on default. Unmount and insert the sdcard to the raspberry pi 3. BEFORE BOOTING UP raspberry pi 3, make sure that the beaglebone blue is powered up first and connected to the rasperry pi 3 via the USB. This is to ensure the configuration is done properly.
 
