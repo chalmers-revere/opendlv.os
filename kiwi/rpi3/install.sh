@@ -83,6 +83,7 @@ printf 'country=SE\n' >> /etc/wpa_supplicant/wpa_supplicant.conf
 printf 'network={\n    ssid="kiwi"\n    psk="opendlv-kiwi"\n    priority=1\n}\n' >> /etc/wpa_supplicant/wpa_supplicant.conf
 printf 'network={\n    ssid="IVRL"\n    psk="opendlv-ivrl"\n    priority=2\n}\n' >> /etc/wpa_supplicant/wpa_supplicant.conf
 
+rfkill unblock wifi
 
 wpa_cli -i wlan0 reconfigure
 
