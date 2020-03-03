@@ -49,6 +49,7 @@ iptables-persistent \
 nmap \
 libncurses5-dev \
 rpi-update \
+vnstat \
 ntp
 "
 # npm \
