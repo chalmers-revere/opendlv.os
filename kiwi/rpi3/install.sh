@@ -131,6 +131,8 @@ systemctl enable dhcpcd
 systemctl restart dhcpcd
 systemctl enable isc-dhcp-server
 systemctl restart isc-dhcp-server
+systemctl enable vnstat
+systemctl start vnstat
 
 
 # Installing docker
