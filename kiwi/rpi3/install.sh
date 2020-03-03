@@ -41,7 +41,7 @@ wget \
 gcc-6 \
 g++-6 \
 python-pip \
-docker-io \
+docker.io \
 docker-compose \
 libusb-dev \
 isc-dhcp-server \
