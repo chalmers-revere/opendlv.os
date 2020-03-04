@@ -150,9 +150,6 @@ iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 8888 -j DNAT --to-destin
 iptables -A FORWARD -i SoftAp0 -o usb0 -p tcp --syn --dport 8080 -m conntrack --ctstate NEW -j ACCEPT
 iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 8080 -j DNAT --to-destination 10.42.42.1
 
-iptables -A FORWARD -p tcp -d 10.42.42.1 --dport 8081 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
-iptables -t nat -A PREROUTING -p tcp -i SoftAp0 --dport 80 -j DNAT --to-destination 10.42.42.1:8081
-
 iptables -A FORWARD -i SoftAp0 -o usb0 -p tcp --syn --dport 8081 -m conntrack --ctstate NEW -j ACCEPT
 iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 8081 -j DNAT --to-destination 10.42.42.1
 
