@@ -87,11 +87,22 @@ rfkill unblock wifi
 
 wpa_cli -i wlan0 reconfigure
 
-#dhcp server
-printf 'authoritative;\nsubnet 10.42.42.0 netmask 255.255.255.0 {\n    range 10.42.42.10 10.42.42.50;\n    option broadcast-address 10.42.42.255;\n    option routers 10.42.42.1;\n    default-lease-time 600;\n    max-lease-time 7200;\n    option domain-name "kiwi.opendlv.io";\n    option domain-name-servers 1.1.1.1, 1.0.0.1;\n}\n' >> /etc/dhcp/dhcpd.conf
+#dhcp server 
 sed -i  's/option domain-name "example.org";/#option domain-name "example.org";/g' /etc/dhcp/dhcpd.conf
 sed -i  's/option domain-name-servers ns1.example.org, ns2.example.org;/#option domain-name-servers ns1.example.org, ns2.example.org;/g' /etc/dhcp/dhcpd.conf
-# mutlicast && hotplug eth1
+
+printf 'authoritative;\n' >> /etc/dhcp/dhcpd.conf
+printf 'subnet 10.42.42.0 netmask 255.255 .255.0 {\n' >> /etc/dhcp/dhcpd.conf
+printf '  range 10.42.42.10 10.42.42.50;\n' >> /etc/dhcp/dhcpd.conf
+printf '  option broadcast-address 10.4 2.42.255;\n' >> /etc/dhcp/dhcpd.conf
+printf '  option routers 10.42.42.1;\n' >> /etc/dhcp/dhcpd.conf
+printf '  option ntp-servers 10.42.4 2.1;\n' >> /etc/dhcp/dhcpd.conf
+printf '  default-lease-time 600; \n' >> /etc/dhcp/dhcpd.conf
+printf '  max-lease-time 7200;\n' >> /etc/dhcp/dhcpd.conf
+printf '  option domain-name "kiwi.opendlv.org";\n' >> /etc/dhcp/dhcpd.conf
+printf '  option domain-name-servers 1.1.1.1, 1.0.0.1;\n}\n' >> /etc/dhcp/dhcpd.conf
+
+# multicast && hotplug eth1
 printf 'if [ "${interface}" = "eth1" ]; then\n' > /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 printf '  if $if_up ; then\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 printf '    ip route add 225.0.0.0/24 dev eth1\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
@@ -102,8 +113,14 @@ printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 
 
 # static ip
-printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\nstatic routers=10.42.42.1\nstatic domain_name-servers=1.1.1.1 1.0.0.1' >> /etc/dhcpcd.conf
-printf 'auto lo\niface lo inet loopback\nallow-hotplug eth0\nallow-hotplug eth1\n' >> /etc/network/interfaces
+printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\n >> /etc/dhcpcd.conf
+
+printf 'auto lo\n' >> /etc/network/interfaces
+printf 'iface lo inet loopback\n' >> /etc/network/interfaces
+printf 'allow-hotplug eth0\n' >> /etc/network/interfaces
+printf 'allow-hotplug eth1\n' >> /etc/network/interfaces
+printf 'allow-hotplug wlan0\n' >> /etc/network/interfaces
+
 sed -i 's/INTERFACESv4=""/INTERFACESv4="eth1"/g' /etc/default/isc-dhcp-server
 
 
