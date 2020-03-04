@@ -94,17 +94,19 @@ apt-get install -y docker-compose
 
 # Networking
 #printf 'USB_NETWORK_CDC_DISABLED=yes\n' >> /etc/default/bb-boot
-printf 'USB_CONFIGURATION=yes\n' > /etc/default/bb-boot
+printf 'USB_CONFIGURATION=enable\n' > /etc/default/bb-boot
 printf 'USB_NETWORK_RNDIS_DISABLED=yes\n' >> /etc/default/bb-boot
 sed -i 's/usb1/usb0/g' /opt/scripts/boot/autoconfigure_usb1.sh
 sed -i 's/usb1/usb0/g' /usr/bin/autoconfigure_usb1.sh
-printf 'auto lo\niface lo inet loopback\nauto usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n' > /etc/network/interfaces
+printf 'auto lo\niface lo inet loopback\nauto usb0\nallow-hotplug usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n    pre-down ip route del 225.0.0.0/24 dev usb0\n' > /etc/network/interfaces
 sed -i 's/timeout 300/timeout 10/g' /etc/dhcp/dhclient.conf
 # Disabling rndis breaks dnsmasq
 # prevents creating new conf file for dnsmasq
 touch /etc/dnsmasq.d/.SoftAp0 
 sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-wl18xx
 #sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
+# Overriding a script that autogen SoftAp0
+printf '' > /usr/bin/bb_dnsmasq_config.sh 
 printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
 printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-authoritative\n' >> /etc/dnsmasq.d/SoftAp0
@@ -118,6 +120,7 @@ printf 'listen-address=192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-option-force=interface:SoftAp0,option:dns-server,192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-option-force=interface:SoftAp0,option:mtu,1500\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-leasefile=/var/run/dnsmasq.leases\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'address=/kiwi.opendlv.org/10.42.42.1\n' >> /etc/dnsmasq.d/SoftAp0
 
 # Need to generate at boot
 #cp /tmp/hostapd-wl18xx.conf /etc/hostapd.conf
@@ -157,8 +160,6 @@ iptables -A FORWARD -i SoftAp0 -o usb0 -p tcp --syn --dport 2200 -m conntrack --
 iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 2200 -j DNAT --to-destination 10.42.42.1
 
 iptables-save > /etc/iptables/rules.v4
-
-printf "10.42.42.1\t kiwi.opendlv.io\n" >> /etc/hosts
 
 
 
