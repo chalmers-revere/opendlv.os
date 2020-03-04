@@ -113,7 +113,7 @@ printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 
 
 # static ip
-printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\n >> /etc/dhcpcd.conf
+printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\n' >> /etc/dhcpcd.conf
 
 printf 'auto lo\n' >> /etc/network/interfaces
 printf 'iface lo inet loopback\n' >> /etc/network/interfaces
