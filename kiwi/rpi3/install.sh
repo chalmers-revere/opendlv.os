@@ -94,9 +94,9 @@ sed -i  's/option domain-name-servers ns1.example.org, ns2.example.org;/#option 
 printf 'authoritative;\n' >> /etc/dhcp/dhcpd.conf
 printf 'subnet 10.42.42.0 netmask 255.255 .255.0 {\n' >> /etc/dhcp/dhcpd.conf
 printf '  range 10.42.42.10 10.42.42.50;\n' >> /etc/dhcp/dhcpd.conf
-printf '  option broadcast-address 10.4 2.42.255;\n' >> /etc/dhcp/dhcpd.conf
+printf '  option broadcast-address 10.42.42.255;\n' >> /etc/dhcp/dhcpd.conf
 printf '  option routers 10.42.42.1;\n' >> /etc/dhcp/dhcpd.conf
-printf '  option ntp-servers 10.42.4 2.1;\n' >> /etc/dhcp/dhcpd.conf
+printf '  option ntp-servers 10.42.42.1;\n' >> /etc/dhcp/dhcpd.conf
 printf '  default-lease-time 600; \n' >> /etc/dhcp/dhcpd.conf
 printf '  max-lease-time 7200;\n' >> /etc/dhcp/dhcpd.conf
 printf '  option domain-name "kiwi.opendlv.org";\n' >> /etc/dhcp/dhcpd.conf
