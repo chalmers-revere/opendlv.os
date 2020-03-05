@@ -6,12 +6,20 @@ In this guide, we will assume that you have internet connection on your host pc 
 
 
 ## Table of Contents
+* [Direct flashing](#direct-flashing)
 * [Raspberry pi 3](#raspberry-pi-3)
 * [Beaglebone blue](#beaglebone-blue)
 * [Devantech flashing](#devantech-flashing)
 * [Steering calibration](#steering-calibration)
 
 ---
+
+### Direct flashing
+Download both images at https://chalmersuniversity.box.com/s/i0du91cyeck1o0bpnlb3wfmbvqlxq5y0
+Flash a sd card with following command
+```
+sudo dd bs=4m status=progress
+```
 
 ### Raspberry pi 3
 
