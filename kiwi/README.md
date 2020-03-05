@@ -18,11 +18,13 @@ In this guide, we will assume that you have internet connection on your host pc 
 Download both images at https://chalmersuniversity.box.com/s/i0du91cyeck1o0bpnlb3wfmbvqlxq5y0
 Flash a sd card with following command assuming that the sdcard is located at ```/dev/mmcblk0```
 ```
-sudo dd bs=4m if=kiwi-rpi3.img.xz of=/dev/mmcblk0 conv=fsync status=progress
+unxz kiwi-rpi3-shrinked.img.xz 
+sudo dd bs=4m if=kiwi-rpi3.img of=/dev/mmcblk0 conv=fsync status=progress
 ```
 and similarly for the beaglebone sdcard flasher
 ```
-sudo dd bs=4M if=kiwi-bbblue.img.xz of=/dev/mmcblk0 conv=fsync status=progress
+unxz kiwi-bbblue.img.xz 
+sudo dd bs=4M if=kiwi-bbblue.img of=/dev/mmcblk0 conv=fsync status=progress
 
 ```
 
