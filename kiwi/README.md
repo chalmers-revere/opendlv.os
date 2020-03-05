@@ -16,10 +16,22 @@ In this guide, we will assume that you have internet connection on your host pc 
 
 ### Direct flashing
 Download both images at https://chalmersuniversity.box.com/s/i0du91cyeck1o0bpnlb3wfmbvqlxq5y0
-Flash a sd card with following command
+Flash a sd card with following command assuming that the sdcard is located at ```/dev/mmcblk0```
 ```
-sudo dd bs=4m status=progress
+sudo dd bs=4m if=kiwi-rpi3.img.xz of=/dev/mmcblk0 conv=fsyncstatus=progress
 ```
+and similarly for the beaglebone sdcard flasher
+```
+sudo dd bs=4M if=kiwi-bbblue.img.xz of=/dev/mmcblk0 conv=fsync status=progress
+
+```
+
+Put the beaglebone sdcard flasher into the beaglebone and let it flash (it will take a few minutes). Once the LEDS stop blinking and the beaglebone has shutdown, take the flasher sdcard out.
+
+
+Put the rpi3 sdcard in to the rpi3, and you're done.
+
+
 
 ### Raspberry pi 3
 
