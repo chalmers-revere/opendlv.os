@@ -45,10 +45,10 @@ services:
         restart: always
         network_mode: "host"
         volumes:
-        - ~/recordings:/opt/vehicle-view/recordings
+        - /home/pi/recordings:/opt/vehicle-view/recordings
         - /var/run/docker.sock:/var/run/docker.sock
 #         temp fix
-        - ~/opendlv-standard-message-set-v0.9.10:/opt/vehicle-view/opendlv-standard-message-set-v0.9.9
+        - /root/opendlv-standard-message-set-v0.9.10.odvd:/opt/vehicle-view/opendlv-standard-message-set-v0.9.9.odvd
         environment:
         - OD4SESSION_CID=${CID}
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 
