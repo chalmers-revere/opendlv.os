@@ -131,7 +131,9 @@ sed -i 's/channel=1/channel=$( shuf -n 1 -e 1 6 11 )/g' /usr/bin/bb-wl18xx-tethe
 
 #sed -i 's/#timeout 60;/timeout 300;/g' /etc/dhcp/dhclient.conf 
 #sed -i 's/#retry 60;/retry 10;/g' /etc/dhcp/dhclient.conf 
-printf 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
+printf 'net.ipv4.ip_forward=1\n' >> /etc/sysctl.conf
+printf 'net.ipv6.conf.all.disable_ipv6=1\n' >> /etc/sysctl.conf
+
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -o usb1 -j MASQUERADE
 iptables -t nat -A POSTROUTING -o usb0 -j MASQUERADE
