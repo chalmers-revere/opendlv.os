@@ -159,8 +159,8 @@ Password: root
 5. Slide the steering calibration to your satisfaction and try the new calibration settings with your joystick control.
 6. In order to make the new calibration settings persistent (across reboots), you will now go back to the terminal where you previously logged in as root.
 7. Save the settings by running
-`docker-compose -f bbb.yml down`
+`docker-compose -f bbblue.yml down`
 then
-`docker-compose -f bbb.yml up -d`
+`docker-compose -f bbblue.yml up -d`
 
 Redo step 4 to 7 if it still needs to reconfiguered.
