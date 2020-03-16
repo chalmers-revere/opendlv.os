@@ -133,6 +133,7 @@ printf "Port 2200\n" >> /etc/ssh/sshd_config
 
 # iptables
 printf "net.ipv4.ip_forward=1\n" >> /etc/sysctl.conf
+printf "net.ipv6.conf.eth1.disable_ipv6=1\n" >> /etc/sysctl.conf
 printf 1 > /proc/sys/net/ipv4/ip_forward
 
 iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
