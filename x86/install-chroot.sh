@@ -54,7 +54,7 @@ else
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-pacman -S --noconfirm ${software}
+pacman -S --noconfirm netctl dhcpcd ${software}
 
 orphans=`pacman -Qtdq`
 if [ ! "${orphans}" == "" ]; then
