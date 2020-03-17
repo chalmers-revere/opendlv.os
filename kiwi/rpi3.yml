@@ -24,7 +24,7 @@ services:
         privileged: true
         volumes:
         - /tmp:/tmp
-        command: "--name.i420=img.i420 --name.argb=img.argb --width=640 --height=480 --freq=20"
+        command: "--name.i420=img.i420 --name.argb=img.argb --width=${IMGWIDTH} --height=${IMGHEIGHT} --freq=20"
 
 
     encoder:
@@ -37,7 +37,7 @@ services:
         ipc: "host"
         volumes:
         - /tmp:/tmp
-        command: "--cid=${CID} --name=img.i420 --width=640 --height=480"
+        command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"
 
     kiwi-view:
         container_name: kiwi-view
