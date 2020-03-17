@@ -32,8 +32,9 @@ done
 mv mirrorlist /etc/pacman.d/mirrorlist
 
 pacman -Syy
+pacman -S --noconfirm archlinux-keyring
 
-pacstrap /mnt base linux linux-firmware netctl dhcpcd
+pacstrap /mnt base linux linux-firmware
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
