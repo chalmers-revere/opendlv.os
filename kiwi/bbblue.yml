@@ -60,7 +60,7 @@ services:
         command: "/usr/bin/opendlv-device-ultrasonic-srf08 --dev=/dev/i2c-1 --bus-address=113 --cid=${CID} --freq=10 --id=2 --range=${USRANGE} --gain=${USGAIN}"
     
     device-adc-bbblue-left:
-        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.11
+        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.12
         network_mode: "host"
         restart: always
         volumes:
@@ -68,14 +68,14 @@ services:
         command: "/usr/bin/opendlv-device-adc-bbblue --cid=${CID} --freq=10 --channel=2 --id=1"
     
     device-adc-bbblue-right:
-        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.11
+        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.12
         network_mode: "host"
         restart: always
         volumes:
           - /sys/:/sys/
         command: "/usr/bin/opendlv-device-adc-bbblue --cid=${CID} --freq=10 --channel=3 --id=3"
     device-adc-bbblue-battery:
-        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.11
+        image: chalmersrevere/opendlv-device-adc-bbblue-armhf:v0.0.12
         network_mode: "host"
         restart: always
         volumes:
