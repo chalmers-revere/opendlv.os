@@ -1,4 +1,5 @@
-# Copyright (C) 2018  Björnborg Nguyen
+# Copyright (C) 2020 Christian Berger
+# Copyright (C) 2020  Björnborg Nguyen
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,18 +27,18 @@ services:
         - /tmp:/tmp
         command: "--name.i420=img.i420 --name.argb=img.argb --width=${IMGWIDTH} --height=${IMGHEIGHT} --freq=20"
 
-
-    encoder:
-        container_name: encoder 
+    video-x264-recorder-armhf:
+        image: chrberger/opendlv-video-x264-recorder:v0.0.4
+        restart: always
         depends_on:
         - device-camera-rpi
-        image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.5
-        restart: always
         network_mode: "host"
         ipc: "host"
+        working_dir: /recordings
         volumes:
         - /tmp:/tmp
-        command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"
+        - /home/pi/recordings:/recordings
+        command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT} --recsuffix=video-all"
 
     kiwi-view:
         container_name: kiwi-view
