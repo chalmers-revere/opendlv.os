@@ -32,7 +32,7 @@ services:
                 --angleconversion=${ANGLECONVERSION} --verbose=0"
                 
     device-kiwi-mpu9250:
-        image: bjornborg/opendlv-device-kiwi-mpu9250-armhf:v0.0.1
+        image: registry.git.chalmers.se/chalmers-revere/opendlv-device-kiwi-mpu9250:v0.0.2
         network_mode: "host"
         privileged: true
         restart: always
