@@ -73,10 +73,10 @@ apt-get autoclean
 
 ##
 
-sed -i '/# pool:/a \
-server 10.42.42.1 iburst' /etc/ntp.conf
 sed -i 's/#restrict 192.168.123.0 mask 255.255.255.0 notrust/restrict 10.42.42.0 mask 255.255.255.0 nomodify notrap/g' /etc/ntp.conf
 sed -i 's/#broadcastclient/broadcastclient/g' /etc/ntp.conf
+printf 'server 10.42.42.1\n' >> /etc/ntp.conf
+printf 'fudge 10.42.42.0 stratum 10\n' >> /etc/ntp.conf
 
 systemctl stop ntp
 ntpd -gq
