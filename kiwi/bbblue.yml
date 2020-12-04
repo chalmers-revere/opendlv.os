@@ -22,8 +22,7 @@ services:
         privileged: true
         restart: always
         volumes:
-            - /dev/mem/:/dev/mem
-            - /sys/:/sys/
+            - /dev/:/dev/
             - /lib/firmware/:/lib/firmware/
             - /root/.env:/usr/bin/.env
         command: "/usr/bin/opendlv-device-kiwi-prugw --cid=${CID} \
