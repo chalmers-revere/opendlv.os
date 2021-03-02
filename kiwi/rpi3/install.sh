@@ -33,6 +33,8 @@ ccache \
 cmake \
 netcat \
 git \
+gnupg2 \
+pass \
 i2c-tools \
 nano \
 screen \
