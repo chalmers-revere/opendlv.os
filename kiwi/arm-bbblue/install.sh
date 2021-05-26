@@ -54,6 +54,8 @@ ntp \
 python-pip \
 screen \
 vim \
+gnupg2 \
+pass \
 wget 
 "
 
