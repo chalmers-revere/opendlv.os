@@ -26,20 +26,6 @@ services:
         volumes:
         - /tmp:/tmp
         command: "--name.i420=img.i420 --name.argb=img.argb --width=${IMGWIDTH} --height=${IMGHEIGHT} --freq=20"
-
-    video-x264-recorder-armhf:
-        image: chrberger/opendlv-video-x264-recorder:v0.0.4
-        restart: always
-        depends_on:
-        - device-camera-rpi
-        network_mode: "host"
-        ipc: "host"
-        working_dir: /recordings
-        volumes:
-        - /tmp:/tmp
-        - /home/pi/recordings:/recordings
-        command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT} --recsuffix=video-all"
-
     kiwi-view:
         container_name: kiwi-view
         image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.60
@@ -55,3 +41,15 @@ services:
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 
         ports:
         - "8081:8081"
+    encoder:
+        container_name: encoder
+        image: bjornborg/omx-encoder:latest
+        privileged: true
+        restart: always
+        network_mode: "host"
+        ipc: "host"
+        depends_on:
+        - device-camera-rpi
+        volumes:
+        - /tmp:/tmp
+        command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"
