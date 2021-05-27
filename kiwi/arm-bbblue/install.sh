@@ -102,29 +102,29 @@ printf 'USB_NETWORK_RNDIS_DISABLED=yes\n' >> /etc/default/bb-boot
 #sed -i 's/usb1/usb0/g' /usr/bin/autoconfigure_usb1.sh
 printf 'auto lo\niface lo inet loopback\nauto usb0\nallow-hotplug usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n    pre-down ip route del 225.0.0.0/24 dev usb0\n' >> /etc/network/interfaces
 #sed -i 's/timeout 300/timeout 10/g' /etc/dhcp/dhclient.conf
-printf 'timeout 10\n' >> /etc/dhcp/dhclient.conf
+printf 'timeout 10;\n' >> /etc/dhcp/dhclient.conf
 
 # Disabling rndis breaks dnsmasq
 # prevents creating new conf file for dnsmasq
-#touch /etc/dnsmasq.d/.SoftAp0 
+touch /etc/dnsmasq.d/.SoftAp0 
 #sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-wl18xx
-#sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
+sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
 # Overriding a script that autogen SoftAp0
-#printf '' > /usr/bin/bb_dnsmasq_config.sh 
-#printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
-#printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'dhcp-authoritative\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'domain-needed\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'bogus-priv\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'expand-hosts\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'cache-size=2048\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'dhcp-range=SoftAp0,192.168.8.50,192.168.8.150,10m\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'listen-address=127.0.0.1\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'listen-address=192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'dhcp-option-force=interface:SoftAp0,option:dns-server,192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'dhcp-option-force=interface:SoftAp0,option:mtu,1500\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'dhcp-leasefile=/var/run/dnsmasq.leases\n' >> /etc/dnsmasq.d/SoftAp0
-#printf 'address=/kiwi.opendlv.org/10.42.42.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf '' > /usr/bin/bb_dnsmasq_config.sh 
+printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
+printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-authoritative\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'domain-needed\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'bogus-priv\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'expand-hosts\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'cache-size=2048\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-range=SoftAp0,192.168.8.50,192.168.8.150,10m\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'listen-address=127.0.0.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'listen-address=192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-option-force=interface:SoftAp0,option:dns-server,192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-option-force=interface:SoftAp0,option:mtu,1500\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'dhcp-leasefile=/var/run/dnsmasq.leases\n' >> /etc/dnsmasq.d/SoftAp0
+printf 'address=/kiwi.opendlv.org/10.42.42.1\n' >> /etc/dnsmasq.d/SoftAp0
 
 # Need to generate at boot
 #cp /tmp/hostapd-wl18xx.conf /etc/hostapd.conf
