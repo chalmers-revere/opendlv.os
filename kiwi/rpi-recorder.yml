@@ -9,3 +9,5 @@ services:
         - /tmp:/tmp
         - /home/pi/recordings:/recordings
         command: "--cid=140 --name=img.i420 --width=1280 --height=720 --recsuffix=video-all"
+        
+#         docker run --privileged --network=host bjornborg/ps3-controller:fine --cid=140 --freq=10 --input=/dev/input/js0 --angleconversion=0.290888
