@@ -1,0 +1,11 @@
+version: "3.6"
+services:
+    recorder:
+        image: chrberger/opendlv-video-x264-recorder:v0.0.4
+        network_mode: "host"
+        ipc: "host"
+        working_dir: /recordings
+        volumes:
+        - /tmp:/tmp
+        - /home/pi/recordings:/recordings
+        command: "--cid=140 --name=img.i420 --width=1280 --height=720 --recsuffix=video-all"
