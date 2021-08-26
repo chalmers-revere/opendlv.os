@@ -105,25 +105,26 @@ printf '  option domain-name "kiwi.opendlv.org";\n' >> /etc/dhcp/dhcpd.conf
 printf '  option domain-name-servers 1.1.1.1, 1.0.0.1;\n}\n' >> /etc/dhcp/dhcpd.conf
 
 # multicast && hotplug usb0
-printf 'if [ "${interface}" = "usb0" ]; then\n' > /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-printf '  if $if_up ; then\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-printf '    ip route add 225.0.0.0/24 dev usb0\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-printf '    systemctl try-restart isc-dhcp-server.service || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-printf '    env $(grep -v '"'"'^#'"'"' /root/.env | xargs) docker-compose -f /root/rpi3.yml restart encoder || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-printf '  fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
+# printf 'if [ "${interface}" = "usb0" ]; then\n' > /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
+# printf '  if $if_up ; then\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
+# printf '    ip route add 225.0.0.0/24 dev usb0\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
+# printf '    systemctl try-restart isc-dhcp-server.service || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
+# printf '    env $(grep -v '"'"'^#'"'"' /root/.env | xargs) docker-compose -f /root/rpi3.yml restart encoder || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
+# printf '  fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
+# printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
 
 
 # static ip
-printf 'noipv6\ninterface usb0\nstatic ip_address=10.42.42.1/24\n' >> /etc/dhcpcd.conf
+printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\n' >> /etc/dhcpcd.conf
 
 printf 'auto lo\n' >> /etc/network/interfaces
 printf 'iface lo inet loopback\n' >> /etc/network/interfaces
 printf 'allow-hotplug eth0\n' >> /etc/network/interfaces
+printf 'allow-hotplug eth1\n' >> /etc/network/interfaces
 printf 'allow-hotplug usb0\n' >> /etc/network/interfaces
 printf 'allow-hotplug wlan0\n' >> /etc/network/interfaces
 
-sed -i 's/INTERFACESv4=""/INTERFACESv4="usb0"/g' /etc/default/isc-dhcp-server
+sed -i 's/INTERFACESv4=""/INTERFACESv4="eth1"/g' /etc/default/isc-dhcp-server
 
 
 cp /run/systemd/generator.late/isc-dhcp-server.service /etc/systemd/system
@@ -135,15 +136,15 @@ printf "Port 2200\n" >> /etc/ssh/sshd_config
 
 # iptables
 printf "net.ipv4.ip_forward=1\n" >> /etc/sysctl.conf
-printf "net.ipv6.conf.usb0.disable_ipv6=1\n" >> /etc/sysctl.conf
+printf "net.ipv6.disable_ipv6=1\n" >> /etc/sysctl.conf
 printf 1 > /proc/sys/net/ipv4/ip_forward
 
 iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
-iptables -A FORWARD -i wlan0 -o usb0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i usb0 -o wlan0 -j ACCEPT
+iptables -A FORWARD -i wlan0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i eth1 -o wlan0 -j ACCEPT
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-iptables -A FORWARD -i eth0 -o usb0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i usb0 -o eth0 -j ACCEPT
+iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
 iptables-save > /etc/iptables/rules.v4
 
 
