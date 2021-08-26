@@ -155,8 +155,8 @@ iptables-save > /etc/iptables/rules.v4
 
 sed -i '$imodprobe bcm2835-v4l2' /etc/rc.local
 systemctl daemon-reload
-systemctl enable dhcpcd
-systemctl restart dhcpcd
+#systemctl enable dhcpcd
+#systemctl restart dhcpcd
 systemctl enable isc-dhcp-server
 systemctl restart isc-dhcp-server
 systemctl enable vnstat
