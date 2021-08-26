@@ -104,14 +104,17 @@ printf '  max-lease-time 7200;\n' >> /etc/dhcp/dhcpd.conf
 printf '  option domain-name "kiwi.opendlv.org";\n' >> /etc/dhcp/dhcpd.conf
 printf '  option domain-name-servers 1.1.1.1, 1.0.0.1;\n}\n' >> /etc/dhcp/dhcpd.conf
 
-# multicast && hotplug usb0
-# printf 'if [ "${interface}" = "usb0" ]; then\n' > /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-# printf '  if $if_up ; then\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-# printf '    ip route add 225.0.0.0/24 dev usb0\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-# printf '    systemctl try-restart isc-dhcp-server.service || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-# printf '    env $(grep -v '"'"'^#'"'"' /root/.env | xargs) docker-compose -f /root/rpi3.yml restart encoder || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-# printf '  fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
-# printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-usb0-beaglebone.conf
+printf 'ip route add 225.0.0.0/24 dev eth1' > /etc/dhcpcd.exit-hook
+
+
+#  hotplug or disconnect eth1
+# printf 'if [ "${interface}" = "eth1" ]; then\n' > /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '  if $if_up ; then\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# # printf '    ip route add 225.0.0.0/24 dev usb0\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '    systemctl try-restart isc-dhcp-server.service || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '    env $(grep -v '"'"'^#'"'"' /root/.env | xargs) docker-compose -f /root/rpi3.yml restart encoder kiwi-view || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '  fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 
 
 # static ip
@@ -136,6 +139,8 @@ printf "Port 2200\n" >> /etc/ssh/sshd_config
 
 # iptables
 printf "net.ipv4.ip_forward=1\n" >> /etc/sysctl.conf
+printf "net.ipv4.conf.eth1.mc_forwarding=1\n" >> /etc/sysctl.conf
+printf "net.ipv4.conf.eth1.rp_filter=0\n" >> /etc/sysctl.conf
 printf "net.ipv6.disable_ipv6=1\n" >> /etc/sysctl.conf
 printf 1 > /proc/sys/net/ipv4/ip_forward
 
