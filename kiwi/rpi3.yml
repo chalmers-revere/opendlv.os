@@ -39,17 +39,45 @@ services:
         environment:
         - OD4SESSION_CID=${CID}
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 
-        ports:
-        - "8081:8081"
+
     encoder:
-        container_name: encoder
-        image: bjornborg/omx-encoder:latest
-        privileged: true
+        container_name: encoder 
+        depends_on:
+        - device-camera-rpi
+        image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.5
         restart: always
         network_mode: "host"
         ipc: "host"
-        depends_on:
-        - device-camera-rpi
         volumes:
         - /tmp:/tmp
         command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"
+        
+#         Recorder
+        
+#     video-x264-recorder-armhf:
+#         image: chrberger/opendlv-video-x264-recorder:v0.0.4
+#         restart: always
+#         depends_on:
+#         - device-camera-rpi
+#         network_mode: "host"
+#         ipc: "host"
+#         working_dir: /recordings
+#         volumes:
+#         - /tmp:/tmp
+#         - /home/pi/recordings:/recordings
+#         command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT} --recsuffix=video-all"
+
+        
+#         This is probably not working. Need to fix this
+#     encoder:
+#         container_name: encoder
+#         image: bjornborg/omx-encoder:latest
+#         privileged: true
+#         restart: always
+#         network_mode: "host"
+#         ipc: "host"
+#         depends_on:
+#         - device-camera-rpi
+#         volumes:
+#         - /tmp:/tmp
+#         command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"
