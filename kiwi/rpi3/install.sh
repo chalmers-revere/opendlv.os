@@ -120,6 +120,13 @@ printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 # static ip
 printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\n' >> /etc/dhcpcd.conf
 
+printf '[Service]' > /etc/systemd/system/dhcpcd.service.d/no-wait.conf
+printf 'ExecStart=' >> /etc/systemd/system/dhcpcd.service.d/no-wait.conf
+printf 'ExecStart=/usr/bin/dhcpcd -b -q' >> /etc/systemd/system/dhcpcd.service.d/no-wait.conf
+
+rm /etc/systemd/system/dhcpcd.service.d/wait.conf
+
+
 printf 'auto lo\n' >> /etc/network/interfaces
 printf 'iface lo inet loopback\n' >> /etc/network/interfaces
 printf 'allow-hotplug eth0\n' >> /etc/network/interfaces
@@ -155,8 +162,8 @@ iptables-save > /etc/iptables/rules.v4
 
 sed -i '$imodprobe bcm2835-v4l2' /etc/rc.local
 systemctl daemon-reload
-#systemctl enable dhcpcd
-#systemctl restart dhcpcd
+systemctl enable dhcpcd
+systemctl restart dhcpcd
 systemctl enable isc-dhcp-server
 systemctl restart isc-dhcp-server
 systemctl enable vnstat
