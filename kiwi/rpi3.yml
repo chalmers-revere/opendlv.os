@@ -40,17 +40,18 @@ services:
         - OD4SESSION_CID=${CID}
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 
 
-    encoder:
-        container_name: encoder 
-        depends_on:
-        - device-camera-rpi
-        image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.5
-        restart: always
-        network_mode: "host"
-        ipc: "host"
-        volumes:
-        - /tmp:/tmp
-        command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"
+#       This encoder should not be enabled.
+#     encoder: 
+#         container_name: encoder 
+#         depends_on:
+#         - device-camera-rpi
+#         image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.5
+#         restart: always
+#         network_mode: "host"
+#         ipc: "host"
+#         volumes:
+#         - /tmp:/tmp
+#         command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"
         
 #         Recorder
         
