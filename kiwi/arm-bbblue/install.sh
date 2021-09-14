@@ -68,7 +68,6 @@ echo librobotcontrol librobotcontrol/q_enable_dt boolean false | debconf-set-sel
 apt-get update
 apt-get remove -y --allow-change-held-packages bone101 bonescript nodejs bb-node-red-installer c9-core-installer
 apt-get dist-upgrade -y
-apt-get upgrade -y
 apt-get install -y ${software}
 apt-get autoremove -y
 apt-get autoclean
