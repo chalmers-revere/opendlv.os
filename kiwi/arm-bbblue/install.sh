@@ -29,11 +29,6 @@ cd /opt/scripts/
 git pull
 cd -
 
-# Add unstable branch
-# echo "deb http://ftp.us.debian.org/debian unstable main contrib non-free" > /etc/apt/sources.list.d/unstable.list
-# echo "Package: * Pin: release a=testing Pin-Priority: 100" > /etc/apt/preferences.d/unstable
-# apt-get update
-# apt-get install gcc-8 g++-8 
 
 # apt-get update
 software=" \
@@ -66,7 +61,7 @@ echo librobotcontrol librobotcontrol/q_runonboot select none | debconf-set-selec
 echo librobotcontrol librobotcontrol/q_enable_dt boolean false | debconf-set-selections
 
 apt-get update
-apt-get remove -y --allow-change-held-packages bone101 bonescript nodejs bb-node-red-installer c9-core-installer
+apt-get purge -y --allow-change-held-packages bone101 bonescript nodejs bb-node-red-installer c9-core-installer python2*
 apt-get dist-upgrade -y
 apt-get install -y ${software}
 apt-get autoremove -y
@@ -93,23 +88,30 @@ apt-get install -y docker-compose
 
 
 
+
 # Networking
 #printf 'USB_NETWORK_CDC_DISABLED=yes\n' >> /etc/default/bb-boot
-printf 'USB_CONFIGURATION=enable\n' > /etc/default/bb-boot
+sed -i 's/USB1_ENABLE=enable/USB1_ENABLE=disable/g' /etc/default/bb-boot
+# One usb network driver has to be disabled in order to not create dual network ports on usb
 printf 'USB_NETWORK_RNDIS_DISABLED=yes\n' >> /etc/default/bb-boot
 #sed -i 's/usb1/usb0/g' /opt/scripts/boot/autoconfigure_usb1.sh
-#sed -i 's/usb1/usb0/g' /usr/bin/autoconfigure_usb1.sh
+# enumeration problem by the boot script
+sed -i 's/usb1/usb0/g' /usr/bin/autoconfigure_usb1.sh
 printf 'auto lo\niface lo inet loopback\nallow-hotplug usb0\niface usb0 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb0\n    pre-down ip route del 225.0.0.0/24 dev usb0\n' >> /etc/network/interfaces
+printf 'allow-hotplug usb1\niface usb1 inet dhcp\n    post-up ip route add 225.0.0.0/24 dev usb1\n    pre-down ip route del 225.0.0.0/24 dev usb1\n' >> /etc/network/interfaces
+
 #sed -i 's/timeout 300/timeout 10/g' /etc/dhcp/dhclient.conf
 printf 'timeout 10;\n' >> /etc/dhcp/dhclient.conf
+printf 'retry 10;\n' >> /etc/dhcp/dhclient.conf
 
 # Disabling rndis breaks dnsmasq
 # prevents creating new conf file for dnsmasq
 touch /etc/dnsmasq.d/.SoftAp0 
-#sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-wl18xx
-sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
-# Overriding a script that autogen SoftAp0
+sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-wl18xx
+#sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
+# Overriding a script that autogen SoftAp0, used like everywhere... by nelson
 printf '' > /usr/bin/bb_dnsmasq_config.sh 
+
 printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
 printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-authoritative\n' >> /etc/dnsmasq.d/SoftAp0
@@ -123,17 +125,13 @@ printf 'listen-address=192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-option-force=interface:SoftAp0,option:dns-server,192.168.8.1\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-option-force=interface:SoftAp0,option:mtu,1500\n' >> /etc/dnsmasq.d/SoftAp0
 printf 'dhcp-leasefile=/var/run/dnsmasq.leases\n' >> /etc/dnsmasq.d/SoftAp0
-printf 'address=/kiwi.opendlv.org/10.42.42.1\n' >> /etc/dnsmasq.d/SoftAp0
 
-# Need to generate at boot
-#cp /tmp/hostapd-wl18xx.conf /etc/hostapd.conf
 
+# Hostap is used for managing broadcasting
 # /usr/bin/bb-wl18xx-tether < good stuff here
 # Random 1,6,11 channel assignment
 sed -i 's/channel=1/channel=$( shuf -n 1 -e 1 6 11 )/g' /usr/bin/bb-wl18xx-tether
 
-#sed -i 's/#timeout 60;/timeout 300;/g' /etc/dhcp/dhclient.conf 
-#sed -i 's/#retry 60;/retry 10;/g' /etc/dhcp/dhclient.conf 
 printf 'net.ipv4.ip_forward=1\n' >> /etc/sysctl.conf
 printf 'net.ipv6.conf.all.disable_ipv6=1\n' >> /etc/sysctl.conf
 
@@ -162,7 +160,6 @@ iptables -A FORWARD -i SoftAp0 -o usb0 -p tcp --syn --dport 2200 -m conntrack --
 iptables -t nat -A PREROUTING -i SoftAp0 -p tcp --dport 2200 -j DNAT --to-destination 10.42.42.1
 
 iptables-save > /etc/iptables/rules.v4
-
 
 
 cd /root
