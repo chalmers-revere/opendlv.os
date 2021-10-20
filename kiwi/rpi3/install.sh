@@ -136,8 +136,8 @@ printf 'allow-hotplug wlan0\n' >> /etc/network/interfaces
 
 sed -i 's/INTERFACESv4=""/INTERFACESv4="eth1"/g' /etc/default/isc-dhcp-server
 
-
-cp /run/systemd/generator.late/isc-dhcp-server.service /etc/systemd/system
+# Doesnt exist more?
+#cp /run/systemd/generator.late/isc-dhcp-server.service /etc/systemd/system
 sed -i 's/Restart=no/Restart=on-failure\nRestartSec=5/g' /etc/systemd/system/isc-dhcp-server.service
 printf '\n[Install]\nWantedBy=multi-user.target\n' >> /etc/systemd/system/isc-dhcp-server.service
 
