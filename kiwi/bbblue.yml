@@ -38,7 +38,7 @@ services:
         volumes:
           - /var/lib/robotcontrol/:/var/lib/robotcontrol/
           - /dev/i2c-2:/dev/i2c-2
-        command: "/usr/bin/opendlv-device-kiwi-mpu9250 --cid=${CID} --freq=100 --verbose=0"
+        command: "/usr/bin/opendlv-device-kiwi-mpu9250 --cid=${CID} --freq=50 --verbose=0"
         
     device-ultrasonic-srf08-front:
         image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.12
