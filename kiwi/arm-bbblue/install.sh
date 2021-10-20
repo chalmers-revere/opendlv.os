@@ -111,6 +111,8 @@ sed -i 's/USE_GENERATED_DNSMASQ=yes/USE_GENERATED_DNSMASQ=no/g' /etc/default/bb-
 #sed -i 's/USE_GENERATED_HOSTAPD=yes/USE_GENERATED_HOSTAPD=no/g' /etc/default/bb-wl18xx
 # Overriding a script that autogen SoftAp0, used like everywhere... by nelson
 printf '' > /usr/bin/bb_dnsmasq_config.sh 
+printf '' > /usr/bin/autoconfigure_usb0.sh
+printf '' > /usr/bin/autoconfigure_usb1.sh
 
 printf 'interface=SoftAp0\n' > /etc/dnsmasq.d/SoftAp0
 printf 'port=53\n' >> /etc/dnsmasq.d/SoftAp0
