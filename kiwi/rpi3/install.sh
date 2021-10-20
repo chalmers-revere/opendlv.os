@@ -40,10 +40,7 @@ nano \
 screen \
 vim \
 wget \
-gcc-6 \
-g++-6 \
 python-pip \
-docker.io \
 docker-compose \
 libusb-dev \
 isc-dhcp-server \
@@ -59,6 +56,8 @@ ntp
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
 
+
+curl -sSL https://get.docker.com | sh
 
 apt-get update
 apt-get install -y ${software}
@@ -122,7 +121,7 @@ printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\n' >> /etc/dhcpc
 
 printf '[Service]\n' > /etc/systemd/system/dhcpcd.service.d/no-wait.conf
 printf 'ExecStart=\n' >> /etc/systemd/system/dhcpcd.service.d/no-wait.conf
-printf 'ExecStart=/usr/sbin/dhcpcd -b -q' >> /etc/systemd/system/dhcpcd.service.d/no-wait.conf
+printf 'ExecStart=/usr/lib/dhcpcd5/dhcpcd -b -q\n' >> /etc/systemd/system/dhcpcd.service.d/no-wait.conf
 
 rm /etc/systemd/system/dhcpcd.service.d/wait.conf
 
@@ -136,8 +135,7 @@ printf 'allow-hotplug wlan0\n' >> /etc/network/interfaces
 
 sed -i 's/INTERFACESv4=""/INTERFACESv4="eth1"/g' /etc/default/isc-dhcp-server
 
-# Doesnt exist more?
-#cp /run/systemd/generator.late/isc-dhcp-server.service /etc/systemd/system
+cp /run/systemd/generator.late/isc-dhcp-server.service /etc/systemd/system
 sed -i 's/Restart=no/Restart=on-failure\nRestartSec=5/g' /etc/systemd/system/isc-dhcp-server.service
 printf '\n[Install]\nWantedBy=multi-user.target\n' >> /etc/systemd/system/isc-dhcp-server.service
 
