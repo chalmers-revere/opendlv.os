@@ -43,8 +43,8 @@ services:
     device-ultrasonic-srf08-front:
         image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.12
         network_mode: "host"
-        restart: always
         privileged: true
+        restart: always
         volumes:
           - /dev/i2c-1:/dev/i2c-1
         command: "/usr/bin/opendlv-device-ultrasonic-srf08 --dev=/dev/i2c-1 --bus-address=112 --cid=${CID} --freq=10 --id=0 --range=${USRANGE} --gain=${USGAIN}"
@@ -52,8 +52,8 @@ services:
     device-ultrasonic-srf08-rear:
         image: chalmersrevere/opendlv-device-ultrasonic-srf08-armhf:v0.0.12
         network_mode: "host"
-        restart: always
         privileged: true
+        restart: always
         volumes:
           - /dev/i2c-1:/dev/i2c-1
         command: "/usr/bin/opendlv-device-ultrasonic-srf08 --dev=/dev/i2c-1 --bus-address=113 --cid=${CID} --freq=10 --id=2 --range=${USRANGE} --gain=${USGAIN}"
@@ -61,6 +61,7 @@ services:
     device-adc-bbblue-left:
         image: registry.git.chalmers.se/bjornborg.nguyen/opendlv-device-adc-bbblue:v0.0.1
         network_mode: "host"
+        privileged: true
         restart: always
         volumes:
           - /sys/:/sys/
@@ -69,6 +70,7 @@ services:
     device-adc-bbblue-right:
         image: registry.git.chalmers.se/bjornborg.nguyen/opendlv-device-adc-bbblue:v0.0.1
         network_mode: "host"
+        privileged: true
         restart: always
         volumes:
           - /sys/:/sys/
@@ -76,6 +78,7 @@ services:
     device-adc-bbblue-battery:
         image: registry.git.chalmers.se/bjornborg.nguyen/opendlv-device-adc-bbblue:v0.0.1
         network_mode: "host"
+        privileged: true
         restart: always
         volumes:
           - /sys/:/sys/
