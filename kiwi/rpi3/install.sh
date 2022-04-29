@@ -41,16 +41,17 @@ screen \
 vim \
 wget \
 python3-pip \
-docker-compose \
 libusb-dev \
 isc-dhcp-server \
 iptables-persistent \
 nmap \
 libncurses5-dev \
 rpi-update \
-vnstat \
-ntp
+docker-compose \
+vnstat 
 "
+#\
+#ntp
 # npm \
 
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
