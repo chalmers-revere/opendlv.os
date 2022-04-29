@@ -66,12 +66,12 @@ apt-get upgrade -y
 apt-get autoremove -y
 apt-get autoclean
 
-printf 'broadcast 10.42.42.255\nserver 127.127.1.0\nfudge 127.127.1.0 stratum 10\n' >> /etc/ntp.conf
+#printf 'broadcast 10.42.42.255\nserver 127.127.1.0\nfudge 127.127.1.0 stratum 10\n' >> /etc/ntp.conf
 
-systemctl stop ntp
-ntpd -gq
-systemctl start ntp
-systemctl enable ntp
+#systemctl stop ntp
+#ntpd -gq
+#systemctl start ntp
+#systemctl enable ntp
 
 rpi-update
 
