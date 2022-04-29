@@ -40,7 +40,7 @@ nano \
 screen \
 vim \
 wget \
-python-pip \
+python3-pip \
 docker-compose \
 libusb-dev \
 isc-dhcp-server \
