@@ -1,5 +1,5 @@
 # Copyright (C) 2020 Christian Berger
-# Copyright (C) 2020  Björnborg Nguyen
+# Copyright (C) 2022  Björnborg Nguyen
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,15 +17,22 @@
 version: "3.6"
 
 services:
-    device-camera-rpi:
-        container_name: device-camera-rpi
-        image: chalmersrevere/opendlv-device-camera-rpi-armhf:v0.0.6
-        restart: always
-        ipc: "host"
+    rpi-camv2:
+        container_name: camv2
+        image: registry.opendlv.org/bjornborg/opendlv-device-camera-rpicamv2:latest
+        ipc: host
+        network_mode: host
         privileged: true
+        environment:
+        - DISPLAY=${DISPLAY}
         volumes:
+        - /sys:/sys:rw
+        - /dev:/dev:rw
+        - /run/udev:/run/udev:rw
         - /tmp:/tmp
-        command: "--name.i420=img.i420 --name.argb=img.argb --width=${IMGWIDTH} --height=${IMGHEIGHT} --freq=20"
+        - /home/pi/.Xauthority:/root/.Xauthority
+        command: "--codec yuv420 --mode 3280:2464:12:P --width 1920 --height 1080 --shutter 10000 --gain 4.0 --exposure sport --awb indoor --denoise cdn_fast #--verbose"
+
     kiwi-view:
         container_name: kiwi-view
         image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.60
@@ -40,45 +47,3 @@ services:
         - OD4SESSION_CID=${CID}
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 
 
-#       This encoder should not be enabled.
-#     encoder: 
-#         container_name: encoder 
-#         depends_on:
-#         - device-camera-rpi
-#         image: chalmersrevere/opendlv-video-x264-encoder-armhf:v0.0.5
-#         restart: always
-#         network_mode: "host"
-#         ipc: "host"
-#         volumes:
-#         - /tmp:/tmp
-#         command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"
-        
-#         Recorder
-        
-#     video-x264-recorder-armhf:
-#         image: chrberger/opendlv-video-x264-recorder:v0.0.4
-#         restart: always
-#         depends_on:
-#         - device-camera-rpi
-#         network_mode: "host"
-#         ipc: "host"
-#         working_dir: /recordings
-#         volumes:
-#         - /tmp:/tmp
-#         - /home/pi/recordings:/recordings
-#         command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT} --recsuffix=video-all"
-
-        
-#         This is probably not working. Need to fix this
-#     encoder:
-#         container_name: encoder
-#         image: bjornborg/omx-encoder:latest
-#         privileged: true
-#         restart: always
-#         network_mode: "host"
-#         ipc: "host"
-#         depends_on:
-#         - device-camera-rpi
-#         volumes:
-#         - /tmp:/tmp
-#         command: "--cid=${CID} --name=img.i420 --width=${IMGWIDTH} --height=${IMGHEIGHT}"

@@ -1,13 +1,14 @@
-version: "3.6"
-services:
-    recorder:
-        image: chrberger/opendlv-video-x264-recorder:v0.0.4
+version: '3.6' # Must be present exactly once at the beginning of the docker-compose.yml file
+services:    # Must be present exactly once at the beginning of the docker-compose.yml file
+    rpi-recorder:
+        image: registry.opendlv.org/bjornborg/opendlv-data-recorder-video-h264:latest
         network_mode: "host"
-        ipc: "host"
         working_dir: /recordings
+        ipc: "host"
         volumes:
         - /tmp:/tmp
         - /home/pi/recordings:/recordings
-        command: "--cid=140 --name=img.i420 --width=1280 --height=720 --recsuffix=video-all"
+        command: "--cid=140 --width=1920 --height=1080 --name=img.i420 --recsuffix=video-all --threads=4 --verbose"
+
         
 #         docker run --privileged --network=host bjornborg/ps3-controller:fine --cid=140 --freq=10 --input=/dev/input/js0 --angleconversion=0.290888

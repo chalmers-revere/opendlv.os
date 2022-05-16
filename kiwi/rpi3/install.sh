@@ -31,6 +31,7 @@ software=" \
 bash-completion \
 ccache \
 cmake \
+build-essential \
 netcat \
 git \
 gnupg2 \
@@ -47,7 +48,11 @@ iptables-persistent \
 nmap \
 libncurses5-dev \
 rpi-update \
+docker.io \
 docker-compose \
+libcamera-dev \
+libcamera-apps \
+x11-apps \
 vnstat 
 "
 #\
@@ -58,7 +63,7 @@ echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
 
 
-curl -sSL https://get.docker.com | sh
+# curl -sSL https://get.docker.com | sh
 
 apt-get update
 apt-get install -y ${software}
@@ -67,6 +72,7 @@ apt-get upgrade -y
 apt-get autoremove -y
 apt-get autoclean
 
+# ntp not standard,
 #printf 'broadcast 10.42.42.255\nserver 127.127.1.0\nfudge 127.127.1.0 stratum 10\n' >> /etc/ntp.conf
 
 #systemctl stop ntp
@@ -77,7 +83,7 @@ apt-get autoclean
 rpi-update
 
 # enable pi cam
-raspi-config nonint do_camera 0
+#raspi-config nonint do_camera 0
 
 
 #enable wireless
@@ -108,13 +114,13 @@ printf '  option domain-name-servers 1.1.1.1, 1.0.0.1;\n}\n' >> /etc/dhcp/dhcpd.
 
 
 #  hotplug or disconnect eth1
-printf 'if [ "${interface}" = "eth1" ]; then\n' > /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
-printf '  if $if_up ; then\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
-printf '    ip route add 225.0.0.0/24 dev eth1\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
-printf '    systemctl try-restart isc-dhcp-server.service || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
-printf '    env $(grep -v '"'"'^#'"'"' /root/.env | xargs) docker-compose -f /root/rpi3.yml restart kiwi-view || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
-printf '  fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
-printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf 'if [ "${interface}" = "eth1" ]; then\n' > /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '  if $if_up ; then\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '    ip route add 225.0.0.0/24 dev eth1\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '    systemctl try-restart isc-dhcp-server.service || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '    env $(grep -v '"'"'^#'"'"' /root/.env | xargs) docker-compose -f /root/rpi3.yml restart kiwi-view || true\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf '  fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
+# printf 'fi\n' >> /lib/dhcpcd/dhcpcd-hooks/99-eth1-beaglebone.conf
 
 
 # static ip
@@ -122,7 +128,7 @@ printf 'noipv6\ninterface eth1\nstatic ip_address=10.42.42.1/24\n' >> /etc/dhcpc
 
 printf '[Service]\n' > /etc/systemd/system/dhcpcd.service.d/no-wait.conf
 printf 'ExecStart=\n' >> /etc/systemd/system/dhcpcd.service.d/no-wait.conf
-printf 'ExecStart=/usr/lib/dhcpcd5/dhcpcd -b -q\n' >> /etc/systemd/system/dhcpcd.service.d/no-wait.conf
+printf 'ExecStart=/usr/sbin/dhcpcd -b -q\n' >> /etc/systemd/system/dhcpcd.service.d/no-wait.conf
 
 rm /etc/systemd/system/dhcpcd.service.d/wait.conf
 
@@ -158,8 +164,6 @@ iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCE
 iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
 iptables-save > /etc/iptables/rules.v4
 
-
-sed -i '$imodprobe bcm2835-v4l2' /etc/rc.local
 systemctl daemon-reload
 systemctl enable dhcpcd
 systemctl restart dhcpcd
