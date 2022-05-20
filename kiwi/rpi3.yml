@@ -17,8 +17,8 @@
 version: "3.6"
 
 services:
-    rpi-camv2:
-        container_name: camv2
+    rpicamv2:
+        container_name: rpicamv2
         image: registry.opendlv.org/bjornborg/opendlv-device-camera-rpicamv2:latest
         ipc: host
         network_mode: host
@@ -31,18 +31,16 @@ services:
         - /run/udev:/run/udev:rw
         - /tmp:/tmp
         - /home/pi/.Xauthority:/root/.Xauthority
-        command: "--codec yuv420 --mode 3280:2464:12:P --width 1920 --height 1080 --shutter 10000 --gain 4.0 --exposure sport --awb indoor --denoise cdn_fast #--verbose"
+        command: "--mode 3280:2464:12:P --width 1920 --height 1080 --shutter 10000 --gain 4.0 --exposure sport --awb indoor --denoise cdn_fast #--verbose"
 
     kiwi-view:
         container_name: kiwi-view
-        image: chalmersrevere/opendlv-vehicle-view-multi:v0.0.60
+        image: registry.opendlv.org/bjornborg/opendlv-ui-vehicleview:v0.0.67
         restart: always
         network_mode: "host"
         volumes:
         - /home/pi/recordings:/opt/vehicle-view/recordings
         - /var/run/docker.sock:/var/run/docker.sock
-#         temp fix
-        - /root/opendlv-standard-message-set-v0.9.10.odvd:/opt/vehicle-view/opendlv-standard-message-set-v0.9.9.odvd
         environment:
         - OD4SESSION_CID=${CID}
         - OPENDLV_VEHICLE_VIEW_PLATFORM=Kiwi 

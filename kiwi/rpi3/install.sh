@@ -83,6 +83,7 @@ apt-get autoclean
 rpi-update
 
 # enable pi cam
+timedatectl set-ntp 1
 #raspi-config nonint do_camera 0
 
 
@@ -110,7 +111,7 @@ printf '  max-lease-time 7200;\n' >> /etc/dhcp/dhcpd.conf
 printf '  option domain-name "kiwi.opendlv.org";\n' >> /etc/dhcp/dhcpd.conf
 printf '  option domain-name-servers 1.1.1.1, 1.0.0.1;\n}\n' >> /etc/dhcp/dhcpd.conf
 
-#printf 'ip route add 225.0.0.0/24 dev eth1' > /etc/dhcpcd.exit-hook
+printf 'ip route add 225.0.0.0/24 dev eth1' > /etc/dhcpcd.exit-hook
 
 
 #  hotplug or disconnect eth1
